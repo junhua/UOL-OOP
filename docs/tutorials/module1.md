@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Module 1 - Introduction to Programming and C++
+title: Module 1 - Introduction to C++
 nav_order: 1
 parent: Tutorials
 has_children: true

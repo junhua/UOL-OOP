@@ -1,500 +1,372 @@
 ---
 layout: default
-title: Part 5 - Working with Operators
+title: Part 5 - Operators
 nav_order: 5
-parent: Module 1 - Introduction to Programming and C++
+parent: Module 1 - Introduction to C++
 grand_parent: Tutorials
-permalink: /tutorials/module1/part5-operators
+permalink: /tutorials/module1/part5-operators/
 ---
 
-# Part 5: Basic Operators
+# Part 5: Operators
 
 ## Learning Objectives
-- Understand different types of operators in C++
-- Learn operator precedence and associativity
-- Practice using operators in expressions
-- Handle common operator-related issues
-- Combine operators effectively
+- Master C++ operators and their usage
+- Understand operator precedence
+- Learn type conversion rules
+- Implement operator overloading
+- Practice safe operator usage
+- Handle operation errors
+- Create custom operators
 
 ## Introduction
-Operators are the building blocks of computation in C++, allowing you to perform calculations, make comparisons, and manipulate data. This part explores several categories of operators:
+Operators in C++ are like the tools in a toolbox, each designed for specific operations. Think of them as:
 
-1. **Arithmetic Operators**:
-   - Basic mathematics (+, -, *, /, %)
-   - Order of operations
-   - Integer vs floating-point division
-   - Modulus operations
+1. **Why Operators Matter**:
+   - **Computation**: Perform calculations
+   - **Comparison**: Make decisions
+   - **Logic**: Control program flow
+   - **Manipulation**: Transform data
+   - **Assignment**: Modify values
 
-2. **Assignment Operators**:
-   - Simple assignment (=)
-   - Compound assignments (+=, -=, *=, /=)
-   - Chained assignments
-   - Assignment with type conversion
+2. **Real-World Applications**:
+   - **Calculator**: Mathematical operations
+   - **Game Logic**: Collision detection
+   - **Data Processing**: Value comparisons
+   - **Graphics**: Coordinate manipulation
+   - **Finance**: Currency calculations
 
-3. **Comparison Operators**:
-   - Equality and inequality (==, !=)
-   - Relational operators (<, >, <=, >=)
-   - Comparing different types
-   - Common comparison pitfalls
-
-4. **Logical Operators**:
-   - AND, OR, NOT operations (&&, \|\|, !)
-   - Short-circuit evaluation
-   - Combining conditions
-   - Truth tables and boolean logic
-
-5. **Increment/Decrement**:
-   - Pre and post increment (++x, x++)
-   - Pre and post decrement (--x, x--)
-   - Side effects and sequence points
-   - Common usage patterns
-
-Understanding these operators and their proper usage is crucial for writing efficient and bug-free code. Through examples, you'll learn how to combine operators effectively while avoiding common pitfalls.
+3. **Benefits in Development**:
+   - **Clear Code**: Expressive operations
+   - **Efficient Logic**: Compact expressions
+   - **Type Safety**: Controlled conversions
+   - **Custom Types**: Extended operations
+   - **Clean Syntax**: Readable code
 
 ## Implementation Guide
 
-### Step 1: Start with the Template
-Let's examine our starting point:
-1. Open the starter code file `Tutorials/Module01/Part5/operators_starter.cpp`
-2. The template outlines what we'll implement:
-
-```cpp
-// TODO: Add necessary include directives
-
-int main() {
-    // TODO: Demonstrate arithmetic operators
-    // 1. Addition
-    // 2. Subtraction
-    // 3. Multiplication
-    // 4. Division
-    // 5. Modulus
-    // Print results of each operation
-
-    // TODO: Demonstrate assignment operators
-    // 1. Basic assignment
-    // 2. Compound assignments (+=, -=, *=, /=, %=)
-    // Print results after each assignment
-
-    // TODO: Demonstrate comparison operators
-    // 1. Equal to (==)
-    // 2. Not equal to (!=)
-    // 3. Greater than (>)
-    // 4. Less than (<)
-    // 5. Greater than or equal to (>=)
-    // 6. Less than or equal to (<=)
-    // Print results of comparisons
-
-    // TODO: Demonstrate logical operators
-    // 1. AND (&&)
-    // 2. OR (||)
-    // 3. NOT (!)
-    // Print results of logical operations
-
-    // TODO: Demonstrate increment/decrement operators
-    // 1. Pre-increment (++x)
-    // 2. Post-increment (x++)
-    // 3. Pre-decrement (--x)
-    // 4. Post-decrement (x--)
-    // Show the difference between pre and post operations
-
-    return 0;
-}
-```
-
-### Step 2: Add Include Directives
-We need two headers for our program:
-1. iostream for output operations
-2. iomanip for formatting boolean values
-
-```cpp
-#include <iostream>
-#include <iomanip>
-```
-
-### Step 3: Implement Arithmetic Operators
-Let's demonstrate basic mathematical operations:
-1. Declare two variables for operands
-2. Show each arithmetic operation
-3. Display results clearly
-
-```cpp
-    // Arithmetic Operators
-    std::cout << "--- Arithmetic Operators ---\n";
-    int a = 10, b = 3;
-    std::cout << "a = " << a << ", b = " << b << std::endl;
-    std::cout << "Addition: a + b = " << a + b << std::endl;
-    std::cout << "Subtraction: a - b = " << a - b << std::endl;
-    std::cout << "Multiplication: a * b = " << a * b << std::endl;
-    std::cout << "Division: a / b = " << a / b << std::endl;
-    std::cout << "Modulus: a % b = " << a % b << std::endl;
-```
-
-### Step 4: Implement Assignment Operators
-Now let's show different ways to assign values:
-1. Start with basic assignment
-2. Demonstrate compound assignments
-3. Show how each modifies the variable
-
-```cpp
-    // Assignment Operators
-    std::cout << "\n--- Assignment Operators ---\n";
-    int x = 5;
-    std::cout << "Initial x = " << x << std::endl;
-    x += 3;  // x = x + 3
-    std::cout << "After x += 3: x = " << x << std::endl;
-    x -= 2;  // x = x - 2
-    std::cout << "After x -= 2: x = " << x << std::endl;
-    x *= 4;  // x = x * 4
-    std::cout << "After x *= 4: x = " << x << std::endl;
-    x /= 2;  // x = x / 2
-    std::cout << "After x /= 2: x = " << x << std::endl;
-    x %= 3;  // x = x % 3
-    std::cout << "After x %= 3: x = " << x << std::endl;
-```
-
-### Step 5: Implement Comparison Operators
-Let's explore how to compare values:
-1. Set up two variables to compare
-2. Show all comparison operations
-3. Display results as true/false
-
-```cpp
-    // Comparison Operators
-    std::cout << "\n--- Comparison Operators ---\n";
-    int p = 5, q = 10;
-    std::cout << "p = " << p << ", q = " << q << std::endl;
-    std::cout << std::boolalpha;  // Print bool as true/false instead of 1/0
-    std::cout << "p == q: " << (p == q) << std::endl;
-    std::cout << "p != q: " << (p != q) << std::endl;
-    std::cout << "p > q: " << (p > q) << std::endl;
-    std::cout << "p < q: " << (p < q) << std::endl;
-    std::cout << "p >= q: " << (p >= q) << std::endl;
-    std::cout << "p <= q: " << (p <= q) << std::endl;
-```
-
-### Step 6: Implement Logical Operators
-Demonstrate boolean logic operations:
-1. Create boolean variables
-2. Show AND, OR, NOT operations
-3. Display logical results
-
-```cpp
-    // Logical Operators
-    std::cout << "\n--- Logical Operators ---\n";
-    bool condition1 = true, condition2 = false;
-    std::cout << "condition1 = " << condition1 << ", condition2 = " << condition2 << std::endl;
-    std::cout << "AND (&&): " << (condition1 && condition2) << std::endl;
-    std::cout << "OR (||): " << (condition1 || condition2) << std::endl;
-    std::cout << "NOT (!): " << (!condition1) << std::endl;
-```
-
-### Step 7: Implement Increment/Decrement Operators
-Show the difference between pre and post operations:
-1. Demonstrate pre-increment/decrement
-2. Show post-increment/decrement
-3. Explain the differences clearly
-
-```cpp
-    // Increment/Decrement Operators
-    std::cout << "\n--- Increment/Decrement Operators ---\n";
-    int i = 5, j;
-    std::cout << "Initial i = " << i << std::endl;
-    
-    // Pre-increment
-    j = ++i;  // i is incremented first, then j gets the new value
-    std::cout << "After j = ++i: i = " << i << ", j = " << j << std::endl;
-    
-    i = 5;  // Reset i
-    // Post-increment
-    j = i++;  // j gets the original value, then i is incremented
-    std::cout << "After j = i++: i = " << i << ", j = " << j << std::endl;
-    
-    i = 5;  // Reset i
-    // Pre-decrement
-    j = --i;  // i is decremented first, then j gets the new value
-    std::cout << "After j = --i: i = " << i << ", j = " << j << std::endl;
-    
-    i = 5;  // Reset i
-    // Post-decrement
-    j = i--;  // j gets the original value, then i is decremented
-    std::cout << "After j = i--: i = " << i << ", j = " << j << std::endl;
-```
-
-### Final Code
-Here's how all the pieces fit together:
-
-```cpp
-#include <iostream>
-#include <iomanip>
-
-int main() {
-    // Arithmetic Operators
-    std::cout << "--- Arithmetic Operators ---\n";
-    int a = 10, b = 3;
-    std::cout << "a = " << a << ", b = " << b << std::endl;
-    std::cout << "Addition: a + b = " << a + b << std::endl;
-    std::cout << "Subtraction: a - b = " << a - b << std::endl;
-    std::cout << "Multiplication: a * b = " << a * b << std::endl;
-    std::cout << "Division: a / b = " << a / b << std::endl;
-    std::cout << "Modulus: a % b = " << a % b << std::endl;
-
-    // Assignment Operators
-    std::cout << "\n--- Assignment Operators ---\n";
-    int x = 5;
-    std::cout << "Initial x = " << x << std::endl;
-    x += 3;  // x = x + 3
-    std::cout << "After x += 3: x = " << x << std::endl;
-    x -= 2;  // x = x - 2
-    std::cout << "After x -= 2: x = " << x << std::endl;
-    x *= 4;  // x = x * 4
-    std::cout << "After x *= 4: x = " << x << std::endl;
-    x /= 2;  // x = x / 2
-    std::cout << "After x /= 2: x = " << x << std::endl;
-    x %= 3;  // x = x % 3
-    std::cout << "After x %= 3: x = " << x << std::endl;
-
-    // Comparison Operators
-    std::cout << "\n--- Comparison Operators ---\n";
-    int p = 5, q = 10;
-    std::cout << "p = " << p << ", q = " << q << std::endl;
-    std::cout << std::boolalpha;  // Print bool as true/false instead of 1/0
-    std::cout << "p == q: " << (p == q) << std::endl;
-    std::cout << "p != q: " << (p != q) << std::endl;
-    std::cout << "p > q: " << (p > q) << std::endl;
-    std::cout << "p < q: " << (p < q) << std::endl;
-    std::cout << "p >= q: " << (p >= q) << std::endl;
-    std::cout << "p <= q: " << (p <= q) << std::endl;
-
-    // Logical Operators
-    std::cout << "\n--- Logical Operators ---\n";
-    bool condition1 = true, condition2 = false;
-    std::cout << "condition1 = " << condition1 << ", condition2 = " << condition2 << std::endl;
-    std::cout << "AND (&&): " << (condition1 && condition2) << std::endl;
-    std::cout << "OR (||): " << (condition1 || condition2) << std::endl;
-    std::cout << "NOT (!): " << (!condition1) << std::endl;
-
-    // Increment/Decrement Operators
-    std::cout << "\n--- Increment/Decrement Operators ---\n";
-    int i = 5, j;
-    std::cout << "Initial i = " << i << std::endl;
-    
-    // Pre-increment
-    j = ++i;  // i is incremented first, then j gets the new value
-    std::cout << "After j = ++i: i = " << i << ", j = " << j << std::endl;
-    
-    i = 5;  // Reset i
-    // Post-increment
-    j = i++;  // j gets the original value, then i is incremented
-    std::cout << "After j = i++: i = " << i << ", j = " << j << std::endl;
-    
-    i = 5;  // Reset i
-    // Pre-decrement
-    j = --i;  // i is decremented first, then j gets the new value
-    std::cout << "After j = --i: i = " << i << ", j = " << j << std::endl;
-    
-    i = 5;  // Reset i
-    // Post-decrement
-    j = i--;  // j gets the original value, then i is decremented
-    std::cout << "After j = i--: i = " << i << ", j = " << j << std::endl;
-
-    return 0;
-}
-```
-
-### Test Cases
-Here are some test cases to verify your implementation:
-
-1. Arithmetic Operators Test
-
-```
-Code:
-int a = 10, b = 3;
-
-Expected Output:
-Addition: a + b = 13
-Subtraction: a - b = 7
-Multiplication: a * b = 30
-Division: a / b = 3
-Modulus: a % b = 1
-```
-
-2. Assignment Operators Test
-
-```
-Code:
-int x = 5;
-x += 3;
-x -= 2;
-x *= 4;
-x /= 2;
-x %= 3;
-
-Expected Output:
-Initial x = 5
-After x += 3: x = 8
-After x -= 2: x = 6
-After x *= 4: x = 24
-After x /= 2: x = 12
-After x %= 3: x = 0
-```
-
-3. Comparison Operators Test
-
-```
-Code:
-int p = 5, q = 10;
-
-Expected Output:
-p == q: false
-p != q: true
-p > q: false
-p < q: true
-p >= q: false
-p <= q: true
-```
-
-4. Logical Operators Test
-
-```
-Code:
-bool condition1 = true, condition2 = false;
-
-Expected Output:
-AND (&&): false
-OR (||): true
-NOT (!): false
-```
-
-5. Pre/Post Increment Test
-
-```
-Code:
-int i = 5, j;
-j = ++i;  // Pre-increment
-Output: i = 6, j = 6
-
-i = 5;    // Reset
-j = i++;  // Post-increment
-Output: i = 6, j = 5
-```
-
-6. Pre/Post Decrement Test
-
-```
-Code:
-int i = 5, j;
-j = --i;  // Pre-decrement
-Output: i = 4, j = 4
-
-i = 5;    // Reset
-j = i--;  // Post-decrement
-Output: i = 4, j = 5
-```
-
-7. Operator Precedence Test
-
-```
-Code:
-int result = 10 + 20 * 2;
-
-Expected Output:
-result = 50  // Multiplication before addition
-```
-
-Try these test cases to verify:
-- Arithmetic operations
-- Assignment behavior
-- Comparison results
-- Logical operations
-- Increment/decrement effects
-- Operator precedence
-- Type conversion in operations
-
-## Understanding Operators
+You'll find the starter code in `Tutorials/Module01/Part5/operators_starter.cpp` and can compare your implementation with the completed version in `Tutorials/Module01/Part5/operators.cpp`.
 
 ### Arithmetic Operators
-- Addition (+): Adds two values
-- Subtraction (-): Subtracts second value from first
-- Multiplication (*): Multiplies two values
-- Division (/): Divides first value by second
-- Modulus (%): Returns division remainder
+Basic mathematical operations:
 
-### Assignment Operators
-- Basic (=): Assigns right value to left
-- Compound (+=, -=, etc.): Combines operation with assignment
-- Shorthand for common operations
+```cpp
+#include <iostream>
+using namespace std;
 
-### Comparison Operators
-- Equal (==): Tests for equality
-- Not Equal (!=): Tests for inequality
-- Greater/Less (<, >): Tests relative values
-- Greater/Less Equal (<=, >=): Includes equality
+int main() {
+    // Basic arithmetic
+    int a = 10, b = 3;
+    
+    cout << "Arithmetic Operations:" << endl;
+    cout << "Addition: " << a + b << endl;        // 13
+    cout << "Subtraction: " << a - b << endl;     // 7
+    cout << "Multiplication: " << a * b << endl;  // 30
+    cout << "Division: " << a / b << endl;        // 3
+    cout << "Modulus: " << a % b << endl;         // 1
+    
+    // Increment/Decrement
+    int x = 5;
+    cout << "\nIncrement/Decrement:" << endl;
+    cout << "Pre-increment: " << ++x << endl;  // 6
+    cout << "Post-increment: " << x++ << endl; // 6 (then 7)
+    cout << "Pre-decrement: " << --x << endl;  // 6
+    cout << "Post-decrement: " << x-- << endl; // 6 (then 5)
+    
+    // Compound assignment
+    x = 5;
+    cout << "\nCompound Assignment:" << endl;
+    cout << "Initial value: " << x << endl;    // 5
+    x += 3;  // x = x + 3
+    cout << "After += 3: " << x << endl;       // 8
+    x *= 2;  // x = x * 2
+    cout << "After *= 2: " << x << endl;       // 16
+    
+    return 0;
+}
+```
 
-### Logical Operators
-- AND (&&): True if both true
-- OR (\|\|): True if either true
-- NOT (!): Inverts truth value
+### Relational and Logical Operators
+Compare values and combine conditions:
 
-### Increment/Decrement
-- Pre (++x): Increment then use
-- Post (x++): Use then increment
-- Same for decrement (--x, x--)
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 5, b = 10;
+    bool flag1 = true, flag2 = false;
+    
+    // Relational operators
+    cout << "Relational Operations:" << endl;
+    cout << "Equal to: " << (a == b) << endl;         // 0
+    cout << "Not equal to: " << (a != b) << endl;     // 1
+    cout << "Greater than: " << (a > b) << endl;      // 0
+    cout << "Less than: " << (a < b) << endl;         // 1
+    cout << "Greater/equal: " << (a >= b) << endl;    // 0
+    cout << "Less/equal: " << (a <= b) << endl;       // 1
+    
+    // Logical operators
+    cout << "\nLogical Operations:" << endl;
+    cout << "AND: " << (flag1 && flag2) << endl;      // 0
+    cout << "OR: " << (flag1 || flag2) << endl;       // 1
+    cout << "NOT: " << (!flag1) << endl;              // 0
+    
+    // Short-circuit evaluation
+    int x = 5;
+    cout << "\nShort-circuit evaluation:" << endl;
+    
+    // Second part not evaluated if first is false
+    if (x > 10 && ++x > 6) {
+        cout << "Not reached" << endl;
+    }
+    cout << "x after &&: " << x << endl;  // Still 5
+    
+    // Second part not evaluated if first is true
+    if (x < 10 || ++x > 6) {
+        cout << "Reached" << endl;
+    }
+    cout << "x after ||: " << x << endl;  // Still 5
+    
+    return 0;
+}
+```
+
+### Bitwise Operators
+Manipulate individual bits:
+
+```cpp
+#include <iostream>
+#include <bitset>
+using namespace std;
+
+int main() {
+    unsigned char a = 0b00001111;  // 15
+    unsigned char b = 0b00110011;  // 51
+    
+    cout << "Bitwise Operations:" << endl;
+    cout << "a = " << bitset<8>(a) << endl;
+    cout << "b = " << bitset<8>(b) << endl;
+    
+    // Bitwise AND
+    cout << "AND: " << bitset<8>(a & b) << endl;
+    
+    // Bitwise OR
+    cout << "OR:  " << bitset<8>(a | b) << endl;
+    
+    // Bitwise XOR
+    cout << "XOR: " << bitset<8>(a ^ b) << endl;
+    
+    // Bitwise NOT
+    cout << "NOT a: " << bitset<8>(~a) << endl;
+    
+    // Left shift
+    cout << "Left shift a << 2: " 
+         << bitset<8>(a << 2) << endl;
+    
+    // Right shift
+    cout << "Right shift b >> 1: " 
+         << bitset<8>(b >> 1) << endl;
+    
+    // Bit manipulation
+    unsigned char flags = 0;
+    
+    // Set bit
+    flags |= (1 << 3);  // Set bit 3
+    cout << "\nAfter setting bit 3: " 
+         << bitset<8>(flags) << endl;
+    
+    // Clear bit
+    flags &= ~(1 << 3);  // Clear bit 3
+    cout << "After clearing bit 3: " 
+         << bitset<8>(flags) << endl;
+    
+    // Toggle bit
+    flags ^= (1 << 4);  // Toggle bit 4
+    cout << "After toggling bit 4: " 
+         << bitset<8>(flags) << endl;
+    
+    // Check bit
+    bool isBitSet = (flags & (1 << 4)) != 0;
+    cout << "Is bit 4 set? " << isBitSet << endl;
+    
+    return 0;
+}
+```
 
 ## Practice Exercises
 
-Open the starter code file `Tutorials/Module01/Part5/practice_operators_starter.cpp`. This file contains a template for exploring different types of operators.
+You'll find the starter code and solutions in:
+- Starter template: `Tutorials/Module01/Part5/practice_operators_starter.cpp`
+- Complete solution: `Tutorials/Module01/Part5/practice_operators.cpp`
 
-### 1. Calculator Operations
-Implement the following in the starter code:
-1. Create variables for two numbers
-2. Implement all arithmetic operators (+, -, *, /, %)
-3. Show operator precedence with complex expressions
-4. Format the output for clarity
-5. Handle division by zero cases
+### Exercise 1: Calculator
+Create a scientific calculator:
+1. Support operations:
+   - Basic arithmetic
+   - Power functions
+   - Root calculations
+   - Trigonometry
+   - Logarithms
+2. Handle errors
+3. Format output
+4. Validate input
+5. Show steps
 
-### 2. Logical Operations
-Add to your implementation:
-1. Create boolean variables for testing conditions
-2. Demonstrate AND, OR, NOT operations
-3. Create a complete truth table
-4. Show short-circuit evaluation with examples
-5. Combine multiple conditions in complex expressions
+Requirements:
+1. All operations
+2. Error handling
+3. Precision control
+4. Input validation
+5. Clear output
 
-### 3. Increment/Decrement Operations
-Complete your implementation by adding:
-1. Demonstrate pre and post increment (++x vs x++)
-2. Show pre and post decrement (--x vs x--)
-3. Use increments in expressions to show differences
-4. Implement common usage patterns in loops
+### Exercise 2: Bit Manipulator
+Build a bit manipulation tool:
+1. Support operations:
+   - Set bits
+   - Clear bits
+   - Toggle bits
+   - Check bits
+   - Shift operations
+2. Show binary
+3. Handle errors
+4. Format output
+5. Validate input
 
-You can compare your solution with the completed example in `Tutorials/Module01/Part5/practice_operators.cpp`.
+Requirements:
+1. All bit operations
+2. Binary display
+3. Error checking
+4. Clear interface
+5. Input validation
 
-The final code demonstrates:
-- Arithmetic operator usage
-- Logical operator combinations
-- Increment/decrement behavior
-- Operator precedence
-- Formatted output
+### Exercise 3: Vector Calculator
+Create a vector mathematics system:
+1. Support operations:
+   - Addition
+   - Subtraction
+   - Dot product
+   - Cross product
+   - Scaling
+2. Handle vectors
+3. Show results
+4. Validate operations
+5. Format output
+
+Requirements:
+1. Vector operations
+2. Error handling
+3. Result display
+4. Input validation
+5. Clear interface
 
 ## Common Pitfalls
-- Integer division truncation
-- Operator precedence confusion
-- Pre/post increment misuse
-- Type conversion issues
-- Division by zero
+
+1. **Division by Zero**
+```cpp
+// Bad: No check for zero
+int result = a / b;  // Crash if b is 0
+
+// Good: Check denominator
+if (b != 0) {
+    result = a / b;
+} else {
+    cerr << "Error: Division by zero" << endl;
+}
+```
+
+2. **Integer Division**
+```cpp
+// Bad: Integer division truncates
+int result = 5 / 2;  // Result is 2
+
+// Good: Use appropriate types
+double result = 5.0 / 2.0;  // Result is 2.5
+```
+
+3. **Operator Precedence**
+```cpp
+// Bad: Unclear precedence
+int result = a + b * c;
+
+// Good: Use parentheses for clarity
+int result = a + (b * c);
+```
 
 ## Best Practices
-1. Use parentheses for clarity
-2. Be careful with integer division
-3. Consider type promotion
-4. Watch for overflow
-5. Document complex expressions
+
+1. **Type Safety**
+```cpp
+// Use appropriate types
+template<typename T>
+T safeAdd(T a, T b) {
+    if (numeric_limits<T>::max() - a < b) {
+        throw overflow_error("Addition would overflow");
+    }
+    return a + b;
+}
+```
+
+2. **Clear Operations**
+```cpp
+// Make operations explicit
+int calculateTotal(int quantity, int price) {
+    return quantity * price;  // Clear intent
+}
+
+// Use compound assignments when appropriate
+total += item.price;  // Instead of total = total + item.price
+```
+
+3. **Bitwise Operations**
+```cpp
+// Use named constants for bits
+enum Flags {
+    READ   = 1 << 0,  // 0b00000001
+    WRITE  = 1 << 1,  // 0b00000010
+    EXECUTE = 1 << 2  // 0b00000100
+};
+
+// Use clear bit manipulation
+permissions |= READ;    // Set read permission
+permissions &= ~WRITE;  // Clear write permission
+```
+
+4. **Comparison Safety**
+```cpp
+// Safe floating-point comparison
+bool almostEqual(double a, double b, double epsilon = 0.0001) {
+    return abs(a - b) < epsilon;
+}
+
+// Safe pointer comparison
+if (ptr != nullptr && *ptr > 0) {
+    // Safe to dereference
+}
+```
+
+5. **Operator Overloading**
+```cpp
+class Vector {
+    double x, y;
+public:
+    // Clear operator overloading
+    Vector operator+(const Vector& other) const {
+        return Vector(x + other.x, y + other.y);
+    }
+    
+    Vector& operator+=(const Vector& other) {
+        x += other.x;
+        y += other.y;
+        return *this;
+    }
+};
+```
 
 ## Next Steps
-After completing this part:
-1. Make sure your program compiles and runs
-2. Try the practice exercises
-3. Compare your solutions with the final version
-4. Move on to Part 6 to learn about comments
-
-[Continue to Part 6: Comments and Code Readability]({{ site.baseurl }}/tutorials/module1/part6-comments)
+1. Complete all practice exercises
+2. Test with various inputs
+3. Handle edge cases properly
+4. Study operator precedence
+5. Practice bit manipulation
+6. Implement custom operators
+7. Move on to [Part 6: Comments and Documentation]({{ site.baseurl }}/tutorials/module1/part6-comments)

@@ -10,298 +10,479 @@ permalink: /tutorials/module2/part4-break-continue/
 # Part 4: Break and Continue Statements
 
 ## Learning Objectives
-- Master the usage of break and continue statements
-- Understand when to use each control statement
-- Learn proper loop control patterns
+- Master break and continue statement usage
+- Understand proper loop control flow
+- Learn when to use each control statement
 - Implement robust error handling
 - Practice nested loop control
+- Create efficient loop structures
+- Avoid common control flow pitfalls
 
 ## Introduction
-Loop control statements enhance your ability to manage program flow within loops. The `break` and `continue` statements provide precise control over loop execution, allowing you to exit loops early or skip specific iterations. Understanding these statements is crucial for writing efficient and maintainable code. This part explores several key concepts:
+Break and continue statements provide precise control over loop execution. Think of them like:
 
-1. **Break Statement Usage**:
-   - Early loop termination
-   - Switch statement control
-   - Search operations
-   - Error handling
-   - Resource cleanup
+1. **Why Control Statements Matter**:
+   - **Flow Control**: Direct program execution efficiently
+   - **Error Handling**: Handle exceptional cases gracefully
+   - **Performance**: Skip unnecessary iterations
+   - **Code Structure**: Implement complex logic clearly
+   - **Resource Management**: Control resource usage
 
-2. **Continue Statement Applications**:
-   - Input validation
-   - Data filtering
-   - Iteration control
-   - Performance optimization
-   - Code organization
+2. **Real-World Applications**:
+   - **Search Operations**: Exit when item found
+   - **Input Validation**: Skip invalid data
+   - **Data Processing**: Filter unwanted items
+   - **Game Logic**: Handle special conditions
+   - **Resource Management**: Early termination
 
-3. **Control Flow Patterns**:
-   - Nested loop control
-   - Error recovery
-   - State management
-   - Buffer handling
-   - User feedback
-
-Understanding these concepts will help you write more efficient and cleaner code by properly controlling program flow and handling special cases effectively. Through practical examples, you'll learn how to use these statements to create robust and maintainable programs.
+3. **Benefits in Development**:
+   - **Cleaner Code**: Avoid nested conditions
+   - **Better Performance**: Skip unnecessary work
+   - **Easier Debugging**: Clear flow control
+   - **Resource Efficiency**: Early exit paths
+   - **Better Organization**: Structured control flow
 
 ## Implementation Guide
 
-You'll find the starter code in `Tutorials/Module02/Part4/break_continue_starter.cpp` and can compare your implementation with the completed version in `Tutorials/Module02/Part4/break_continue.cpp`.
+You'll find the starter code in `Tutorials/Module02/Part4/control_starter.cpp` and can compare your implementation with the completed version in `Tutorials/Module02/Part4/control.cpp`.
 
-### Step 1: Start with the Template
-1. Open the starter code file `Tutorials/Module02/Part4/practice_break_continue_starter.cpp`
-2. You'll see the following template:
-
-```cpp
-#include <iostream>
-#include <string>
-#include <limits>
-using namespace std;
-
-int main() {
-    // TODO: Declare validation constants
-    // TODO: Implement input collection loop
-    // TODO: Add validation checks with continue
-    // TODO: Add termination check with break
-    // TODO: Process and display results
-    
-    return 0;
-}
-```
-
-### Step 2: Add Constants and Variables
-First, let's set up our program's configuration:
-
-```cpp
-    const int MAX_ENTRIES = 5;
-    const int MIN_LENGTH = 3;
-    const string SENTINEL = "quit";
-    
-    string validEntries[MAX_ENTRIES];
-    int entryCount = 0;
-```
-
-### Step 3: Display Instructions
-Add clear user instructions:
-
-```cpp
-    cout << "Enter up to " << MAX_ENTRIES << " text entries" << endl;
-    cout << "Rules:" << endl;
-    cout << "- Minimum " << MIN_LENGTH << " characters" << endl;
-    cout << "- No spaces allowed" << endl;
-    cout << "- Enter '" << SENTINEL << "' to stop" << endl;
-```
-
-### Step 4: Implement Main Loop
-Create the main input processing loop:
-
-```cpp
-    while (entryCount < MAX_ENTRIES) {
-        string input;
-        cout << "\nEntry " << (entryCount + 1) << ": ";
-        cin >> input;
-        
-        // Process input here
-    }
-```
-
-### Step 5: Add Break Condition
-Implement the sentinel check using break:
-
-```cpp
-        // Check for sentinel
-        if (input == SENTINEL) {
-            cout << "Input terminated by user" << endl;
-            break;  // Exit loop when sentinel is entered
-        }
-```
-
-### Step 6: Add Continue Conditions
-Implement validation using continue:
-
-```cpp
-        // Validate length
-        if (input.length() < MIN_LENGTH) {
-            cout << "Too short! Must be at least " << MIN_LENGTH << " characters" << endl;
-            continue;  // Skip to next iteration
-        }
-        
-        // Check for spaces
-        if (input.find(' ') != string::npos) {
-            cout << "Spaces not allowed!" << endl;
-            continue;  // Skip to next iteration
-        }
-```
-
-### Step 7: Store Valid Data
-Add code to store and confirm valid entries:
-
-```cpp
-        // Store valid entry
-        validEntries[entryCount++] = input;
-        cout << "Entry accepted" << endl;
-```
-
-### Step 8: Display Results
-Add the final results display:
-
-```cpp
-    // Display results
-    cout << "\nValid entries collected: " << entryCount << endl;
-    for (int i = 0; i < entryCount; i++) {
-        cout << (i + 1) << ": " << validEntries[i] << endl;
-    }
-```
-
-### Final Code
-Here's the complete implementation:
+### Step 1: Break Statement Examples
+First, let's explore break usage:
 
 ```cpp
 #include <iostream>
-#include <string>
-#include <limits>
+#include <vector>
 using namespace std;
 
 int main() {
-    const int MAX_ENTRIES = 5;
-    const int MIN_LENGTH = 3;
-    const string SENTINEL = "quit";
+    // Early exit example
+    vector<int> numbers = {1, 3, 5, 7, 9, 11, 13};
+    int target = 7;
+    bool found = false;
     
-    string validEntries[MAX_ENTRIES];
-    int entryCount = 0;
-    
-    cout << "Enter up to " << MAX_ENTRIES << " text entries" << endl;
-    cout << "Rules:" << endl;
-    cout << "- Minimum " << MIN_LENGTH << " characters" << endl;
-    cout << "- No spaces allowed" << endl;
-    cout << "- Enter '" << SENTINEL << "' to stop" << endl;
-    
-    while (entryCount < MAX_ENTRIES) {
-        string input;
-        cout << "\nEntry " << (entryCount + 1) << ": ";
-        cin >> input;
-        
-        // Check for sentinel
-        if (input == SENTINEL) {
-            cout << "Input terminated by user" << endl;
-            break;
+    for (int num : numbers) {
+        if (num == target) {
+            found = true;
+            cout << "Found " << target << "!" << endl;
+            break;  // Exit loop early
         }
-        
-        // Validate length
-        if (input.length() < MIN_LENGTH) {
-            cout << "Too short! Must be at least " << MIN_LENGTH << " characters" << endl;
-            continue;
-        }
-        
-        // Check for spaces
-        if (input.find(' ') != string::npos) {
-            cout << "Spaces not allowed!" << endl;
-            continue;
-        }
-        
-        // Store valid entry
-        validEntries[entryCount++] = input;
-        cout << "Entry accepted" << endl;
+        cout << "Checking " << num << "..." << endl;
     }
     
-    // Display results
-    cout << "\nValid entries collected: " << entryCount << endl;
-    for (int i = 0; i < entryCount; i++) {
-        cout << (i + 1) << ": " << validEntries[i] << endl;
+    if (!found) {
+        cout << target << " not found." << endl;
+    }
+    
+    // Nested loop break
+    const int ROWS = 3;
+    const int COLS = 4;
+    int matrix[ROWS][COLS] = {
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 11, 12}
+    };
+    
+    target = 6;
+    found = false;
+    
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (matrix[i][j] == target) {
+                cout << "Found at position [" << i << "][" << j << "]" << endl;
+                found = true;
+                break;  // Exits inner loop only
+            }
+        }
+        if (found) break;  // Exits outer loop
     }
     
     return 0;
 }
 ```
 
-### Test Cases
+### Step 2: Continue Statement Examples
+Demonstrate continue usage:
 
-1. Normal Input:
-```
-Input: hello world test quit
-Expected Output:
-Entry 1: hello (accepted)
-Entry 2: world (accepted)
-Entry 3: test (accepted)
-Entry 4: quit (program ends)
-Valid entries: 3
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    // Skip processing example
+    vector<int> numbers = {1, -2, 3, -4, 5, -6, 7, -8};
+    int positiveSum = 0;
+    
+    for (int num : numbers) {
+        if (num < 0) {
+            cout << "Skipping " << num << endl;
+            continue;  // Skip negative numbers
+        }
+        positiveSum += num;
+    }
+    
+    cout << "Sum of positive numbers: " << positiveSum << endl;
+    
+    // Input validation with continue
+    int sum = 0;
+    int count = 0;
+    
+    cout << "Enter 5 positive numbers:" << endl;
+    while (count < 5) {
+        int value;
+        cout << "Number " << (count + 1) << ": ";
+        
+        if (!(cin >> value)) {
+            cout << "Invalid input! Enter a number." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+        
+        if (value <= 0) {
+            cout << "Please enter a positive number." << endl;
+            continue;
+        }
+        
+        sum += value;
+        count++;
+    }
+    
+    cout << "Average: " << static_cast<double>(sum) / count << endl;
+    
+    return 0;
+}
 ```
 
-2. Validation Failures:
-```
-Input: hi no hello quit
-Expected Output:
-Entry 1: hi (too short)
-Entry 2: no (too short)
-Entry 3: hello (accepted)
-Entry 4: quit (program ends)
-Valid entries: 1
+### Step 3: Combined Control Flow
+Show complex control flow:
+
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string password;
+    const int MAX_ATTEMPTS = 3;
+    int attempts = 0;
+    bool success = false;
+    
+    while (attempts < MAX_ATTEMPTS) {
+        cout << "Enter password: ";
+        getline(cin, password);
+        attempts++;
+        
+        // Skip empty input
+        if (password.empty()) {
+            cout << "Empty input not allowed!" << endl;
+            continue;
+        }
+        
+        // Check password strength
+        if (password.length() < 8) {
+            cout << "Password too short!" << endl;
+            continue;
+        }
+        
+        // Check for required characters
+        bool hasUpper = false, hasLower = false, hasDigit = false;
+        
+        for (char c : password) {
+            if (isupper(c)) hasUpper = true;
+            if (islower(c)) hasLower = true;
+            if (isdigit(c)) hasDigit = true;
+            
+            if (hasUpper && hasLower && hasDigit) {
+                success = true;
+                break;  // Found all required characters
+            }
+        }
+        
+        if (success) {
+            cout << "Password accepted!" << endl;
+            break;  // Exit main loop
+        } else {
+            cout << "Password must contain uppercase, lowercase, and digit" << endl;
+        }
+    }
+    
+    if (!success) {
+        cout << "Maximum attempts exceeded!" << endl;
+    }
+    
+    return 0;
+}
 ```
 
-3. Maximum Entries:
-```
-Input: test1 test2 test3 test4 test5 test6
+Test Cases:
+```cpp
+// Break Example Test
+Input: N/A
 Expected Output:
-Accepts first 5 entries
-Stops after MAX_ENTRIES reached
-Valid entries: 5
+Checking 1...
+Checking 3...
+Checking 5...
+Found 7!
+
+// Continue Example Test
+Input: 1, -2, 3, 4, 5
+Expected Output:
+Skipping -2
+Sum of positive numbers: 13
+
+// Combined Flow Test
+Input: "pass", "password", "Password123"
+Expected Output:
+Password too short!
+Password must contain uppercase, lowercase, and digit
+Password accepted!
 ```
 
 ## Practice Exercises
 
-Start with the starter code in `Tutorials/Module02/Part4/practice_break_continue_starter.cpp`.
+You'll find the starter code and solutions in:
+- Starter template: `Tutorials/Module02/Part4/practice_control_starter.cpp`
+- Complete solution: `Tutorials/Module02/Part4/practice_control.cpp`
 
-### Exercise 1: Number Processor
-Create a program that:
-1. Processes numbers until a sentinel value
-2. Uses continue to skip invalid numbers
-3. Uses break when sum exceeds limit
-4. Validates input properly
-5. Displays running statistics
+### Exercise 1: Data Filter
+Create a data filtering system:
+1. Process array of values
+2. Filter based on criteria:
+   - Range validation
+   - Type checking
+   - Pattern matching
+3. Skip invalid items
+4. Collect valid data
+5. Report statistics
 
-### Exercise 2: Pattern Generator
-Implement a system that:
-1. Uses nested loops with break/continue
-2. Creates various patterns
-3. Handles user input
-4. Validates pattern size
-5. Provides clear output
+Requirements:
+1. Use continue for filtering
+2. Track processed items
+3. Handle invalid data
+4. Generate summary
+5. Optimize performance
 
-### Exercise 3: Data Filter
-Build a program that:
-1. Filters input based on criteria
-2. Uses continue for invalid data
-3. Uses break for completion
-4. Maintains statistics
-5. Shows filtered results
+### Exercise 2: Search System
+Implement a search algorithm:
+1. Search multiple arrays
+2. Support criteria:
+   - Exact match
+   - Range match
+   - Pattern match
+3. Exit early on find
+4. Handle not found
+5. Report results
 
-You can compare your solutions with the completed examples in `Tutorials/Module02/Part4/practice_break_continue.cpp`.
+Requirements:
+1. Use break efficiently
+2. Handle nested searches
+3. Track search path
+4. Provide feedback
+5. Optimize search
 
-## Best Practices
-1. Use break for:
-   - Early loop termination
-   - Sentinel values
-   - Error conditions
-   - Search completion
-   - Resource cleanup
+### Exercise 3: Input Processor
+Create an input processing system:
+1. Accept multiple inputs
+2. Validate each input:
+   - Format check
+   - Range check
+   - Type check
+3. Process valid data
+4. Skip invalid data
+5. Generate report
 
-2. Use continue for:
-   - Input validation
-   - Data filtering
-   - Skipping iterations
-   - Error recovery
-   - Performance optimization
+Requirements:
+1. Robust validation
+2. Clear feedback
+3. Error recovery
+4. Progress tracking
+5. Final summary
 
-3. Code Organization:
-   - Clear conditions
-   - Proper comments
-   - Consistent style
-   - Error handling
-   - Buffer management
+## Summary
+
+### Key Concepts
+1. **Break Statement**
+   ```cpp
+   // Early exit from loop
+   for (int i = 0; i < size; i++) {
+       if (found) break;  // Exit loop
+       process(data[i]);
+   }
+   
+   // Nested loop control
+   for (int i = 0; i < rows; i++) {
+       for (int j = 0; j < cols; j++) {
+           if (found) {
+               found = true;
+               break;  // Exit inner loop
+           }
+       }
+       if (found) break;  // Exit outer loop
+   }
+   ```
+
+2. **Continue Statement**
+   ```cpp
+   // Skip current iteration
+   for (const auto& item : items) {
+       if (!valid(item)) {
+           continue;  // Skip to next item
+       }
+       process(item);
+   }
+   
+   // Input validation
+   while (true) {
+       if (!validInput()) {
+           continue;  // Retry input
+       }
+       processInput();
+   }
+   ```
+
+3. **Control Flow Patterns**
+   ```cpp
+   // Combined control
+   while (processData()) {
+       if (shouldSkip()) {
+           continue;  // Skip processing
+       }
+       if (isDone()) {
+           break;    // Exit processing
+       }
+       // Normal processing
+   }
+   ```
+
+### Common Pitfalls
+1. **Breaking Wrong Loop**
+   ```cpp
+   // Bad: Only breaks inner loop
+   for (int i = 0; i < rows; i++) {
+       for (int j = 0; j < cols; j++) {
+           if (found) break;  // Wrong!
+       }
+   }
+
+   // Good: Control both loops
+   bool found = false;
+   for (int i = 0; i < rows && !found; i++) {
+       for (int j = 0; j < cols; j++) {
+           if (match) {
+               found = true;
+               break;
+           }
+       }
+   }
+   ```
+
+2. **Infinite Loops**
+   ```cpp
+   // Bad: Continue skips increment
+   while (count < max) {
+       if (error) continue;  // Infinite!
+       count++;
+   }
+
+   // Good: Proper control
+   while (count < max) {
+       if (error) {
+           handleError();
+           continue;
+       }
+       process();
+       count++;
+   }
+   ```
+
+3. **Resource Management**
+   ```cpp
+   // Bad: Resource leak
+   while (processData()) {
+       if (error) break;  // Leak!
+   }
+
+   // Good: Cleanup
+   while (processData()) {
+       if (error) {
+           cleanup();
+           break;
+       }
+   }
+   ```
+
+### Best Practices
+1. **Clear Intent**
+   ```cpp
+   for (const auto& item : items) {
+       // Skip invalid items
+       if (!valid(item)) continue;
+       
+       // Exit on match
+       if (matches(item)) break;
+       
+       process(item);
+   }
+   ```
+
+2. **Resource Safety**
+   ```cpp
+   while (processData()) {
+       try {
+           if (error) {
+               cleanup();
+               break;
+           }
+       } catch (...) {
+           cleanup();
+           throw;
+       }
+   }
+   ```
+
+3. **Loop Control**
+   ```cpp
+   bool found = false;
+   for (int i = 0; i < size && !found; i++) {
+       if (match(data[i])) {
+           found = true;
+           break;
+       }
+   }
+   ```
+
+4. **Error Handling**
+   ```cpp
+   while (true) {
+       try {
+           if (!valid()) continue;
+           if (done()) break;
+           process();
+       } catch (const Error& e) {
+           handleError();
+       }
+   }
+   ```
+
+5. **Progress Tracking**
+   ```cpp
+   int processed = 0;
+   for (const auto& item : items) {
+       if (skip(item)) {
+           logSkip(item);
+           continue;
+       }
+       process(item);
+       showProgress(++processed);
+   }
+   ```
 
 ## Next Steps
 1. Complete all practice exercises
 2. Test with various inputs
-3. Handle edge cases
-4. Review error handling
-5. Move on to [Part 5: Simple Program Examples]({{ site.baseurl }}/tutorials/module2/part5-examples)
-
-Remember that while break and continue are powerful tools, they should be used judiciously. Clear code structure and proper documentation are essential when using these control flow statements.
+3. Handle edge cases properly
+4. Study control flow patterns
+5. Practice nested loops
+6. Implement complex algorithms
+7. Move on to [Part 5: Simple Program Examples]({{ site.baseurl }}/tutorials/module2/part5-examples)

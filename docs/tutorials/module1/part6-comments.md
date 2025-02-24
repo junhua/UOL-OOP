@@ -1,572 +1,377 @@
 ---
 layout: default
-title: Part 6 - Code Style and Documentation
+title: Part 6 - Comments and Documentation
 nav_order: 6
-parent: Module 1 - Introduction to Programming and C++
+parent: Module 1 - Introduction to C++
 grand_parent: Tutorials
-permalink: /tutorials/module1/part6-comments
+permalink: /tutorials/module1/part6-comments/
 ---
 
-# Part 6: Comments and Code Readability
+# Part 6: Comments and Documentation
 
 ## Learning Objectives
-- Understand the importance of code documentation
-- Learn different types of comments in C++
-- Practice writing clear and helpful comments
-- Learn code formatting best practices
-- Understand naming conventions
+- Master C++ comment syntax
+- Understand documentation standards
+- Learn proper commenting practices
+- Implement clear documentation
+- Practice code documentation
+- Create maintainable comments
+- Write effective documentation
 
 ## Introduction
-Code documentation and style are crucial aspects of software development that make programs easier to understand, maintain, and debug. This part covers several key aspects of code documentation:
+Comments and documentation are like a map for your code. Think of them as:
 
-1. **Types of Comments**:
-   - Single-line comments for brief explanations
-   - Multi-line comments for detailed descriptions
-   - Documentation comments (Doxygen-style) for API documentation
-   - Best practices for when and how to comment
+1. **Why Documentation Matters**:
+   - **Code Understanding**: Explain complex logic
+   - **Maintenance**: Guide future changes
+   - **Collaboration**: Help team members
+   - **Debugging**: Aid troubleshooting
+   - **Knowledge Transfer**: Share expertise
 
-2. **Code Documentation**:
-   - File-level documentation
-   - Function documentation
-   - Class and method documentation
-   - Parameter and return value descriptions
-   - Usage examples and warnings
+2. **Real-World Applications**:
+   - **API Documentation**: Interface descriptions
+   - **Library Usage**: Usage guidelines
+   - **Code Reviews**: Understanding code
+   - **Team Projects**: Shared knowledge
+   - **Open Source**: Community guidance
 
-3. **Naming Conventions**:
-   - Variable naming guidelines
-   - Function and method naming
-   - Class naming conventions
-   - Constants and macro naming
-   - Hungarian notation vs. modern practices
-
-4. **Code Formatting**:
-   - Consistent indentation
-   - Brace placement
-   - Line length and wrapping
-   - Spacing around operators
-   - Organization of code blocks
-
-Understanding these principles is essential for writing professional-quality code that others (including your future self) can easily understand and maintain. Through examples, you'll learn how to document and format your code effectively.
+3. **Benefits in Development**:
+   - **Better Maintenance**: Clear explanations
+   - **Faster Debugging**: Understanding context
+   - **Easier Updates**: Clear intentions
+   - **Team Efficiency**: Shared knowledge
+   - **Code Quality**: Better organization
 
 ## Implementation Guide
 
-### Step 1: Start with the Template
-Let's examine our starting point:
-1. Open the starter code file `Tutorials/Module01/Part6/comments_starter.cpp`
-2. The template outlines what we'll implement:
+You'll find the starter code in `Tutorials/Module01/Part6/comments_starter.cpp` and can compare your implementation with the completed version in `Tutorials/Module01/Part6/comments.cpp`.
+
+### Comment Types
+First, let's explore different comment styles:
 
 ```cpp
-// TODO: Add necessary include directives
+// Single-line comment
+// Used for brief explanations
+// Each line starts with //
 
-// TODO: Add a file-level comment describing the purpose of this program
+/* Multi-line comment
+   Used for longer explanations
+   Can span multiple lines
+   Without repeating comment markers */
 
-// TODO: Add a function declaration with documentation comments
-// Include:
-// - Brief description
-// - Parameter descriptions
-// - Return value description
-// - Any important notes or warnings
+/// Documentation comment for functions
+/// Supports multiple lines
+/// Often used with documentation generators
 
-// TODO: Add a class declaration with documentation comments
-// Include:
-// - Class purpose
-// - Member variable descriptions
-// - Method descriptions
-// - Usage examples
+/** Documentation block comment
+ *  Used for detailed documentation
+ *  Often includes special tags
+ *  @param parameter Description
+ *  @return Description of return value
+ */
+```
 
-int main() {
-    // TODO: Demonstrate different types of comments:
-    // 1. Single-line comments
-    // 2. Multi-line comments
-    // 3. Documentation comments
+### Function Documentation
+Document functions properly:
+
+```cpp
+/**
+ * @brief Calculates the area of a circle
+ * 
+ * This function calculates the area of a circle using
+ * the formula A = πr².
+ * 
+ * @param radius The radius of the circle
+ * @return The area of the circle
+ * @throws invalid_argument If radius is negative
+ * 
+ * @note Uses math.h for PI constant
+ * @see calculateCircumference()
+ */
+double calculateArea(double radius) {
+    // Validate input
+    if (radius < 0) {
+        throw invalid_argument("Radius cannot be negative");
+    }
     
-    // TODO: Show proper code formatting:
-    // 1. Consistent indentation
-    // 2. Appropriate spacing
-    // 3. Logical grouping of code
-    
-    // TODO: Demonstrate good naming conventions:
-    // 1. Variables
-    // 2. Constants
-    // 3. Functions
-    
-    return 0;
+    // Calculate and return area
+    return M_PI * radius * radius;
+}
+
+/// Simple calculation of circle circumference
+/// @param radius Circle radius
+/// @return Circle circumference
+double calculateCircumference(double radius) {
+    return 2 * M_PI * radius;
 }
 ```
 
-### Step 2: Add File-Level Documentation
-Let's start with comprehensive file documentation:
-1. Use Doxygen-style comments
-2. Include key metadata
-3. Provide clear description
-
-```cpp
-/**
- * @file comments.cpp
- * @brief Demonstrates proper code documentation, formatting, and naming conventions in C++
- * @author Tutorial Module 1
- * @date 2025-02-23
- * 
- * This program shows various types of comments, proper code formatting,
- * and naming conventions. It includes examples of function and class
- * documentation, as well as different comment styles.
- */
-```
-
-### Step 3: Add Include Directives
-Add the necessary headers:
-1. iostream for output
-2. string for text handling
-
-```cpp
-#include <iostream>
-#include <string>
-```
-
-### Step 4: Add Documented Function
-Create a well-documented function:
-1. Include comprehensive documentation
-2. Show parameter descriptions
-3. Document return value
-4. Add any important warnings
-
-```cpp
-/**
- * @brief Calculates the area of a rectangle
- * @param length The length of the rectangle
- * @param width The width of the rectangle
- * @return The area of the rectangle
- * @warning Both parameters must be positive numbers
- */
-double calculateRectangleArea(double length, double width) {
-    return length * width;
-}
-```
-
-### Step 5: Add Documented Class
-Create a class with detailed documentation:
-1. Document the class purpose
-2. Document member variables
-3. Document methods
-4. Include usage examples
-
-```cpp
-/**
- * @class Student
- * @brief Represents a student entity with basic information
- * 
- * This class maintains student information including ID, name,
- * and grade. It provides methods to access and modify this data.
- * 
- * Example usage:
- * @code
- *     Student student(12345, "John Doe");
- *     student.setGrade(85.5);
- *     double grade = student.getGrade();
- * @endcode
- */
-class Student {
-private:
-    // Member variables with clear, descriptive names
-    int studentId;        ///< Unique identifier for the student
-    std::string name;     ///< Full name of the student
-    double grade;         ///< Student's grade (0-100)
-
-public:
-    // Constructor with initialization list
-    Student(int id, const std::string& studentName) 
-        : studentId(id), name(studentName), grade(0.0) {
-    }
-
-    // Accessor methods
-    int getStudentId() const { return studentId; }
-    std::string getName() const { return name; }
-    double getGrade() const { return grade; }
-
-    // Mutator method with validation
-    void setGrade(double newGrade) {
-        /* Multi-line comment example:
-           Check if the new grade is within valid range
-           before assigning it to the member variable */
-        if (newGrade >= 0.0 && newGrade <= 100.0) {
-            grade = newGrade;
-        }
-    }
-};
-```
-
-### Step 6: Implement Main Function
-Demonstrate various documentation styles:
-1. Show different comment types
-2. Use proper naming conventions
-3. Implement logical code organization
-
-```cpp
-int main() {
-    // Constants using UPPER_SNAKE_CASE
-    const double MAX_GRADE = 100.0;
-    const int PASSING_GRADE = 50;
-
-    // Variables using camelCase
-    double rectangleLength = 5.0;
-    double rectangleWidth = 3.0;
-
-    // Calculate and display rectangle area
-    double area = calculateRectangleArea(rectangleLength, rectangleWidth);
-    std::cout << "Rectangle area: " << area << std::endl;
-
-    // Create and use a Student object
-    Student student(1001, "Jane Smith");
-    student.setGrade(95.5);
-
-    // Display student information with proper spacing and alignment
-    std::cout << "\nStudent Information:\n"
-              << "ID: " << student.getStudentId() << "\n"
-              << "Name: " << student.getName() << "\n"
-              << "Grade: " << student.getGrade() << "\n";
-
-    // Demonstrate logical grouping of related operations
-    {
-        // Local scope for grade calculation
-        double currentGrade = student.getGrade();
-        bool isPassing = currentGrade >= PASSING_GRADE;
-        
-        std::cout << "\nGrade Status:\n"
-                  << "Current Grade: " << currentGrade << "\n"
-                  << "Passing: " << (isPassing ? "Yes" : "No") << "\n";
-    }
-
-    return 0;
-}
-```
-
-### Final Code
-Here's the complete program with all documentation:
-
-```cpp
-/**
- * @file comments.cpp
- * @brief Demonstrates proper code documentation, formatting, and naming conventions in C++
- * @author Tutorial Module 1
- * @date 2025-02-23
- * 
- * This program shows various types of comments, proper code formatting,
- * and naming conventions. It includes examples of function and class
- * documentation, as well as different comment styles.
- */
-
-#include <iostream>
-#include <string>
-
-/**
- * @brief Calculates the area of a rectangle
- * @param length The length of the rectangle
- * @param width The width of the rectangle
- * @return The area of the rectangle
- * @warning Both parameters must be positive numbers
- */
-double calculateRectangleArea(double length, double width) {
-    return length * width;
-}
-
-/**
- * @class Student
- * @brief Represents a student entity with basic information
- * 
- * This class maintains student information including ID, name,
- * and grade. It provides methods to access and modify this data.
- * 
- * Example usage:
- * @code
- *     Student student(12345, "John Doe");
- *     student.setGrade(85.5);
- *     double grade = student.getGrade();
- * @endcode
- */
-class Student {
-private:
-    // Member variables with clear, descriptive names
-    int studentId;        ///< Unique identifier for the student
-    std::string name;     ///< Full name of the student
-    double grade;         ///< Student's grade (0-100)
-
-public:
-    // Constructor with initialization list
-    Student(int id, const std::string& studentName) 
-        : studentId(id), name(studentName), grade(0.0) {
-    }
-
-    // Accessor methods
-    int getStudentId() const { return studentId; }
-    std::string getName() const { return name; }
-    double getGrade() const { return grade; }
-
-    // Mutator method with validation
-    void setGrade(double newGrade) {
-        /* Multi-line comment example:
-           Check if the new grade is within valid range
-           before assigning it to the member variable */
-        if (newGrade >= 0.0 && newGrade <= 100.0) {
-            grade = newGrade;
-        }
-    }
-};
-
-int main() {
-    // Constants using UPPER_SNAKE_CASE
-    const double MAX_GRADE = 100.0;
-    const int PASSING_GRADE = 50;
-
-    // Variables using camelCase
-    double rectangleLength = 5.0;
-    double rectangleWidth = 3.0;
-
-    // Calculate and display rectangle area
-    double area = calculateRectangleArea(rectangleLength, rectangleWidth);
-    std::cout << "Rectangle area: " << area << std::endl;
-
-    // Create and use a Student object
-    Student student(1001, "Jane Smith");
-    student.setGrade(95.5);
-
-    // Display student information with proper spacing and alignment
-    std::cout << "\nStudent Information:\n"
-              << "ID: " << student.getStudentId() << "\n"
-              << "Name: " << student.getName() << "\n"
-              << "Grade: " << student.getGrade() << "\n";
-
-    // Demonstrate logical grouping of related operations
-    {
-        // Local scope for grade calculation
-        double currentGrade = student.getGrade();
-        bool isPassing = currentGrade >= PASSING_GRADE;
-        
-        std::cout << "\nGrade Status:\n"
-                  << "Current Grade: " << currentGrade << "\n"
-                  << "Passing: " << (isPassing ? "Yes" : "No") << "\n";
-    }
-
-    return 0;
-}
-```
-
-### Test Cases
-Here are some test cases to verify your implementation:
-
-1. Single-line Comments Test
-
-```cpp
-// Basic single-line comment
-int x = 5;  // End-of-line comment
-// TODO: Implement feature
-// FIXME: Fix this bug
-```
-
-2. Multi-line Comments Test
-
-```cpp
-/* This is a multi-line comment
-   that spans several lines and
-   provides detailed explanation */
-
-/* Nested comments are not allowed:
-   /* This will cause an error */
-   This is still part of first comment */
-```
-
-3. Documentation Comments Test
-
-```cpp
-/**
- * @brief Calculate area of rectangle
- * @param length The length of rectangle
- * @param width The width of rectangle
- * @return The area of rectangle
- */
-double calculateArea(double length, double width) {
-    return length * width;
-}
-```
-
-4. Class Documentation Test
+### Class Documentation
+Document classes and their members:
 
 ```cpp
 /**
  * @class Rectangle
  * @brief Represents a rectangle shape
  * 
- * This class provides functionality to:
- * - Calculate area
- * - Calculate perimeter
- * - Compare with other rectangles
+ * This class provides functionality for working with
+ * rectangles, including area and perimeter calculations.
  */
 class Rectangle {
-    // Class implementation
-};
-```
-
-5. Function Documentation Test
-
-```cpp
-/**
- * @brief Get student grade
- * @param score Student's numeric score
- * @return char Letter grade (A-F)
- * @throws std::invalid_argument If score is negative
- */
-char getGrade(int score) {
-    // Function implementation
-}
-```
-
-6. Variable Documentation Test
-
-```cpp
-class Student {
+public:
+    /**
+     * @brief Constructs a rectangle
+     * @param w Width of rectangle
+     * @param h Height of rectangle
+     */
+    Rectangle(double w, double h);
+    
+    /**
+     * @brief Calculates rectangle area
+     * @return Area of rectangle
+     */
+    double getArea() const;
+    
+    /**
+     * @brief Calculates rectangle perimeter
+     * @return Perimeter of rectangle
+     */
+    double getPerimeter() const;
+    
 private:
-    int id;        ///< Unique identifier
-    string name;   ///< Full name of student
-    double gpa;    ///< Current GPA (0.0-4.0)
+    double width;   ///< Width of rectangle
+    double height;  ///< Height of rectangle
 };
 ```
 
-7. Deprecated Code Documentation
+### File Documentation
+Document source files:
 
 ```cpp
 /**
- * @deprecated Use newFunction() instead.
- * This function will be removed in version 2.0
+ * @file geometry.h
+ * @brief Geometric shape calculations
+ * @author Your Name
+ * @date 2025-02-24
+ * 
+ * This file contains classes and functions for
+ * working with geometric shapes and performing
+ * various calculations.
  */
-void oldFunction() {
-    // Function implementation
+
+#ifndef GEOMETRY_H
+#define GEOMETRY_H
+
+// Include necessary headers
+#include <cmath>
+#include <stdexcept>
+
+// Namespace declaration
+namespace Geometry {
+    // Class declarations...
 }
-```
 
-Try these test cases to verify:
-- Comment syntax correctness
-- Documentation completeness
-- Doxygen compatibility
-- Code readability
-- Documentation style consistency
-
-## Understanding Documentation
-
-### Types of Comments
-
-#### Single-line Comments
-- Use for brief explanations
-- Good for end-of-line notes
-
-```cpp
-int count = 0;  // Initialize counter
-```
-
-#### Multi-line Comments
-- Use for longer explanations
-- Can span multiple lines
-
-```cpp
-/* This is a multi-line comment
-   that explains a complex
-   section of code */
-```
-
-#### Documentation Comments
-- Use for API documentation
-- Include specific tags
-
-```cpp
-/**
- * @brief Function description
- * @param paramName Parameter description
- * @return Return value description
- */
-```
-
-### Naming Conventions
-
-#### Variables
-- Use camelCase
-- Be descriptive
-- Avoid abbreviations
-
-```cpp
-int studentCount;    // Good
-int n;              // Bad
-```
-
-#### Constants
-- Use UPPER_SNAKE_CASE
-- Clear purpose
-
-```cpp
-const int MAX_STUDENTS = 30;
-```
-
-#### Functions
-- Use camelCase
-- Verb-noun combination
-
-```cpp
-void calculateTotal();
+#endif // GEOMETRY_H
 ```
 
 ## Practice Exercises
 
-Open the starter code file `Tutorials/Module01/Part6/practice_documentation_starter.cpp`. This file contains a template for practicing code documentation and organization.
+You'll find the starter code and solutions in:
+- Starter template: `Tutorials/Module01/Part6/practice_comments_starter.cpp`
+- Complete solution: `Tutorials/Module01/Part6/practice_comments.cpp`
 
-### 1. Function Documentation
-Implement and document a function that:
-1. Takes at least two parameters of different types
-2. Returns a meaningful value
-3. Includes proper documentation comments
-4. Describes parameters, return value, and any important notes
-5. Provides usage examples in the documentation
+### Exercise 1: API Documentation
+Create documentation for an API:
+1. Document components:
+   - Functions
+   - Classes
+   - Parameters
+   - Return values
+   - Exceptions
+2. Include examples
+3. Add usage notes
+4. Document errors
+5. Show best practices
 
-### 2. Class Documentation
-Create and document a class that:
-1. Has private member variables with documentation
-2. Includes a constructor with parameter descriptions
-3. Implements public methods with full documentation
-4. Uses proper documentation style for all components
-5. Includes clear usage examples in class documentation
+Requirements:
+1. Complete coverage
+2. Clear examples
+3. Error documentation
+4. Usage guidelines
+5. Best practices
 
-### 3. Code Organization
-Complete the implementation by:
-1. Adding comprehensive file-level documentation
-2. Using different types of comments appropriately
-3. Following consistent naming conventions
-4. Organizing code with logical structure
-5. Demonstrating proper code formatting
+### Exercise 2: Library Documentation
+Document a class library:
+1. Document elements:
+   - Class overview
+   - Methods
+   - Properties
+   - Relationships
+   - Usage
+2. Show inheritance
+3. Explain patterns
+4. Include examples
+5. Add diagrams
 
-You can compare your solution with the completed example in `Tutorials/Module01/Part6/practice_documentation.cpp`.
+Requirements:
+1. Class documentation
+2. Method details
+3. Clear examples
+4. Relationship docs
+5. Usage guide
 
-The final code demonstrates:
-- File-level documentation
-- Function and parameter documentation
-- Class and member documentation
-- Different comment styles
-- Code organization best practices
+### Exercise 3: Code Comments
+Write effective code comments:
+1. Add comments:
+   - Function docs
+   - Complex logic
+   - Algorithms
+   - Warnings
+   - TODOs
+2. Explain decisions
+3. Note assumptions
+4. Mark updates
+5. Flag issues
 
-## Common Pitfalls
-- Over-commenting obvious code
-- Under-documenting complex logic
-- Inconsistent formatting
-- Poor naming choices
-- Outdated comments
+Requirements:
+1. Clear comments
+2. Logic explanation
+3. Update tracking
+4. Issue marking
+5. Decision notes
 
-## Best Practices
-1. Document non-obvious code
-2. Keep comments up to date
-3. Use consistent style
-4. Choose clear names
-5. Format for readability
+## Summary
+
+### Key Concepts
+1. **Comment Types**
+   ```cpp
+   // Single-line comment
+   // For brief explanations
+   
+   /* Multi-line comment
+      For longer explanations
+      Spans multiple lines */
+   
+   /// Documentation comment
+   /// For functions and methods
+   /// Supports doc generators
+   ```
+
+2. **Documentation Blocks**
+   ```cpp
+   /**
+    * @brief Function description
+    * @param name Parameter description
+    * @return Return value description
+    * @throws Exception description
+    */
+   void function(string name);
+   ```
+
+3. **File Documentation**
+   ```cpp
+   /**
+    * @file filename.h
+    * @brief File description
+    * @author Author name
+    * @date YYYY-MM-DD
+    */
+   ```
+
+### Common Pitfalls
+1. **Obvious Comments**
+   ```cpp
+   // Bad: States the obvious
+   i = i + 1;  // Increment i
+
+   // Good: Explains why
+   i = i + 1;  // Adjust for zero-based index
+   ```
+
+2. **Outdated Comments**
+   ```cpp
+   // Bad: Doesn't match code
+   // Calculate sum
+   total = a * b;  // Actually product
+
+   // Good: Matches code
+   // Calculate product
+   total = a * b;
+   ```
+
+3. **Comment Clutter**
+   ```cpp
+   // Bad: Too verbose
+   void clear() {
+       x = 0;  // Set x to zero
+       y = 0;  // Set y to zero
+   }
+
+   // Good: Clear and concise
+   void clear() {
+       // Reset coordinates to origin
+       x = 0;
+       y = 0;
+   }
+   ```
+
+### Best Practices
+1. **Function Documentation**
+   ```cpp
+   /**
+    * @brief Clear description
+    * @param param Description
+    * @return Description
+    */
+   ReturnType function(Type param);
+   ```
+
+2. **Class Documentation**
+   ```cpp
+   /**
+    * @class ClassName
+    * @brief One-line description
+    *
+    * Detailed description
+    */
+   class ClassName {
+   };
+   ```
+
+3. **Implementation Comments**
+   ```cpp
+   void process() {
+       // Step 1: Initialize
+       init();
+       
+       // Step 2: Process data
+       for (auto& item : items) {
+           if (!valid(item)) continue;
+           process(item);
+       }
+   }
+   ```
+
+4. **TODO Comments**
+   ```cpp
+   // TODO(user): Add validation
+   // TODO(user): Optimize algorithm
+   // TODO(user): Add unit tests
+   ```
+
+5. **Update Comments**
+   ```cpp
+   /**
+    * @brief Component description
+    * @note Updated 2025-02-24: Added feature
+    */
+   ```
 
 ## Next Steps
-After completing this part:
-1. Make sure your program compiles and runs
-2. Try the practice exercises
-3. Compare your solutions with the final version
-4. Review all six parts of Module 1
-
-[Continue to Module 2: Control Flow]({{ site.baseurl }}/tutorials/module2)
+1. Complete all practice exercises
+2. Review existing code comments
+3. Update documentation
+4. Study documentation tools
+5. Practice clear writing
+6. Implement documentation standards
+7. Move on to [Module 2: Control Flow]({{ site.baseurl }}/tutorials/module2)

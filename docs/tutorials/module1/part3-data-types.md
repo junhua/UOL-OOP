@@ -1,364 +1,437 @@
 ---
 layout: default
-title: Part 3 - Variables and Data Types
+title: Part 3 - Data Types
 nav_order: 3
-parent: Module 1 - Introduction to Programming and C++
+parent: Module 1 - Introduction to C++
 grand_parent: Tutorials
-permalink: /tutorials/module1/part3-data-types
+permalink: /tutorials/module1/part3-data-types/
 ---
 
-# Part 3: Variables and Data Types
+# Part 3: Data Types
 
 ## Learning Objectives
-- Understand fundamental C++ data types
-- Learn about variable declaration and initialization
-- Understand type sizes and ranges
-- Learn about type conversion and casting
-- Practice using different data types
+- Master C++ fundamental data types
+- Understand type conversion rules
+- Learn about user-defined types
+- Implement type-safe code
+- Practice proper type usage
+- Handle type-related errors
+- Create custom data types
 
 ## Introduction
-Data types are fundamental building blocks in C++ that determine how data is stored and manipulated. This part explores several key concepts:
+Data types in C++ are like different kinds of containers, each designed to hold specific types of data. Think of them as:
 
-1. **Fundamental Data Types**: 
-   - Integers (int, short, long) for whole numbers
-   - Floating-point (float, double) for decimal numbers
-   - Characters (char) for single text characters
-   - Booleans (bool) for true/false values
+1. **Why Data Types Matter**:
+   - **Memory Efficiency**: Optimal storage use
+   - **Type Safety**: Prevent errors
+   - **Performance**: Efficient operations
+   - **Clarity**: Clear code intent
+   - **Reliability**: Prevent data corruption
 
-2. **Memory and Storage**:
-   - How different types use memory
-   - Size limitations and ranges
-   - Type overflow considerations
+2. **Real-World Applications**:
+   - **Financial Software**: Precise calculations
+   - **Graphics**: Coordinate systems
+   - **Scientific Computing**: Accurate measurements
+   - **Database Systems**: Data storage
+   - **Game Development**: Entity properties
 
-3. **Type Conversion**:
-   - Implicit conversion (automatic type casting)
-   - Explicit conversion (manual type casting)
-   - Potential data loss during conversion
-
-4. **Variable Declaration and Initialization**:
-   - Proper syntax for declaring variables
-   - Initialization techniques
-   - Best practices for variable usage
-
-Understanding these concepts is essential as they affect program efficiency, memory usage, and data accuracy. Through practical examples, you'll learn how to choose appropriate data types for different scenarios and handle type conversions safely.
+3. **Benefits in Development**:
+   - **Better Memory Management**: Right-sized storage
+   - **Fewer Bugs**: Type checking
+   - **Clear Interfaces**: Type-based contracts
+   - **Efficient Code**: Optimized operations
+   - **Safe Conversions**: Controlled type changes
 
 ## Implementation Guide
 
-### Step 1: Start with the Template
-First, let's examine our starting point:
-1. Open the starter code file `Tutorials/Module01/Part3/data_types_starter.cpp`
-2. The template outlines what we'll implement:
+You'll find the starter code in `Tutorials/Module01/Part3/types_starter.cpp` and can compare your implementation with the completed version in `Tutorials/Module01/Part3/types.cpp`.
 
-```cpp
-// TODO: Add necessary include directives
+### Overview
+In this implementation, we'll explore and work with C++'s rich type system. We'll build programs that:
+- Demonstrate all fundamental data types
+- Create and use custom types
+- Handle type conversions safely
+- Show type limits and properties
+- Implement type-safe operations
 
-int main() {
-    // TODO: Declare and initialize variables of different fundamental types
-    // 1. Integer type
-    // 2. Floating-point type
-    // 3. Character type
-    // 4. Boolean type
+Through these examples, you'll learn:
+- How to **choose appropriate types**
+- *Work with type conversions* safely
+- ***Critical type safety*** considerations
+- Memory usage optimization
+- Professional type handling
 
-    // TODO: Print the values of all variables
+### Fundamental Types
+First, let's explore the basic building blocks of C++ types. We'll cover:
+- **Integer types** for whole numbers
+- *Floating-point types* for decimals
+- ***Character types*** for text
+- Boolean type for logical values
+- Size and range information
 
-    // TODO: Demonstrate type conversion
-    // 1. Implicit conversion
-    // 2. Explicit conversion (casting)
-
-    // TODO: Show the sizes of different data types
-
-    return 0;
-}
-```
-
-### Step 2: Add Include Directives
-We need two important headers for our program:
-1. iostream for input/output operations
-2. limits for working with type ranges
-3. Add these lines at the top:
+Let's examine each type in detail:
 
 ```cpp
 #include <iostream>
 #include <limits>
-```
-
-### Step 3: Declare Fundamental Types
-Let's create variables of different types to demonstrate their use:
-1. Create an integer for whole numbers
-2. Use double for decimal numbers
-3. Add a character for single letters
-4. Include a boolean for true/false values
-
-```cpp
-    // Fundamental data types
-    int age = 25;                    // Integer
-    double price = 19.99;            // Double precision floating-point
-    char grade = 'A';                // Character
-    bool isStudent = true;           // Boolean
-```
-
-### Step 4: Print Variable Values
-Now we'll display each variable to see how they're represented:
-1. Use cout to print each value
-2. Add descriptive labels
-3. Use endl for line breaks
-
-```cpp
-    // Print values
-    std::cout << "Integer (age): " << age << std::endl;
-    std::cout << "Double (price): " << price << std::endl;
-    std::cout << "Character (grade): " << grade << std::endl;
-    std::cout << "Boolean (isStudent): " << isStudent << std::endl;
-```
-
-### Step 5: Demonstrate Type Conversion
-Let's show how to convert between types:
-1. Create a height in meters (double)
-2. Convert it to centimeters (integer)
-3. Show both implicit and explicit conversion
-
-```cpp
-    // Type conversion examples
-    double height = 1.85;            // meters
-    int heightCm = (int)(height * 100);  // Explicit conversion
-    std::cout << "\nHeight conversion:" << std::endl;
-    std::cout << "Height in meters: " << height << std::endl;
-    std::cout << "Height in centimeters: " << heightCm << std::endl;
-```
-
-### Step 6: Show Type Sizes
-Let's explore how much memory each type uses:
-1. Use sizeof to get the size in bytes
-2. Display sizes for all fundamental types
-3. Add clear labels for each
-
-```cpp
-    // Size of different types
-    std::cout << "\nSize of data types:" << std::endl;
-    std::cout << "Size of int: " << sizeof(int) << " bytes" << std::endl;
-    std::cout << "Size of double: " << sizeof(double) << " bytes" << std::endl;
-    std::cout << "Size of char: " << sizeof(char) << " bytes" << std::endl;
-    std::cout << "Size of bool: " << sizeof(bool) << " bytes" << std::endl;
-```
-
-### Step 7: Display Type Ranges
-Finally, let's show the range of values for integers:
-1. Use numeric_limits to get minimum and maximum values
-2. Display these ranges clearly
-3. Help understand type limitations
-
-```cpp
-    // Range of integer type
-    std::cout << "\nRange of integer type:" << std::endl;
-    std::cout << "Minimum int value: " << std::numeric_limits<int>::min() << std::endl;
-    std::cout << "Maximum int value: " << std::numeric_limits<int>::max() << std::endl;
-```
-
-### Final Code
-Here's how everything comes together in the complete program:
-
-```cpp
-#include <iostream>
-#include <limits>
+using namespace std;
 
 int main() {
-    // Fundamental data types
-    int age = 25;                    // Integer
-    double price = 19.99;            // Double precision floating-point
-    char grade = 'A';                // Character
-    bool isStudent = true;           // Boolean
-
-    // Print values
-    std::cout << "Integer (age): " << age << std::endl;
-    std::cout << "Double (price): " << price << std::endl;
-    std::cout << "Character (grade): " << grade << std::endl;
-    std::cout << "Boolean (isStudent): " << isStudent << std::endl;
-
-    // Type conversion examples
-    double height = 1.85;            // meters
-    int heightCm = (int)(height * 100);  // Explicit conversion
-    std::cout << "\nHeight conversion:" << std::endl;
-    std::cout << "Height in meters: " << height << std::endl;
-    std::cout << "Height in centimeters: " << heightCm << std::endl;
-
-    // Size of different types
-    std::cout << "\nSize of data types:" << std::endl;
-    std::cout << "Size of int: " << sizeof(int) << " bytes" << std::endl;
-    std::cout << "Size of double: " << sizeof(double) << " bytes" << std::endl;
-    std::cout << "Size of char: " << sizeof(char) << " bytes" << std::endl;
-    std::cout << "Size of bool: " << sizeof(bool) << " bytes" << std::endl;
-
-    // Range of integer type
-    std::cout << "\nRange of integer type:" << std::endl;
-    std::cout << "Minimum int value: " << std::numeric_limits<int>::min() << std::endl;
-    std::cout << "Maximum int value: " << std::numeric_limits<int>::max() << std::endl;
-
+    // Integer types
+    int integer = 42;
+    short smallInteger = 32767;
+    long largeInteger = 2147483647L;
+    long long veryLargeInteger = 9223372036854775807LL;
+    
+    // Floating-point types
+    float decimal = 3.14159f;
+    double preciseDecimal = 3.14159265359;
+    long double veryPreciseDecimal = 3.14159265359L;
+    
+    // Character types
+    char character = 'A';
+    wchar_t wideChar = L'Ω';
+    char16_t unicode16 = u'Ω';
+    char32_t unicode32 = U'Ω';
+    
+    // Boolean type
+    bool flag = true;
+    
+    // Size information
+    cout << "Type Sizes:\n";
+    cout << "int: " << sizeof(int) << " bytes\n";
+    cout << "double: " << sizeof(double) << " bytes\n";
+    cout << "char: " << sizeof(char) << " bytes\n";
+    cout << "bool: " << sizeof(bool) << " bytes\n";
+    
+    // Range information
+    cout << "\nType Ranges:\n";
+    cout << "int: " << numeric_limits<int>::min() 
+         << " to " << numeric_limits<int>::max() << "\n";
+    cout << "float precision: " 
+         << numeric_limits<float>::digits10 << " digits\n";
+    
     return 0;
 }
 ```
 
-### Test Cases
-Here are some test cases to verify your implementation:
+### User-Defined Types
+Now we'll learn to create our own custom types. We'll explore:
+- **Enumeration** for named constants
+- *Structures* for data grouping
+- ***Classes*** for encapsulation
+- Unions for memory sharing
+- Type safety patterns
 
-1. Basic Data Type Values
+Let's create some custom types:
 
-```
-Code:
-int age = 25;
-double price = 19.99;
-char grade = 'A';
-bool isStudent = true;
+```cpp
+// Enumeration
+enum class Color {
+    Red,
+    Green,
+    Blue,
+    Yellow
+};
 
-Expected Output:
-Integer (age): 25
-Double (price): 19.99
-Character (grade): A
-Boolean (isStudent): 1
-```
+// Structure
+struct Point {
+    double x;
+    double y;
+    
+    // Constructor
+    Point(double x_val = 0, double y_val = 0) 
+        : x(x_val), y(y_val) {}
+        
+    // Method
+    double distanceFromOrigin() const {
+        return sqrt(x*x + y*y);
+    }
+};
 
-2. Type Conversion
+// Union
+union DataValue {
+    int i;
+    float f;
+    char c;
+};
 
-```
-Code:
-double height = 1.85;
-int heightCm = (int)(height * 100);
-
-Expected Output:
-Height in meters: 1.85
-Height in centimeters: 185
-```
-
-3. Size of Types
-
-```
-Expected Output:
-Size of int: 4 bytes
-Size of double: 8 bytes
-Size of char: 1 bytes
-Size of bool: 1 bytes
-```
-
-4. Integer Range
-
-```
-Expected Output:
-Minimum int value: -2147483648
-Maximum int value: 2147483647
-```
-
-5. Floating Point Precision
-
-```
-Code:
-float f = 3.14159f;
-double d = 3.14159;
-
-Expected Output:
-float: 3.14159
-double: 3.14159
-```
-
-6. Type Overflow Test
-
-```
-Code:
-short s = 32767;  // Maximum short value
-s = s + 1;        // Overflow
-
-Expected Output:
--32768            // Wraps around to minimum value
+// Class
+class Rectangle {
+public:
+    Rectangle(double w, double h) 
+        : width(w), height(h) {}
+    
+    double getArea() const {
+        return width * height;
+    }
+    
+    double getPerimeter() const {
+        return 2 * (width + height);
+    }
+    
+private:
+    double width;
+    double height;
+};
 ```
 
-7. Character Type Test
+### Type Conversions
+Type conversions require careful handling to prevent data loss. We'll learn:
+- **Implicit vs explicit** conversions
+- *Safe conversion* patterns
+- ***Critical safety checks***
+- Numeric type conversions
+- Pointer type handling
 
+Let's implement safe type conversions:
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    // Implicit conversions
+    int i = 42;
+    double d = i;    // int to double (safe)
+    float f = d;     // double to float (possible precision loss)
+    
+    // Explicit conversions
+    double pi = 3.14159;
+    int rounded = static_cast<int>(pi);  // double to int
+    
+    // Numeric conversions
+    long bigNum = 1234567890L;
+    int normalNum = static_cast<int>(bigNum);  // Check range
+    
+    if (bigNum > numeric_limits<int>::max()) {
+        cout << "Warning: Possible data loss in conversion\n";
+    }
+    
+    // Character conversions
+    char c = 'A';
+    int ascii = static_cast<int>(c);  // char to int
+    
+    // Boolean conversions
+    int zero = 0;
+    bool isZero = (zero == 0);  // Comparison to bool
+    
+    // Pointer conversions
+    int* ptr = nullptr;
+    void* vptr = ptr;  // OK: implicit conversion
+    int* back = static_cast<int*>(vptr);  // void* to int*
+    
+    return 0;
+}
 ```
-Code:
-char c = 65;
-std::cout << c << std::endl;
-
-Expected Output:
-A                 // ASCII value 65 is 'A'
-```
-
-Try these test cases to verify:
-- Proper initialization of different types
-- Type conversion behavior
-- Size and range limitations
-- Overflow handling
-- Type representation
-
-## Understanding Data Types
-
-### Integer Types
-- `short`: Small whole numbers (-32,768 to 32,767)
-- `int`: Standard whole numbers (typically ±2 billion)
-- `long`: Large whole numbers
-- `unsigned`: Non-negative versions of above types
-
-### Floating Point Types
-- `float`: Single precision (7 digits)
-- `double`: Double precision (15 digits)
-- `long double`: Extended precision
-
-### Character Types
-- `char`: Single character ('A', 'b', '1', etc.)
-- `wchar_t`: Wide character (for Unicode)
-
-### Boolean Type
-- `bool`: true or false values
 
 ## Practice Exercises
 
-Open the starter code file `Tutorials/Module01/Part3/practice_types_starter.cpp`. This file contains a template for exploring data types and their properties.
+You'll find the starter code and solutions in:
+- Starter template: `Tutorials/Module01/Part3/practice_types_starter.cpp`
+- Complete solution: `Tutorials/Module01/Part3/practice_types.cpp`
 
-### 1. Type Ranges
-Implement the following in the starter code:
-1. Declare variables of different integer types (short, int, long)
-2. Use numeric_limits to display their minimum and maximum values
-3. Demonstrate overflow behavior by incrementing a maximum value
-4. Compare float and double precision with large numbers
+### Exercise 1: Type Calculator
+Create a type information calculator:
+1. Show information for:
+   - Integer types
+   - Floating types
+   - Character types
+   - Boolean type
+2. Display ranges
+3. Show memory sizes
+4. Calculate limits
+5. Demonstrate precision
 
-### 2. Type Conversion
-Add to your implementation:
-1. Show implicit conversions between different numeric types
-2. Demonstrate explicit type casting using static_cast
-3. Illustrate precision loss when converting between types
-4. Include examples of numeric-to-character conversions
+Requirements:
+1. All basic types
+2. Range information
+3. Size information
+4. Precision details
+5. Example values
 
-### 3. Size Exploration
-Complete your implementation by adding:
-1. Display sizes of all fundamental types using sizeof
-2. Compare sizes of different integer types
-3. Show memory usage patterns with arrays
-4. Document the results with clear output formatting
+### Exercise 2: Geometry System
+Build a geometry calculation system:
+1. Define types:
+   - Point
+   - Line
+   - Circle
+   - Rectangle
+2. Implement calculations
+3. Handle conversions
+4. Validate input
+5. Format output
 
-You can compare your solution with the completed example in `Tutorials/Module01/Part3/practice_types.cpp`.
+Requirements:
+1. Custom types
+2. Safe conversions
+3. Input validation
+4. Error handling
+5. Clear output
 
-The final code demonstrates:
-- Range limits of different types
-- Type conversion effects
-- Memory size characteristics
-- Proper output formatting
+### Exercise 3: Data Converter
+Create a data type converter:
+1. Support conversions:
+   - Numeric types
+   - Character types
+   - Custom types
+2. Validate conversions
+3. Handle errors
+4. Show conversion info
+5. Format output
 
-## Common Pitfalls
-- Integer overflow/underflow
-- Precision loss in floating-point
-- Implicit conversion issues
-- Uninitialized variables
-- Type mismatch in operations
+Requirements:
+1. Safe conversions
+2. Error checking
+3. Information display
+4. Clean interface
+5. Example usage
 
-## Best Practices
-1. Choose appropriate types for data
-2. Initialize variables at declaration
-3. Use explicit casting for clarity
-4. Check for potential overflow
-5. Consider memory usage in type selection
+## Summary
+
+### Key Concepts
+1. **Fundamental Types**
+   ```cpp
+   // Integer types
+   int i = 42;             // Basic integer
+   short s = 100;          // Small integer
+   long l = 1000L;         // Large integer
+   long long ll = 1000LL;  // Very large integer
+   
+   // Floating-point types
+   float f = 3.14f;        // Single precision
+   double d = 3.14159;     // Double precision
+   
+   // Character types
+   char c = 'A';           // Single character
+   wchar_t w = L'Ω';       // Wide character
+   
+   // Boolean type
+   bool flag = true;       // Logical value
+   ```
+
+2. **User-Defined Types**
+   ```cpp
+   // Enumeration
+   enum class Color { Red, Green, Blue };
+   
+   // Structure
+   struct Point {
+       double x, y;
+   };
+   
+   // Class
+   class Circle {
+       double radius;
+   public:
+       double getArea() const;
+   };
+   ```
+
+3. **Type Conversions**
+   ```cpp
+   // Safe conversions
+   int i = 42;
+   double d = i;  // Implicit widening
+   
+   // Explicit conversions
+   double pi = 3.14159;
+   int rounded = static_cast<int>(pi);
+   ```
+
+### Common Pitfalls
+1. **Implicit Conversions**
+   ```cpp
+   // Bad: Implicit narrowing
+   double pi = 3.14159;
+   int iPi = pi;  // Loss of precision
+
+   // Good: Explicit conversion
+   int iPi = static_cast<int>(pi);
+   ```
+
+2. **Type Overflow**
+   ```cpp
+   // Bad: No overflow check
+   short s = 32767;
+   s++;  // Undefined behavior
+
+   // Good: Check limits
+   if (s < numeric_limits<short>::max()) {
+       s++;
+   }
+   ```
+
+3. **Sign Issues**
+   ```cpp
+   // Bad: Sign mismatch
+   unsigned int u = 10;
+   int i = -5;
+   if (u > i) {  // i converted to unsigned!
+
+   // Good: Explicit comparison
+   if (u > 0 && static_cast<int>(u) > i) {
+   ```
+
+### Best Practices
+1. **Type Selection**
+   ```cpp
+   // Choose appropriate types
+   int count = 0;         // Counting
+   double price = 99.99;  // Money
+   char grade = 'A';      // Single character
+   bool isValid = true;   // Flags
+   ```
+
+2. **Type Safety**
+   ```cpp
+   // Use type-safe constructs
+   enum class Status {
+       Success,
+       Failure,
+       Pending
+   };
+   Status result = Status::Success;
+   ```
+
+3. **Conversions**
+   ```cpp
+   // Safe type conversions
+   template<typename T>
+   T safeCast(auto value) {
+       if (value > numeric_limits<T>::max()) {
+           throw overflow_error("Value too large");
+       }
+       return static_cast<T>(value);
+   }
+   ```
+
+4. **Custom Types**
+   ```cpp
+   // Clear type definitions
+   class Temperature {
+       double value;
+       string unit;
+   public:
+       Temperature(double v, string u);
+   };
+   ```
+
+5. **Type Traits**
+   ```cpp
+   // Use type traits
+   template<typename T>
+   void processNumber(T value) {
+       static_assert(is_arithmetic<T>::value,
+                    "Arithmetic type required");
+   }
+   ```
 
 ## Next Steps
-After completing this part:
-1. Make sure your program compiles and runs
-2. Try the practice exercises
-3. Compare your solutions with the final version
-4. Move on to Part 4 to learn about input/output operations
-
-[Continue to Part 4: Input and Output Operations]({{ site.baseurl }}/tutorials/module1/part4-io)
+1. Complete all practice exercises
+2. Test with various types
+3. Study type conversions
+4. Practice type safety
+5. Implement custom types
+6. Review type limits
+7. Move on to [Part 4: Input and Output]({{ site.baseurl }}/tutorials/module1/part4-io)
