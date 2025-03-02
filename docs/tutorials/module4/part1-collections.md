@@ -9,274 +9,311 @@ permalink: /tutorials/module4/part1-collections/
 
 # Part 1: Vector, Set and Map
 
-## Overview
-C++ provides several container types in the Standard Template Library (STL) for storing and managing collections of data. This part introduces three fundamental container types: Vector, Set, and Map.
+## Learning Objectives
+- Master STL container concepts and usage
+- Understand container selection criteria
+- Learn container operations and iterators
+- Practice container manipulation
+- Implement efficient container operations
+- Handle container-specific errors
 
-## Vector
+## Introduction
+STL containers are fundamental building blocks in C++ that provide different ways to store and organize data. Think of them like:
 
-### What is a Vector?
-- Dynamic array implementation
-- Automatically resizes as needed
-- Continuous memory storage
-- Fast random access
-- Efficient insertion at end
+1. **Why Containers Matter**:
+   - **Organization**: Store and manage collections of data
+   - **Efficiency**: Optimized implementations for different needs
+   - **Type Safety**: Compile-time type checking
+   - **Standardization**: Consistent interface across containers
+   - **Reusability**: Standard algorithms work with all containers
 
-### Basic Vector Operations
+2. **Real-World Applications**:
+   - **Vector**: Dynamic arrays, growing collections
+   - **Set**: Unique elements, sorted data
+   - **Map**: Key-value associations, dictionaries
+   - **Container Selection**: Performance trade-offs
+   - **Iterator Usage**: Uniform access patterns
+
+3. **Benefits in Development**:
+   - **Code Organization**: Clear data structure choice
+   - **Performance**: Right container for the job
+   - **Maintainability**: Standard interfaces
+   - **Flexibility**: Easy container switching
+   - **Safety**: Built-in bounds checking
+
+## Implementation Guide
+
+You'll find the starter code in `Tutorials/Module04/Part1/collections_starter.cpp` and can compare your implementation with the completed version in `Tutorials/Module04/Part1/collections.cpp`.
+
+### Step 1: Vector Operations
 ```cpp
 #include <vector>
 
-vector<int> numbers;              // Create empty vector
-numbers.push_back(10);           // Add element at end
-numbers.pop_back();              // Remove last element
-numbers[0];                      // Access element
-numbers.at(0);                   // Safe access with bounds checking
-numbers.size();                  // Get number of elements
-numbers.empty();                 // Check if empty
-numbers.clear();                 // Remove all elements
-```
+// Create and initialize vector
+vector<int> numbers = {1, 2, 3, 4, 5};
 
-### Vector Iteration
-```cpp
-vector<int> nums = {1, 2, 3, 4, 5};
+// Add elements
+numbers.push_back(6);
+numbers.push_back(7);
 
-// Using index
-for (size_t i = 0; i < nums.size(); i++) {
-    cout << nums[i] << " ";
+// Access elements
+cout << "First: " << numbers[0] << endl;
+cout << "Last: " << numbers.back() << endl;
+
+// Iterate using index
+for (size_t i = 0; i < numbers.size(); i++) {
+    cout << numbers[i] << " ";
 }
 
-// Using range-based for loop
-for (int num : nums) {
+// Range-based loop
+for (int num : numbers) {
     cout << num << " ";
 }
 
-// Using iterator
-for (auto it = nums.begin(); it != nums.end(); ++it) {
-    cout << *it << " ";
-}
+// Vector operations
+cout << "Size: " << numbers.size() << endl;
+numbers.pop_back();  // Remove last
 ```
 
-## Set
+Key Points:
+- Dynamic size management
+- Continuous memory storage
+- Fast random access
+- Efficient end operations
+- Iterator support
 
-### What is a Set?
-- Stores unique elements
-- Automatically sorted
-- No duplicates allowed
-- Fast search operations
-- Binary tree implementation
-
-### Basic Set Operations
+### Step 2: Set Operations
 ```cpp
 #include <set>
 
-set<int> numbers;                // Create empty set
-numbers.insert(10);             // Insert element
-numbers.erase(10);              // Remove element
-numbers.find(10);               // Find element
-numbers.count(10);              // Count occurrences (0 or 1)
-numbers.size();                 // Get number of elements
-numbers.empty();                // Check if empty
-numbers.clear();                // Remove all elements
-```
+// Create and initialize set
+set<string> fruits = {"apple", "banana", "orange"};
 
-### Set Iteration
-```cpp
-set<int> nums = {3, 1, 4, 1, 5};  // Stores: {1, 3, 4, 5}
+// Insert elements
+fruits.insert("grape");  // New element
+fruits.insert("apple");  // Duplicate ignored
 
-// Using range-based for loop
-for (int num : nums) {
-    cout << num << " ";  // Prints in sorted order
+// Check existence
+if (fruits.find("banana") != fruits.end()) {
+    cout << "Found banana" << endl;
 }
 
-// Using iterator
-for (auto it = nums.begin(); it != nums.end(); ++it) {
-    cout << *it << " ";
+// Iterate through set
+for (const string& fruit : fruits) {
+    cout << fruit << " ";
 }
+
+// Set operations
+cout << "Size: " << fruits.size() << endl;
+fruits.erase("apple");
 ```
 
-## Map
+Key Points:
+- Unique elements
+- Automatic sorting
+- Fast search operations
+- No duplicates
+- Iterator stability
 
-### What is a Map?
-- Key-value pair storage
-- Unique keys
-- Automatically sorted by key
-- Fast key lookup
-- Binary tree implementation
-
-### Basic Map Operations
+### Step 3: Map Operations
 ```cpp
 #include <map>
 
-map<string, int> scores;         // Create empty map
-scores["Alice"] = 100;          // Insert/update value
-scores.erase("Alice");          // Remove entry
-scores.find("Alice");           // Find entry
-scores.count("Alice");          // Check if key exists
-scores.size();                  // Get number of entries
-scores.empty();                 // Check if empty
-scores.clear();                 // Remove all entries
-```
-
-### Map Iteration
-```cpp
+// Create and initialize map
 map<string, int> scores = {
-    {"Alice", 100},
-    {"Bob", 95},
-    {"Charlie", 90}
+    {"Alice", 95},
+    {"Bob", 87}
 };
 
-// Using range-based for loop
+// Add/update elements
+scores["Charlie"] = 92;
+scores["Alice"] = 97;  // Updates Alice's score
+
+// Access elements
+cout << "Alice's score: " << scores["Alice"] << endl;
+
+// Check key existence
+if (scores.find("Bob") != scores.end()) {
+    cout << "Bob's score: " << scores["Bob"] << endl;
+}
+
+// Iterate through map
 for (const auto& pair : scores) {
     cout << pair.first << ": " << pair.second << endl;
 }
-
-// Using iterator
-for (auto it = scores.begin(); it != scores.end(); ++it) {
-    cout << it->first << ": " << it->second << endl;
-}
 ```
 
-## Practice Exercise
+Key Points:
+- Key-value pairs
+- Unique keys
+- Automatic key sorting
+- Fast key lookup
+- Iterator support
 
-Create a program that demonstrates the use of Vector, Set, and Map:
-1. Use a vector to store and process student grades
-2. Use a set to track unique student IDs
-3. Use a map to store student name-grade pairs
+## Practice Exercises
 
-Solution:
+You'll find the starter code and solutions in:
+- Starter template: `Tutorials/Module04/Part1/practice_collections_starter.cpp`
+- Complete solution: `Tutorials/Module04/Part1/practice_collections.cpp`
+
+### Exercise 1: Grade Tracker
+Implement a grade tracking system using vector:
 ```cpp
-#include <iostream>
-#include <vector>
-#include <set>
-#include <map>
-#include <string>
-using namespace std;
-
-int main() {
-    // Vector example - storing grades
-    vector<int> grades;
-    grades.push_back(85);
-    grades.push_back(92);
-    grades.push_back(78);
-    grades.push_back(95);
-    
-    // Calculate average grade
-    int sum = 0;
-    for (int grade : grades) {
-        sum += grade;
-    }
-    double average = static_cast<double>(sum) / grades.size();
-    
-    cout << "Grades: ";
-    for (int grade : grades) {
-        cout << grade << " ";
-    }
-    cout << "\nAverage: " << average << endl;
-    
-    // Set example - unique student IDs
-    set<int> studentIds;
-    studentIds.insert(1001);
-    studentIds.insert(1002);
-    studentIds.insert(1001);  // Duplicate, won't be added
-    studentIds.insert(1003);
-    
-    cout << "\nStudent IDs: ";
-    for (int id : studentIds) {
-        cout << id << " ";
-    }
-    cout << "\nNumber of students: " << studentIds.size() << endl;
-    
-    // Map example - student name-grade pairs
-    map<string, int> studentGrades;
-    studentGrades["Alice"] = 95;
-    studentGrades["Bob"] = 87;
-    studentGrades["Charlie"] = 92;
-    
-    cout << "\nStudent Grades:" << endl;
-    for (const auto& pair : studentGrades) {
-        cout << pair.first << ": " << pair.second << endl;
-    }
-    
-    // Demonstrate map lookup
-    string student = "Alice";
-    if (studentGrades.find(student) != studentGrades.end()) {
-        cout << "\n" << student << "'s grade: " 
-             << studentGrades[student] << endl;
-    }
-    
-    return 0;
-}
+class GradeTracker {
+    vector<double> grades;
+public:
+    void addGrade(double grade);
+    double getAverage() const;
+    double getHighest() const;
+    double getLowest() const;
+    void displayGrades() const;
+};
 ```
 
-## Common Operations Comparison
+Requirements:
+1. Validate grade input (0-100)
+2. Calculate accurate statistics
+3. Handle empty grade list
+4. Format output clearly
+5. Support grade updates
 
-### Adding Elements
+### Exercise 2: Word Counter
+Create a unique word counter using set:
 ```cpp
-vector<int> vec;
-vec.push_back(1);     // Add to end
-
-set<int> s;
-s.insert(1);         // Insert element
-
-map<string, int> m;
-m["key"] = 1;        // Add/update key-value pair
+class WordCounter {
+    set<string> uniqueWords;
+public:
+    void addWord(const string& word);
+    size_t getUniqueWordCount() const;
+    bool containsWord(const string& word) const;
+    void displayWords() const;
+};
 ```
 
-### Removing Elements
+Requirements:
+1. Case-insensitive comparison
+2. Handle punctuation
+3. Support word lookup
+4. Clear word display
+5. Efficient storage
+
+### Exercise 3: Phone Directory
+Build a phone directory using map:
 ```cpp
-vector<int> vec = {1, 2, 3};
-vec.pop_back();              // Remove last
-vec.erase(vec.begin());     // Remove first
-
-set<int> s = {1, 2, 3};
-s.erase(2);                 // Remove element
-
-map<string, int> m = {{"a", 1}};
-m.erase("a");              // Remove key-value pair
+class PhoneDirectory {
+    map<string, string> directory;
+public:
+    void addContact(const string& name, const string& phone);
+    bool removeContact(const string& name);
+    string getPhoneNumber(const string& name) const;
+    void displayContacts() const;
+};
 ```
 
-### Searching
-```cpp
-// Vector - linear search
-auto it = find(vec.begin(), vec.end(), value);
+Requirements:
+1. Validate phone numbers
+2. Handle name collisions
+3. Support contact updates
+4. Format display neatly
+5. Efficient lookup
 
-// Set - logarithmic search
-auto it = s.find(value);
+## Summary
 
-// Map - logarithmic search
-auto it = m.find(key);
-```
+### Key Concepts
 
-## Best Practices
+1. **Vector**
+   ```cpp
+   vector<T>              // Dynamic array
+   push_back(), pop_back() // End operations
+   [], at()               // Element access
+   size(), empty()        // Capacity
+   begin(), end()         // Iterators
+   ```
 
-### Vector Best Practices
-1. Reserve space if size known
-2. Use push_back over [] for adding
-3. Use range-based for when possible
-4. Check bounds before accessing
-5. Consider using emplace_back
+2. **Set**
+   ```cpp
+   set<T>                // Unique sorted elements
+   insert(), erase()     // Modification
+   find(), count()       // Searching
+   size(), empty()       // Capacity
+   begin(), end()        // Iterators
+   ```
 
-### Set Best Practices
-1. Use for unique collections
-2. Check insert result
-3. Use count for existence check
-4. Consider multiset if duplicates needed
-5. Use emplace for efficient insertion
+3. **Map**
+   ```cpp
+   map<K,V>              // Key-value pairs
+   [], at()              // Element access
+   insert(), erase()     // Modification
+   find(), count()       // Searching
+   begin(), end()        // Iterators
+   ```
 
-### Map Best Practices
-1. Check key existence before access
-2. Use at() for safe access
-3. Use emplace for efficient insertion
-4. Consider unordered_map for better performance
-5. Use structured bindings in C++17
+### Common Pitfalls
 
-## Common Mistakes to Avoid
-1. Not checking bounds
-2. Invalidating iterators
-3. Using [] without checking map key
-4. Forgetting to include headers
-5. Not considering performance implications
+1. **Vector Issues**
+   ```cpp
+   // Wrong: No bounds checking
+   vec[i] = value;  
+   
+   // Right: Safe access
+   vec.at(i) = value;
+   ```
+
+2. **Set Problems**
+   ```cpp
+   // Wrong: Direct modification
+   *set.find(value) = newValue;
+   
+   // Right: Remove and insert
+   set.erase(value);
+   set.insert(newValue);
+   ```
+
+3. **Map Mistakes**
+   ```cpp
+   // Wrong: Unnecessary lookups
+   if (map.find(key) != map.end())
+       map[key] = value;
+   
+   // Right: Single operation
+   map[key] = value;
+   ```
+
+### Best Practices
+
+1. **Container Selection**
+   - Use vector for sequential data
+   - Use set for unique elements
+   - Use map for key-value pairs
+   - Consider performance needs
+   - Match container to usage
+
+2. **Memory Management**
+   - Reserve vector capacity
+   - Clear unused elements
+   - Use shrink_to_fit()
+   - Monitor container size
+   - Handle reallocation
+
+3. **Iterator Usage**
+   - Use range-based for
+   - Check iterator validity
+   - Use const iterators
+   - Handle end conditions
+   - Maintain iterator safety
+
+4. **Error Handling**
+   - Check bounds
+   - Validate input
+   - Handle duplicates
+   - Check container empty
+   - Use at() for safety
 
 ## Next Steps
-- Try the practice exercise
-- Experiment with different container types
-- Move on to [Part 2: Accessing Array Elements]({% link tutorials/module4/part2-arrays.md %})
+1. Complete practice exercises
+2. Test with various data types
+3. Handle edge cases
+4. Review error handling
+5. Move on to [Part 2: Arrays]({{ site.baseurl }}/tutorials/module4/part2-arrays)
+
+Remember: Container choice affects program performance and maintainability. Choose containers based on your specific needs and usage patterns.

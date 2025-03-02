@@ -9,283 +9,311 @@ permalink: /tutorials/module4/part4-string-ops/
 
 # Part 4: Common String Operations
 
-## Overview
-This part covers common string operations in C++, including string manipulation, searching, comparison, and formatting. Understanding these operations is essential for effective text processing.
+## Learning Objectives
+- Master string manipulation techniques
+- Understand string transformation
+- Learn string searching methods
+- Practice string formatting
+- Implement string utilities
+- Handle string operation errors
 
-## String Manipulation
+## Introduction
+String operations are essential for text processing and data manipulation. Think of them like:
 
-### Concatenation
+1. **Why String Operations Matter**:
+   - **Text Processing**: Content manipulation
+   - **Data Validation**: Input verification
+   - **Format Conversion**: Data transformation
+   - **Search Operations**: Pattern matching
+   - **Output Formatting**: Display presentation
+
+2. **Real-World Applications**:
+   - **Form Processing**: Input cleaning
+   - **Data Parsing**: CSV, JSON handling
+   - **Template Systems**: Content generation
+   - **Command Processing**: Argument parsing
+   - **Text Analysis**: Content statistics
+
+3. **Benefits in Development**:
+   - **Code Reusability**: Common operations
+   - **Standardization**: Consistent handling
+   - **Efficiency**: Optimized methods
+   - **Reliability**: Tested operations
+   - **Maintainability**: Clear intent
+
+## Implementation Guide
+
+You'll find the starter code in `Tutorials/Module04/Part4/string_ops_starter.cpp` and can compare your implementation with the completed version in `Tutorials/Module04/Part4/string_ops.cpp`.
+
+### Step 1: Case Conversion
 ```cpp
-// Using + operator
-string first = "Hello";
-string second = "World";
-string result = first + " " + second;  // "Hello World"
+#include <algorithm>
 
-// Using append
-string text = "Hello";
-text.append(" there");                 // "Hello there"
-text += "!";                           // "Hello there!"
-```
+// Convert to uppercase
+string upper = text;
+transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
 
-### Insertion and Erasure
-```cpp
-string str = "Hello World";
+// Convert to lowercase
+string lower = text;
+transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
 
-// Insert
-str.insert(5, " beautiful");  // "Hello beautiful World"
-
-// Erase
-str.erase(6, 9);             // Remove "beautiful"
-str.erase(5);                // Remove from position 5 to end
-```
-
-### Replacement
-```cpp
-string text = "Hello World";
-
-// Replace substring
-text.replace(6, 5, "there");  // "Hello there"
-
-// Replace all occurrences
-size_t pos = 0;
-while ((pos = text.find("l", pos)) != string::npos) {
-    text.replace(pos, 1, "L");
-    pos++;
-}
-```
-
-## String Searching
-
-### Find Operations
-```cpp
-string text = "Hello World";
-
-// Find first occurrence
-size_t pos = text.find("o");        // Returns 4
-
-// Find last occurrence
-pos = text.rfind("o");              // Returns 7
-
-// Find first of several characters
-pos = text.find_first_of("aeiou");  // Find first vowel
-
-// Find last of several characters
-pos = text.find_last_of("aeiou");   // Find last vowel
-
-// Check if contains
-if (text.find("World") != string::npos) {
-    cout << "Contains 'World'" << endl;
-}
-```
-
-### Substring Operations
-```cpp
-string str = "Hello World";
-
-// Get substring
-string sub1 = str.substr(0, 5);     // "Hello"
-string sub2 = str.substr(6);        // "World"
-
-// Find between delimiters
-size_t start = str.find_first_of("aeiou");
-size_t end = str.find_last_of("aeiou");
-if (start != string::npos && end != string::npos) {
-    string sub = str.substr(start, end - start + 1);
-}
-```
-
-## String Comparison
-
-### Comparison Operations
-```cpp
-string str1 = "apple";
-string str2 = "banana";
-
-// Using operators
-bool isEqual = (str1 == str2);
-bool isLess = (str1 < str2);
-
-// Using compare method
-int result = str1.compare(str2);
-// negative if str1 < str2
-// 0 if str1 == str2
-// positive if str1 > str2
-
-// Compare substrings
-result = str1.compare(0, 2, str2, 0, 2);
-```
-
-### Case-Insensitive Comparison
-```cpp
-bool compareIgnoreCase(const string& str1, const string& str2) {
-    if (str1.length() != str2.length()) {
-        return false;
-    }
-    
-    for (size_t i = 0; i < str1.length(); i++) {
-        if (tolower(str1[i]) != tolower(str2[i])) {
-            return false;
-        }
-    }
-    return true;
-}
-```
-
-## Practice Exercise
-
-Create a program that implements various string operations:
-1. Text analysis (count vowels, consonants, etc.)
-2. String transformation (case conversion, replacement)
-3. Pattern matching
-4. Word processing
-
-Solution:
-```cpp
-#include <iostream>
-#include <string>
-#include <cctype>
-using namespace std;
-
-// Function to count vowels in string
-int countVowels(const string& str) {
-    int count = 0;
-    string vowels = "aeiouAEIOU";
-    
-    for (char c : str) {
-        if (vowels.find(c) != string::npos) {
-            count++;
-        }
-    }
-    return count;
+// Convert first character
+string capitalized = text;
+if (!capitalized.empty()) {
+    capitalized[0] = toupper(capitalized[0]);
 }
 
-// Function to convert string to title case
-string toTitleCase(string str) {
-    bool newWord = true;
-    
-    for (char& c : str) {
-        if (isspace(c)) {
-            newWord = true;
-        } else if (newWord) {
-            c = toupper(c);
-            newWord = false;
-        } else {
-            c = tolower(c);
-        }
-    }
-    return str;
-}
-
-// Function to find all occurrences of a pattern
-void findAllOccurrences(const string& str, const string& pattern) {
-    size_t pos = 0;
-    while ((pos = str.find(pattern, pos)) != string::npos) {
-        cout << "Found at position: " << pos << endl;
-        pos++;
-    }
-}
-
-int main() {
-    // Text analysis
-    string text = "Hello World! This is a test.";
-    cout << "Original text: " << text << endl;
-    cout << "Number of vowels: " << countVowels(text) << endl;
-    cout << "Length: " << text.length() << endl;
-    
-    // String transformation
-    cout << "\nTransformations:" << endl;
-    cout << "Title case: " << toTitleCase(text) << endl;
-    
-    // Convert to upper case
-    string upper = text;
-    for (char& c : upper) {
+// Title case
+string title = text;
+bool newWord = true;
+for (char& c : title) {
+    if (isspace(c)) {
+        newWord = true;
+    } else if (newWord) {
         c = toupper(c);
-    }
-    cout << "Upper case: " << upper << endl;
-    
-    // Convert to lower case
-    string lower = text;
-    for (char& c : lower) {
+        newWord = false;
+    } else {
         c = tolower(c);
     }
-    cout << "Lower case: " << lower << endl;
-    
-    // Pattern matching
-    cout << "\nPattern matching:" << endl;
-    string pattern = "is";
-    cout << "Finding all occurrences of '" << pattern << "':" << endl;
-    findAllOccurrences(text, pattern);
-    
-    // Word processing
-    cout << "\nWord processing:" << endl;
-    string sentence = "   This   has   extra   spaces   ";
-    
-    // Trim leading spaces
-    size_t start = sentence.find_first_not_of(" \t\n\r");
-    if (start != string::npos) {
-        sentence = sentence.substr(start);
-    }
-    
-    // Trim trailing spaces
-    size_t end = sentence.find_last_not_of(" \t\n\r");
-    if (end != string::npos) {
-        sentence = sentence.substr(0, end + 1);
-    }
-    
-    // Reduce multiple spaces to single space
-    string result;
-    bool lastWasSpace = false;
-    
-    for (char c : sentence) {
-        if (isspace(c)) {
-            if (!lastWasSpace) {
-                result += ' ';
-                lastWasSpace = true;
-            }
-        } else {
-            result += c;
-            lastWasSpace = false;
-        }
-    }
-    
-    cout << "Original: \"" << sentence << "\"" << endl;
-    cout << "Processed: \"" << result << "\"" << endl;
-    
-    return 0;
 }
 ```
 
-## Best Practices
+Key Points:
+- In-place transformation
+- Character-by-character processing
+- Case sensitivity handling
+- Boundary conditions
+- Unicode considerations
 
-### String Efficiency
-1. Use string_view for read-only strings
-2. Reserve space for known sizes
-3. Use references to avoid copies
-4. Consider SSO for small strings
-5. Use appropriate search methods
+### Step 2: String Trimming
+```cpp
+// Trim left
+string leftTrimmed = text;
+leftTrimmed.erase(0, leftTrimmed.find_first_not_of(" \t\n\r"));
 
-### String Safety
-1. Check string bounds
-2. Validate input strings
-3. Handle empty strings
-4. Use exception handling
-5. Check search results
+// Trim right
+string rightTrimmed = text;
+size_t lastNonSpace = rightTrimmed.find_last_not_of(" \t\n\r");
+if (lastNonSpace != string::npos) {
+    rightTrimmed.erase(lastNonSpace + 1);
+}
 
-### String Style
-1. Be consistent with case
-2. Use clear string literals
-3. Consider internationalization
-4. Document string formats
-5. Use meaningful names
+// Trim both ends
+string trimmed = text;
+trimmed.erase(0, trimmed.find_first_not_of(" \t\n\r"));
+lastNonSpace = trimmed.find_last_not_of(" \t\n\r");
+if (lastNonSpace != string::npos) {
+    trimmed.erase(lastNonSpace + 1);
+}
+```
 
-## Common Mistakes to Avoid
-1. Ignoring string capacity
-2. Unchecked string access
-3. Inefficient concatenation
-4. Not handling empty strings
-5. Assuming string encoding
+Key Points:
+- Whitespace handling
+- Position finding
+- String modification
+- Empty string handling
+- Efficiency considerations
+
+### Step 3: String Splitting and Joining
+```cpp
+// Split string into words
+vector<string> split(const string& text, char delimiter = ' ') {
+    vector<string> tokens;
+    size_t start = 0;
+    size_t end = text.find(delimiter);
+    
+    while (end != string::npos) {
+        tokens.push_back(text.substr(start, end - start));
+        start = end + 1;
+        end = text.find(delimiter, start);
+    }
+    tokens.push_back(text.substr(start));
+    
+    return tokens;
+}
+
+// Join strings with delimiter
+string join(const vector<string>& tokens, const string& delimiter) {
+    string result;
+    for (size_t i = 0; i < tokens.size(); i++) {
+        if (i > 0) result += delimiter;
+        result += tokens[i];
+    }
+    return result;
+}
+```
+
+Key Points:
+- Token extraction
+- Delimiter handling
+- Empty token handling
+- Memory efficiency
+- String building
+
+## Practice Exercises
+
+You'll find the starter code and solutions in:
+- Starter template: `Tutorials/Module04/Part4/practice_string_ops_starter.cpp`
+- Complete solution: `Tutorials/Module04/Part4/practice_string_ops.cpp`
+
+### Exercise 1: CSV Parser
+Create a CSV file parser:
+```cpp
+class CSVParser {
+private:
+    char delimiter;
+    vector<string> headers;
+    vector<vector<string>> data;
+public:
+    bool parse(const string& input);
+    vector<string> splitLine(const string& line);
+    string getField(size_t row, size_t col) const;
+    string getField(size_t row, const string& header) const;
+};
+```
+
+Requirements:
+1. Handle quoted fields
+2. Support custom delimiters
+3. Process header row
+4. Handle empty fields
+5. Validate CSV format
+
+### Exercise 2: Template Engine
+Build a simple template engine:
+```cpp
+class TemplateEngine {
+private:
+    map<string, string> variables;
+public:
+    void setVariable(const string& name, const string& value);
+    string process(const string& templateStr);
+    bool hasVariable(const string& name) const;
+    string getVariable(const string& name) const;
+};
+```
+
+Requirements:
+1. Replace variables
+2. Handle missing variables
+3. Support nested variables
+4. Escape special characters
+5. Handle template errors
+
+### Exercise 3: Command Line Parser
+Implement a command line argument parser:
+```cpp
+class CommandLineParser {
+private:
+    map<string, string> options;
+    vector<string> arguments;
+public:
+    bool parse(const vector<string>& args);
+    bool hasOption(const string& name) const;
+    string getOption(const string& name, const string& defaultValue = "") const;
+    const vector<string>& getArguments() const;
+};
+```
+
+Requirements:
+1. Parse options formats
+2. Handle flags
+3. Support default values
+4. Process arguments
+5. Validate input
+
+## Summary
+
+### Key Concepts
+
+1. **Case Conversion**
+   ```cpp
+   transform()            // STL algorithm
+   toupper(), tolower()  // Character conversion
+   isspace(), isalpha()  // Character testing
+   Case sensitivity      // Comparison modes
+   ```
+
+2. **String Trimming**
+   ```cpp
+   find_first_not_of()  // Left trim
+   find_last_not_of()   // Right trim
+   erase()             // Remove characters
+   Whitespace handling // Multiple types
+   ```
+
+3. **Split and Join**
+   ```cpp
+   find()              // Find delimiter
+   substr()           // Extract substring
+   push_back()        // Add to vector
+   String building    // Efficient joining
+   ```
+
+### Common Pitfalls
+
+1. **Case Conversion Issues**
+   ```cpp
+   // Wrong: Direct modification
+   text[i] = toupper(text[i]);
+   
+   // Right: Use transform
+   transform(text.begin(), text.end(), text.begin(), ::toupper);
+   ```
+
+2. **Trimming Problems**
+   ```cpp
+   // Wrong: Only spaces
+   text.erase(0, text.find_first_not_of(" "));
+   
+   // Right: All whitespace
+   text.erase(0, text.find_first_not_of(" \t\n\r"));
+   ```
+
+3. **Split/Join Errors**
+   ```cpp
+   // Wrong: No empty token handling
+   if (token.empty()) continue;
+   
+   // Right: Keep empty tokens
+   tokens.push_back(token);
+   ```
+
+### Best Practices
+
+1. **String Operations**
+   - Use standard algorithms
+   - Handle edge cases
+   - Consider efficiency
+   - Document assumptions
+   - Test thoroughly
+
+2. **Memory Management**
+   - Avoid unnecessary copies
+   - Pre-allocate when possible
+   - Clear unused memory
+   - Monitor string growth
+   - Use appropriate methods
+
+3. **Error Handling**
+   - Validate input
+   - Check boundaries
+   - Handle special cases
+   - Report errors
+   - Maintain consistency
+
+4. **Performance**
+   - Choose efficient methods
+   - Minimize allocations
+   - Use appropriate containers
+   - Profile operations
+   - Optimize hot paths
 
 ## Next Steps
-- Try the practice exercise
-- Experiment with string operations
-- Consider taking [Module 5: Classes and Objects]({{ site.baseurl }}/tutorials/module5)
+1. Complete practice exercises
+2. Test with various inputs
+3. Handle edge cases
+4. Review error handling
+5. Move on to [Module 5: Classes and Objects]({{ site.baseurl }}/tutorials/module5)
+
+Remember: String operations are fundamental to many programming tasks. Choose the right operations for your needs and always consider performance and safety implications.

@@ -1,105 +1,169 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <iomanip>
 using namespace std;
 
-// ===== Step 1: Basic Function Declaration =====
-// Function declarations
-void printMessage();
-int getNumber();
-void displayNumber(int num);
-
-// ===== Step 2: Functions with Parameters =====
-// Function declarations with parameters
+// Forward declarations
+void processData(int value);
+void processB(int x);  // Forward declaration needed for mutual recursion
 double calculateArea(double radius);
-string formatName(string first, string last);
-bool isEven(int number);
+string formatText(const string& text);
+void displayArray(const int arr[], int size);
+int findMax(const vector<int>& numbers);
 
-// ===== Step 3: Advanced Function Organization =====
-// Related function declarations for student management
-struct Student {
-    string name;
-    double gpa;
-};
-
-Student createStudent(string name, double gpa);
-void displayStudent(const Student& student);
-bool isHonorsStudent(const Student& student);
-
-int main() {
-    // Test Step 1: Basic functions
-    cout << "===== Testing Step 1 =====" << endl;
-    printMessage();
-    
-    int num = getNumber();
-    displayNumber(num);
-    cout << endl;
-    
-    // Test Step 2: Functions with parameters
-    cout << "===== Testing Step 2 =====" << endl;
-    double radius = 5.0;
-    cout << "Area of circle with radius " << radius << ": " 
-         << calculateArea(radius) << endl;
-    
-    string formattedName = formatName("John", "Doe");
-    cout << "Formatted name: " << formattedName << endl;
-    
-    int testNum = 42;
-    cout << testNum << " is " << (isEven(testNum) ? "even" : "odd") << endl;
-    cout << endl;
-    
-    // Test Step 3: Student management
-    cout << "===== Testing Step 3 =====" << endl;
-    Student student = createStudent("Alice Smith", 3.8);
-    displayStudent(student);
-    cout << student.name << " is " 
-         << (isHonorsStudent(student) ? "" : "not ") 
-         << "an honors student" << endl;
-    
-    return 0;
+// Function definitions with documentation
+/**
+ * Process a numeric value and display the result
+ * @param value The number to process
+ */
+void processData(int value) {
+    cout << "Processing: " << value << endl;
 }
 
-// ===== Function Definitions =====
-
-// Step 1: Basic function definitions
-void printMessage() {
-    cout << "Hello from a basic function!" << endl;
-}
-
-int getNumber() {
-    return 42;  // Returns a fixed number for demonstration
-}
-
-void displayNumber(int num) {
-    cout << "The number is: " << num << endl;
-}
-
-// Step 2: Functions with parameters
+/**
+ * Calculate the area of a circle
+ * @param radius The radius of the circle
+ * @return The calculated area
+ */
 double calculateArea(double radius) {
     const double PI = 3.14159;
     return PI * radius * radius;
 }
 
-string formatName(string first, string last) {
-    return last + ", " + first;
+/**
+ * Format text by adding decorative elements
+ * @param text The text to format
+ * @return The formatted text
+ */
+string formatText(const string& text) {
+    return "=== " + text + " ===";
 }
 
-bool isEven(int number) {
-    return number % 2 == 0;
+/**
+ * Display array elements with proper formatting
+ * @param arr The array to display
+ * @param size The size of the array
+ */
+void displayArray(const int arr[], int size) {
+    cout << "Array contents: ";
+    for (int i = 0; i < size; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
 }
 
-// Step 3: Student management functions
-Student createStudent(string name, double gpa) {
-    Student student;
-    student.name = name;
-    student.gpa = gpa;
-    return student;
+/**
+ * Find the maximum value in a vector
+ * @param numbers Vector of integers
+ * @return The maximum value
+ */
+int findMax(const vector<int>& numbers) {
+    if (numbers.empty()) {
+        return 0;
+    }
+    
+    int max = numbers[0];
+    for (int num : numbers) {
+        if (num > max) max = num;
+    }
+    return max;
 }
 
-void displayStudent(const Student& student) {
-    cout << "Student: " << student.name << endl;
-    cout << "GPA: " << student.gpa << endl;
+// Mutual recursion example
+void processA(int x) {
+    if (x > 0) {
+        cout << "A" << x << " ";
+        processB(x - 1);
+    }
 }
 
-bool isHonorsStudent(const Student& student) {
-    return student.gpa >= 3.5;
+void processB(int x) {
+    if (x > 0) {
+        cout << "B" << x << " ";
+        processA(x - 1);
+    }
+}
+
+// Class with member function declarations
+class Calculator {
+public:
+    Calculator();
+    double add(double a, double b);
+    double subtract(double a, double b);
+    double multiply(double a, double b);
+    double divide(double a, double b);
+    void displayResult(double result);
+private:
+    int operationCount;
+};
+
+// Class member function definitions
+Calculator::Calculator() : operationCount(0) {}
+
+double Calculator::add(double a, double b) {
+    operationCount++;
+    return a + b;
+}
+
+double Calculator::subtract(double a, double b) {
+    operationCount++;
+    return a - b;
+}
+
+double Calculator::multiply(double a, double b) {
+    operationCount++;
+    return a * b;
+}
+
+double Calculator::divide(double a, double b) {
+    if (b != 0) {
+        operationCount++;
+        return a / b;
+    }
+    cout << "Error: Division by zero" << endl;
+    return 0;
+}
+
+void Calculator::displayResult(double result) {
+    cout << "Result: " << result << endl;
+    cout << "Operations performed: " << operationCount << endl;
+}
+
+int main() {
+    cout << "Function Declaration Demo" << endl;
+    cout << "======================\n" << endl;
+    
+    // Test basic functions
+    processData(42);
+    cout << "Circle area: " << calculateArea(5.0) << endl;
+    cout << formatText("Hello") << endl;
+    
+    // Test array functions
+    int numbers[] = {1, 2, 3, 4, 5};
+    displayArray(numbers, 5);
+    
+    // Test vector functions
+    vector<int> vec = {5, 2, 8, 1, 9};
+    cout << "Maximum value: " << findMax(vec) << endl;
+    
+    // Test mutual recursion
+    cout << "\nMutual Recursion Test:" << endl;
+    processA(3);
+    cout << endl;
+    
+    // Test calculator class
+    Calculator calc;
+    double result;
+    
+    result = calc.add(10, 5);
+    calc.displayResult(result);
+    
+    result = calc.multiply(result, 2);
+    calc.displayResult(result);
+    
+    result = calc.divide(result, 5);
+    calc.displayResult(result);
+    
+    return 0;
 }

@@ -2,65 +2,34 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <cctype>
 using namespace std;
 
-// ===== Exercise 1: Shape Calculator =====
-// Function declarations
+// Forward declarations for Shape Calculator
 double calculateCircleArea(double radius);
 double calculateRectangleArea(double length, double width);
 double calculateTriangleArea(double base, double height);
 void displayArea(string shape, double area);
 
-// ===== Exercise 2: Text Analyzer =====
-// Function declarations
+// Forward declarations for Text Analyzer
 int countVowels(const string& text);
 int countConsonants(const string& text);
 double calculateLetterRatio(int vowels, int consonants);
 void displayTextStats(const string& text);
 
-// ===== Exercise 3: Grade Calculator =====
+// Forward declarations for Grade Calculator
 struct Grade {
     string subject;
     double score;
     char letterGrade;
 };
 
-// Function declarations
 Grade createGrade(string subject, double score);
 char calculateLetterGrade(double score);
 double calculateGPA(const vector<Grade>& grades);
 void displayGradeReport(const vector<Grade>& grades);
 
-int main() {
-    // Test Exercise 1: Shape Calculator
-    cout << "===== Shape Calculator =====" << endl;
-    double radius = 5.0;
-    double length = 4.0, width = 6.0;
-    double base = 3.0, height = 8.0;
-    
-    displayArea("Circle", calculateCircleArea(radius));
-    displayArea("Rectangle", calculateRectangleArea(length, width));
-    displayArea("Triangle", calculateTriangleArea(base, height));
-    cout << endl;
-    
-    // Test Exercise 2: Text Analyzer
-    cout << "===== Text Analyzer =====" << endl;
-    string text = "Hello World! How are you today?";
-    displayTextStats(text);
-    cout << endl;
-    
-    // Test Exercise 3: Grade Calculator
-    cout << "===== Grade Calculator =====" << endl;
-    vector<Grade> grades;
-    grades.push_back(createGrade("Math", 95.5));
-    grades.push_back(createGrade("English", 88.0));
-    grades.push_back(createGrade("History", 92.5));
-    displayGradeReport(grades);
-    
-    return 0;
-}
-
-// ===== Exercise 1: Shape Calculator Implementation =====
+// Shape Calculator Implementations
 double calculateCircleArea(double radius) {
     const double PI = 3.14159;
     return PI * radius * radius;
@@ -78,7 +47,7 @@ void displayArea(string shape, double area) {
     cout << shape << " Area: " << fixed << setprecision(2) << area << endl;
 }
 
-// ===== Exercise 2: Text Analyzer Implementation =====
+// Text Analyzer Implementations
 int countVowels(const string& text) {
     int count = 0;
     string vowels = "aeiouAEIOU";
@@ -101,7 +70,8 @@ int countConsonants(const string& text) {
 }
 
 double calculateLetterRatio(int vowels, int consonants) {
-    return consonants != 0 ? static_cast<double>(vowels) / consonants : 0;
+    if (consonants == 0) return 0.0;
+    return static_cast<double>(vowels) / consonants;
 }
 
 void displayTextStats(const string& text) {
@@ -109,13 +79,15 @@ void displayTextStats(const string& text) {
     int consonants = countConsonants(text);
     double ratio = calculateLetterRatio(vowels, consonants);
     
-    cout << "Text: \"" << text << "\"" << endl;
+    cout << "Text Analysis:" << endl;
+    cout << "-------------" << endl;
+    cout << "Text: " << text << endl;
     cout << "Vowels: " << vowels << endl;
     cout << "Consonants: " << consonants << endl;
     cout << "Vowel/Consonant Ratio: " << fixed << setprecision(2) << ratio << endl;
 }
 
-// ===== Exercise 3: Grade Calculator Implementation =====
+// Grade Calculator Implementations
 Grade createGrade(string subject, double score) {
     Grade grade;
     grade.subject = subject;
@@ -142,23 +114,81 @@ double calculateGPA(const vector<Grade>& grades) {
             case 'B': total += 3.0; break;
             case 'C': total += 2.0; break;
             case 'D': total += 1.0; break;
-            default: break;
+            default: total += 0.0;
         }
     }
+    
     return total / grades.size();
 }
 
 void displayGradeReport(const vector<Grade>& grades) {
-    cout << "Grade Report:" << endl;
-    cout << setw(10) << "Subject" << setw(10) << "Score" 
-         << setw(10) << "Grade" << endl;
-    cout << string(30, '-') << endl;
+    cout << "\nGrade Report" << endl;
+    cout << "============" << endl;
+    cout << setw(15) << left << "Subject" 
+         << setw(10) << "Score" 
+         << "Letter Grade" << endl;
+    cout << string(35, '-') << endl;
     
     for (const Grade& grade : grades) {
-        cout << setw(10) << grade.subject 
-             << setw(10) << fixed << setprecision(1) << grade.score
-             << setw(10) << grade.letterGrade << endl;
+        cout << setw(15) << left << grade.subject 
+             << setw(10) << grade.score 
+             << grade.letterGrade << endl;
     }
     
-    cout << "\nGPA: " << fixed << setprecision(2) << calculateGPA(grades) << endl;
+    cout << "\nGPA: " << fixed << setprecision(2) 
+         << calculateGPA(grades) << endl;
+}
+
+void testShapeCalculator() {
+    cout << "Shape Calculator Test" << endl;
+    cout << "====================" << endl;
+    
+    double radius = 5.0;
+    double length = 4.0;
+    double width = 6.0;
+    double base = 3.0;
+    double height = 8.0;
+    
+    displayArea("Circle", calculateCircleArea(radius));
+    displayArea("Rectangle", calculateRectangleArea(length, width));
+    displayArea("Triangle", calculateTriangleArea(base, height));
+}
+
+void testTextAnalyzer() {
+    cout << "\nText Analyzer Test" << endl;
+    cout << "=================" << endl;
+    
+    string text1 = "Hello World";
+    string text2 = "AEIOU";
+    string text3 = "BCDFG";
+    
+    displayTextStats(text1);
+    cout << endl;
+    displayTextStats(text2);
+    cout << endl;
+    displayTextStats(text3);
+}
+
+void testGradeCalculator() {
+    cout << "\nGrade Calculator Test" << endl;
+    cout << "====================" << endl;
+    
+    vector<Grade> grades;
+    grades.push_back(createGrade("Math", 95.0));
+    grades.push_back(createGrade("English", 87.5));
+    grades.push_back(createGrade("History", 76.8));
+    grades.push_back(createGrade("Science", 92.3));
+    
+    displayGradeReport(grades);
+}
+
+int main() {
+    cout << "Practice Declaration Demo" << endl;
+    cout << "=======================" << endl;
+    
+    testShapeCalculator();
+    testTextAnalyzer();
+    testGradeCalculator();
+    
+    return 0;
 }

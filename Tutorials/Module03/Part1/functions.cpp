@@ -1,89 +1,212 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <limits>
 using namespace std;
 
-// Function declarations
-void greetUser(string name);
-int calculateSum(int a, int b);
-bool divideNumbers(double numerator, double denominator, double& result);
-double calculateAverage(const int numbers[], int size);
-string getValidInput(string prompt);
-
-int main() {
-    // Demonstrate basic function
-    string name = getValidInput("Enter your name: ");
-    greetUser(name);
-    
-    // Demonstrate function with return value
-    int num1 = 5, num2 = 3;
-    int sum = calculateSum(num1, num2);
-    cout << num1 << " + " << num2 << " = " << sum << endl;
-    
-    // Demonstrate error handling
-    double quotient;
-    double numerator = 10.0, denominator = 2.0;
-    if (divideNumbers(numerator, denominator, quotient)) {
-        cout << numerator << " / " << denominator << " = " << quotient << endl;
-    } else {
-        cout << "Error: Division by zero!" << endl;
-    }
-    
-    // Test error case
-    if (!divideNumbers(5.0, 0.0, quotient)) {
-        cout << "Successfully caught division by zero" << endl;
-    }
-    
-    // Demonstrate array processing
-    int numbers[] = {1, 2, 3, 4, 5};
-    int size = sizeof(numbers) / sizeof(numbers[0]);
-    double average = calculateAverage(numbers, size);
-    cout << "Average of array: " << average << endl;
-    
-    // Test empty array case
-    int emptyArray[] = {};
-    cout << "Empty array average: " << calculateAverage(emptyArray, 0) << endl;
-    
-    return 0;
-}
-
-// Function definitions
+// Basic greeting function
 void greetUser(string name) {
     cout << "Hello, " << name << "!" << endl;
 }
 
-int calculateSum(int a, int b) {
-    return a + b;
-}
-
-bool divideNumbers(double numerator, double denominator, double& result) {
-    if (denominator == 0) {
-        return false;  // Error case
+// Calculator function with validation
+double calculate(double num1, double num2, char operation) {
+    switch (operation) {
+        case '+': return num1 + num2;
+        case '-': return num1 - num2;
+        case '*': return num1 * num2;
+        case '/': 
+            if (num2 != 0) return num1 / num2;
+            cout << "Error: Division by zero" << endl;
+            return 0;
+        default:
+            cout << "Error: Invalid operation" << endl;
+            return 0;
     }
-    result = numerator / denominator;
-    return true;  // Success case
 }
 
-double calculateAverage(const int numbers[], int size) {
+bool isValidOperation(char op) {
+    return op == '+' || op == '-' || op == '*' || op == '/';
+}
+
+// Array processing with error handling
+bool processArray(const int arr[], int size, double& average, int& max) {
     if (size <= 0) {
-        return 0.0;  // Handle empty array case
+        cout << "Error: Invalid array size" << endl;
+        return false;
     }
     
-    double sum = 0.0;
+    int sum = 0;
+    max = arr[0];
+    
     for (int i = 0; i < size; i++) {
-        sum += numbers[i];
+        sum += arr[i];
+        if (arr[i] > max) max = arr[i];
     }
     
-    return sum / size;
+    average = static_cast<double>(sum) / size;
+    return true;
 }
 
-string getValidInput(string prompt) {
-    string input;
-    do {
-        cout << prompt;
-        getline(cin, input);
-        if (!input.empty()) {
-            return input;
+void displayResults(bool success, double average, int max) {
+    if (success) {
+        cout << "Average: " << average << endl;
+        cout << "Maximum: " << max << endl;
+    }
+}
+
+// Menu-driven number processor
+void displayMenu() {
+    cout << "\n=== Number Processor ===" << endl;
+    cout << "1. Enter numbers" << endl;
+    cout << "2. Display statistics" << endl;
+    cout << "3. Clear data" << endl;
+    cout << "4. Exit" << endl;
+    cout << "Choice: ";
+}
+
+int getMenuChoice() {
+    int choice;
+    while (!(cin >> choice) || choice < 1 || choice > 4) {
+        cout << "Invalid choice. Enter 1-4: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    return choice;
+}
+
+bool processNumbers(vector<int>& numbers) {
+    cout << "Enter numbers (0 to finish):" << endl;
+    int num;
+    
+    while (true) {
+        if (!(cin >> num)) {
+            cout << "Invalid input. Enter a number: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
         }
-        cout << "Invalid input. Please try again." << endl;
-    } while (true);
+        
+        if (num == 0) break;
+        numbers.push_back(num);
+    }
+    
+    return true;
+}
+
+void displayStats(const vector<int>& numbers) {
+    if (numbers.empty()) {
+        cout << "No data available!" << endl;
+        return;
+    }
+    
+    int sum = 0, max = numbers[0], min = numbers[0];
+    for (int num : numbers) {
+        sum += num;
+        if (num > max) max = num;
+        if (num < min) min = num;
+    }
+    
+    double avg = static_cast<double>(sum) / numbers.size();
+    
+    cout << "\nStatistics:" << endl;
+    cout << "Count: " << numbers.size() << endl;
+    cout << "Sum: " << sum << endl;
+    cout << "Average: " << avg << endl;
+    cout << "Maximum: " << max << endl;
+    cout << "Minimum: " << min << endl;
+}
+
+void processChoice(int choice) {
+    static vector<int> numbers;
+    
+    switch (choice) {
+        case 1:
+            if (processNumbers(numbers)) {
+                cout << "Numbers added successfully!" << endl;
+            }
+            break;
+        case 2:
+            displayStats(numbers);
+            break;
+        case 3:
+            numbers.clear();
+            cout << "Data cleared!" << endl;
+            break;
+        case 4:
+            cout << "Goodbye!" << endl;
+            break;
+    }
+    
+    if (choice != 4) {
+        cout << "\nPress Enter to continue...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.get();
+    }
+}
+
+int main() {
+    cout << "Function Examples" << endl;
+    cout << "================\n" << endl;
+    
+    // Test basic function
+    string name;
+    cout << "Enter your name: ";
+    getline(cin, name);
+    greetUser(name);
+    
+    // Test calculator
+    double num1, num2;
+    char operation;
+    
+    cout << "\nCalculator" << endl;
+    cout << "==========" << endl;
+    cout << "Enter first number: ";
+    cin >> num1;
+    
+    cout << "Enter operation (+, -, *, /): ";
+    cin >> operation;
+    
+    cout << "Enter second number: ";
+    cin >> num2;
+    
+    if (isValidOperation(operation)) {
+        double result = calculate(num1, num2, operation);
+        cout << num1 << " " << operation << " " << num2 
+             << " = " << result << endl;
+    } else {
+        cout << "Invalid operation!" << endl;
+    }
+    
+    // Test array processing
+    const int SIZE = 5;
+    int numbers[SIZE];
+    double average;
+    int max;
+    
+    cout << "\nArray Processing" << endl;
+    cout << "===============" << endl;
+    cout << "Enter " << SIZE << " numbers:" << endl;
+    
+    for (int i = 0; i < SIZE; i++) {
+        cout << "Number " << (i + 1) << ": ";
+        cin >> numbers[i];
+    }
+    
+    if (processArray(numbers, SIZE, average, max)) {
+        displayResults(true, average, max);
+    }
+    
+    // Test menu-driven program
+    cout << "\nMenu-Driven Program" << endl;
+    cout << "==================" << endl;
+    
+    int choice;
+    do {
+        displayMenu();
+        choice = getMenuChoice();
+        processChoice(choice);
+    } while (choice != 4);
+    
+    return 0;
 }

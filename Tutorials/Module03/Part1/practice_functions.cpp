@@ -1,31 +1,50 @@
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <vector>
+#include <iomanip>
 #include <algorithm>
 using namespace std;
 
-// Exercise 1 - Temperature Converter
+// Temperature Converter Functions
 double celsiusToFahrenheit(double celsius) {
-    return (celsius * 9.0/5.0) + 32;
+    return (celsius * 9.0/5.0) + 32.0;
 }
 
 double fahrenheitToCelsius(double fahrenheit) {
-    return (fahrenheit - 32) * 5.0/9.0;
+    return (fahrenheit - 32.0) * 5.0/9.0;
 }
 
-bool validateTemperature(double temp, double minTemp, double maxTemp) {
-    return temp >= minTemp && temp <= maxTemp;
+bool validateTemperature(double temp, double min, double max) {
+    return temp >= min && temp <= max;
 }
 
-// Exercise 2 - String Processor
-int countWords(const string& text) {
-    stringstream ss(text);
-    string word;
-    int count = 0;
-    while (ss >> word) {
-        count++;
+void displayConversion(double value, char unit) {
+    cout << fixed << setprecision(2);
+    if (unit == 'C' || unit == 'c') {
+        double fahrenheit = celsiusToFahrenheit(value);
+        cout << value << "°C = " << fahrenheit << "°F" << endl;
+    } else if (unit == 'F' || unit == 'f') {
+        double celsius = fahrenheitToCelsius(value);
+        cout << value << "°F = " << celsius << "°C" << endl;
     }
+}
+
+// String Processor Functions
+int countWords(const string& text) {
+    if (text.empty()) return 0;
+    
+    int count = 0;
+    bool inWord = false;
+    
+    for (char c : text) {
+        if (isspace(c)) {
+            inWord = false;
+        } else if (!inWord) {
+            inWord = true;
+            count++;
+        }
+    }
+    
     return count;
 }
 
@@ -35,132 +54,169 @@ string reverseString(const string& text) {
 
 bool isPalindrome(const string& text) {
     string processed;
-    // Remove non-alphanumeric characters and convert to lowercase
     for (char c : text) {
         if (isalnum(c)) {
             processed += tolower(c);
         }
     }
-    return processed == string(processed.rbegin(), processed.rend());
+    
+    string reversed = reverseString(processed);
+    return processed == reversed;
 }
 
 string changeCase(const string& text, char mode) {
     string result = text;
-    if (mode == 'u') {
-        for (char& c : result) {
-            c = toupper(c);
-        }
-    } else if (mode == 'l') {
-        for (char& c : result) {
-            c = tolower(c);
-        }
+    if (mode == 'u' || mode == 'U') {
+        transform(result.begin(), result.end(), result.begin(), ::toupper);
+    } else if (mode == 'l' || mode == 'L') {
+        transform(result.begin(), result.end(), result.begin(), ::tolower);
     }
     return result;
 }
 
-string removeCharacter(const string& text, char charToRemove) {
-    string result = text;
-    result.erase(remove(result.begin(), result.end(), charToRemove), result.end());
+string removeCharacter(const string& text, char target) {
+    string result;
+    copy_if(text.begin(), text.end(), back_inserter(result),
+            [target](char c) { return c != target; });
     return result;
 }
 
-// Exercise 3 - Calculator Functions
-vector<string> calculationHistory;
-
-double calculate(double a, double b, char operation) {
-    switch (operation) {
+// Calculator Functions
+double basicOperation(double a, double b, char op) {
+    switch (op) {
         case '+': return a + b;
         case '-': return a - b;
         case '*': return a * b;
-        case '/': return b != 0 ? a / b : 0;
-        default: return 0;
+        case '/': 
+            if (b != 0) return a / b;
+            cout << "Error: Division by zero" << endl;
+            return 0;
+        default:
+            cout << "Error: Invalid operator" << endl;
+            return 0;
     }
 }
 
-bool validateOperation(char operation) {
-    return operation == '+' || operation == '-' || 
-           operation == '*' || operation == '/';
+double power(double base, int exponent) {
+    if (exponent == 0) return 1;
+    if (exponent < 0) {
+        base = 1.0 / base;
+        exponent = -exponent;
+    }
+    
+    double result = 1.0;
+    for (int i = 0; i < exponent; i++) {
+        result *= base;
+    }
+    return result;
 }
 
-void displayResult(double result, bool isValid) {
-    if (isValid) {
-        cout << "Result: " << result << endl;
-        // Add to history
-        ostringstream oss;
-        oss << "Result: " << result;
-        calculationHistory.push_back(oss.str());
-    } else {
-        cout << "Error: Invalid operation" << endl;
+double squareRoot(double number) {
+    if (number < 0) {
+        cout << "Error: Cannot calculate square root of negative number" << endl;
+        return 0;
     }
+    return sqrt(number);
+}
+
+bool validateInput(double number) {
+    return !isnan(number) && !isinf(number);
 }
 
 string getCalculationHistory() {
-    if (calculationHistory.empty()) {
-        return "No calculations performed";
+    static vector<string> history;
+    string result = "Calculation History:\n";
+    for (const auto& entry : history) {
+        result += entry + "\n";
     }
-    
-    string history = "Calculation History:\n";
-    for (const string& calc : calculationHistory) {
-        history += calc + "\n";
-    }
-    return history;
+    return result;
 }
 
-int main() {
-    // Temperature Converter Examples
-    cout << "=== Temperature Converter ===" << endl;
-    double celsius = 25.0;
-    cout << celsius << "°C = " << celsiusToFahrenheit(celsius) << "°F" << endl;
+void testTemperatureConverter() {
+    cout << "\nTemperature Converter Test" << endl;
+    cout << "========================" << endl;
     
-    double fahrenheit = 98.6;
-    cout << fahrenheit << "°F = " << fahrenheitToCelsius(fahrenheit) << "°C" << endl;
+    // Test valid temperatures
+    cout << "Converting 0°C: ";
+    displayConversion(0, 'C');
     
-    // Validate temperatures
-    double temp = -50.0;
-    if (validateTemperature(temp, -273.15, 100.0)) {
-        cout << temp << "°C is a valid temperature" << endl;
-    } else {
-        cout << temp << "°C is not a valid temperature" << endl;
-    }
+    cout << "Converting 100°C: ";
+    displayConversion(100, 'C');
     
-    // String Processor Examples
-    cout << "\n=== String Processor ===" << endl;
-    string text = "Hello World! How are you?";
-    cout << "Text: " << text << endl;
+    cout << "Converting 32°F: ";
+    displayConversion(32, 'F');
+    
+    cout << "Converting 212°F: ";
+    displayConversion(212, 'F');
+    
+    // Test validation
+    cout << "\nValidation Tests:" << endl;
+    cout << "-273.15°C is valid: " 
+         << (validateTemperature(-273.15, -273.15, 1000) ? "Yes" : "No") << endl;
+    cout << "1000°C is valid: "
+         << (validateTemperature(1000, -273.15, 1000) ? "Yes" : "No") << endl;
+    cout << "-274°C is valid: "
+         << (validateTemperature(-274, -273.15, 1000) ? "Yes" : "No") << endl;
+}
+
+void testStringProcessor() {
+    cout << "\nString Processor Test" << endl;
+    cout << "====================" << endl;
+    
+    string text = "Hello, World! This is a test.";
+    cout << "Original text: " << text << endl;
+    
     cout << "Word count: " << countWords(text) << endl;
     cout << "Reversed: " << reverseString(text) << endl;
     
     string palindrome = "A man, a plan, a canal: Panama";
-    cout << "\"" << palindrome << "\" is " 
-         << (isPalindrome(palindrome) ? "" : "not ") 
-         << "a palindrome" << endl;
+    cout << "\nTesting palindrome: " << palindrome << endl;
+    cout << "Is palindrome? " << (isPalindrome(palindrome) ? "Yes" : "No") << endl;
     
-    cout << "Uppercase: " << changeCase(text, 'u') << endl;
-    cout << "Lowercase: " << changeCase(text, 'l') << endl;
+    cout << "\nCase conversion:" << endl;
+    cout << "Uppercase: " << changeCase(text, 'U') << endl;
+    cout << "Lowercase: " << changeCase(text, 'L') << endl;
     
-    cout << "Remove spaces: " << removeCharacter(text, ' ') << endl;
+    cout << "\nRemoving spaces: " << endl;
+    cout << removeCharacter(text, ' ') << endl;
+}
+
+void testCalculator() {
+    cout << "\nCalculator Test" << endl;
+    cout << "==============" << endl;
     
-    // Calculator Examples
-    cout << "\n=== Calculator ===" << endl;
-    double a = 10.0, b = 5.0;
-    char operations[] = {'+', '-', '*', '/'};
+    // Test basic operations
+    cout << "Basic Operations:" << endl;
+    cout << "10 + 5 = " << basicOperation(10, 5, '+') << endl;
+    cout << "10 - 5 = " << basicOperation(10, 5, '-') << endl;
+    cout << "10 * 5 = " << basicOperation(10, 5, '*') << endl;
+    cout << "10 / 5 = " << basicOperation(10, 5, '/') << endl;
     
-    for (char op : operations) {
-        if (validateOperation(op)) {
-            double result = calculate(a, b, op);
-            cout << a << " " << op << " " << b << " = " << result << endl;
-            displayResult(result, true);
-        }
-    }
+    // Test power function
+    cout << "\nPower Function:" << endl;
+    cout << "2^3 = " << power(2, 3) << endl;
+    cout << "2^-2 = " << power(2, -2) << endl;
+    cout << "5^0 = " << power(5, 0) << endl;
     
-    // Test invalid operation
-    char invalidOp = '%';
-    if (!validateOperation(invalidOp)) {
-        cout << "Invalid operation: " << invalidOp << endl;
-    }
+    // Test square root
+    cout << "\nSquare Root:" << endl;
+    cout << "√16 = " << squareRoot(16) << endl;
+    cout << "√25 = " << squareRoot(25) << endl;
+    cout << "√-4 = "; squareRoot(-4);
     
-    // Display calculation history
-    cout << "\n" << getCalculationHistory() << endl;
+    // Test validation
+    cout << "\nValidation:" << endl;
+    cout << "Valid number (123): " << validateInput(123) << endl;
+    cout << "Invalid number (inf): " << validateInput(INFINITY) << endl;
+}
+
+int main() {
+    cout << "Practice Functions Demo" << endl;
+    cout << "=====================" << endl;
+    
+    testTemperatureConverter();
+    testStringProcessor();
+    testCalculator();
     
     return 0;
 }

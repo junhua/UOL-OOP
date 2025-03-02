@@ -1,124 +1,252 @@
 #include <iostream>
 #include <string>
-#include <complex>
-#include <cmath>
+#include <vector>
 #include <iomanip>
+#include <sstream>
+#include <cmath>
 using namespace std;
 
-// Exercise 1: Calculator Functions
-double calculate(double a, double b, char op) {
-    switch (op) {
-        case '+': return a + b;
-        case '-': return a - b;
-        case '*': return a * b;
-        case '/': return b != 0 ? a / b : throw runtime_error("Division by zero");
-        default: throw runtime_error("Invalid operator");
+// Calculator with operator overloading
+class Calculator {
+public:
+    // Constructor
+    Calculator() : result(0), memory(0) {}
+    
+    // Basic arithmetic operators
+    Calculator& operator+(double value) {
+        result += value;
+        return *this;
     }
-}
-
-int calculate(int a, int b, char op) {
-    switch (op) {
-        case '+': return a + b;
-        case '-': return a - b;
-        case '*': return a * b;
-        case '/': return b != 0 ? a / b : throw runtime_error("Division by zero");
-        case '%': return b != 0 ? a % b : throw runtime_error("Division by zero");
-        default: throw runtime_error("Invalid operator");
+    
+    Calculator& operator-(double value) {
+        result -= value;
+        return *this;
     }
-}
-
-complex<double> calculate(complex<double> a, complex<double> b, char op) {
-    switch (op) {
-        case '+': return a + b;
-        case '-': return a - b;
-        case '*': return a * b;
-        case '/': return b != complex<double>(0,0) ? a / b : 
-                 throw runtime_error("Division by zero");
-        default: throw runtime_error("Invalid operator");
+    
+    Calculator& operator*(double value) {
+        result *= value;
+        return *this;
     }
-}
-
-// Exercise 2: Shape Area Calculator
-const double PI = 3.14159265359;
-
-double calculateArea(double radius) {  // Circle
-    if (radius < 0) throw runtime_error("Negative radius");
-    return PI * radius * radius;
-}
-
-double calculateArea(double length, double width) {  // Rectangle
-    if (length < 0 || width < 0) throw runtime_error("Negative dimensions");
-    return length * width;
-}
-
-double calculateArea(double base, double height, char shape) {  // Triangle/Parallelogram
-    if (base < 0 || height < 0) throw runtime_error("Negative dimensions");
-    switch (toupper(shape)) {
-        case 'T': return 0.5 * base * height;  // Triangle
-        case 'P': return base * height;        // Parallelogram
-        default: throw runtime_error("Invalid shape");
+    
+    Calculator& operator/(double value) {
+        if (value != 0) {
+            result /= value;
+        } else {
+            cout << "Error: Division by zero" << endl;
+        }
+        return *this;
     }
-}
-
-// Exercise 3: String Formatter
-string format(const string& text) {
-    if (text.empty()) return "";
-    string result = text;
-    // Remove leading/trailing whitespace
-    result = result.substr(result.find_first_not_of(" \t"));
-    result = result.substr(0, result.find_last_not_of(" \t") + 1);
-    return result;
-}
-
-string format(const string& text, bool uppercase) {
-    string result = format(text);  // Use basic formatting first
-    if (uppercase) {
-        transform(result.begin(), result.end(), result.begin(), ::toupper);
+    
+    // Memory operations
+    void memoryStore() { memory = result; }
+    void memoryRecall() { result = memory; }
+    void memoryClear() { memory = 0; }
+    
+    // Get current result
+    double getResult() const { return result; }
+    
+    // Clear result
+    void clear() { result = 0; }
+    
+    // Friend function for output
+    friend ostream& operator<<(ostream& os, const Calculator& calc) {
+        os << "Result: " << calc.result;
+        return os;
     }
-    return result;
-}
 
-string format(const string& text, int width, char fill) {
-    string result = format(text);  // Use basic formatting first
-    if (result.length() < width) {
-        result = string(width - result.length(), fill) + result;
+private:
+    double result;
+    double memory;
+};
+
+// String formatter with function overloading
+class StringFormatter {
+public:
+    // Format with default settings
+    string format(const string& text) {
+        return text;
     }
-    return result;
+    
+    // Format with case conversion
+    string format(const string& text, bool uppercase) {
+        string result = text;
+        if (uppercase) {
+            transform(result.begin(), result.end(), 
+                     result.begin(), ::toupper);
+        } else {
+            transform(result.begin(), result.end(), 
+                     result.begin(), ::tolower);
+        }
+        return result;
+    }
+    
+    // Format with padding
+    string format(const string& text, size_t width, char fill) {
+        ostringstream ss;
+        ss << setw(width) << setfill(fill) << text;
+        return ss.str();
+    }
+    
+    // Format with prefix and suffix
+    string format(const string& text, 
+                 const string& prefix, 
+                 const string& suffix) {
+        return prefix + text + suffix;
+    }
+};
+
+// Shape hierarchy with method overloading
+class Shape {
+public:
+    virtual double area() const = 0;
+    virtual double perimeter() const = 0;
+    virtual string toString() const = 0;
+    virtual ~Shape() {}
+};
+
+class Circle : public Shape {
+public:
+    Circle(double r) : radius(r) {}
+    
+    double area() const override {
+        return M_PI * radius * radius;
+    }
+    
+    double perimeter() const override {
+        return 2 * M_PI * radius;
+    }
+    
+    string toString() const override {
+        ostringstream ss;
+        ss << "Circle(radius=" << radius << ")";
+        return ss.str();
+    }
+    
+private:
+    double radius;
+};
+
+class Rectangle : public Shape {
+public:
+    Rectangle(double w, double h) : width(w), height(h) {}
+    
+    double area() const override {
+        return width * height;
+    }
+    
+    double perimeter() const override {
+        return 2 * (width + height);
+    }
+    
+    string toString() const override {
+        ostringstream ss;
+        ss << "Rectangle(width=" << width 
+           << ", height=" << height << ")";
+        return ss.str();
+    }
+    
+private:
+    double width, height;
+};
+
+class Triangle : public Shape {
+public:
+    Triangle(double a, double b, double c) 
+        : side1(a), side2(b), side3(c) {}
+    
+    double area() const override {
+        // Using Heron's formula
+        double s = (side1 + side2 + side3) / 2;
+        return sqrt(s * (s - side1) * (s - side2) * (s - side3));
+    }
+    
+    double perimeter() const override {
+        return side1 + side2 + side3;
+    }
+    
+    string toString() const override {
+        ostringstream ss;
+        ss << "Triangle(sides=" << side1 << "," 
+           << side2 << "," << side3 << ")";
+        return ss.str();
+    }
+    
+private:
+    double side1, side2, side3;
+};
+
+void testCalculator() {
+    cout << "Calculator Test" << endl;
+    cout << "==============" << endl;
+    
+    Calculator calc;
+    
+    // Test basic operations
+    calc + 10;
+    cout << calc << endl;
+    
+    calc * 2;
+    cout << calc << endl;
+    
+    calc - 5;
+    cout << calc << endl;
+    
+    calc / 3;
+    cout << calc << endl;
+    
+    // Test memory operations
+    calc.memoryStore();
+    calc.clear();
+    cout << "After clear: " << calc << endl;
+    
+    calc.memoryRecall();
+    cout << "After recall: " << calc << endl;
 }
 
-string format(const string& text, const string& prefix, const string& suffix) {
-    string result = format(text);  // Use basic formatting first
-    return prefix + result + suffix;
+void testStringFormatter() {
+    cout << "\nString Formatter Test" << endl;
+    cout << "===================" << endl;
+    
+    StringFormatter formatter;
+    string text = "Hello World";
+    
+    cout << "Default: " << formatter.format(text) << endl;
+    cout << "Uppercase: " << formatter.format(text, true) << endl;
+    cout << "Padded: " << formatter.format(text, 20, '*') << endl;
+    cout << "With affixes: " 
+         << formatter.format(text, "<<", ">>") << endl;
+}
+
+void testShapes() {
+    cout << "\nShape Test" << endl;
+    cout << "==========" << endl;
+    
+    vector<Shape*> shapes;
+    shapes.push_back(new Circle(5));
+    shapes.push_back(new Rectangle(4, 6));
+    shapes.push_back(new Triangle(3, 4, 5));
+    
+    for (const Shape* shape : shapes) {
+        cout << shape->toString() << endl;
+        cout << "Area: " << fixed << setprecision(2) 
+             << shape->area() << endl;
+        cout << "Perimeter: " << shape->perimeter() << endl;
+        cout << endl;
+    }
+    
+    // Cleanup
+    for (Shape* shape : shapes) {
+        delete shape;
+    }
 }
 
 int main() {
-    try {
-        // Test Calculator Functions
-        cout << "=== Calculator Functions ===" << endl;
-        cout << "Integer: 15 / 3 = " << calculate(15, 3, '/') << endl;
-        cout << "Double: 3.14 * 2.0 = " << calculate(3.14, 2.0, '*') << endl;
-        complex<double> c1(1, 2), c2(3, 4);
-        cout << "Complex: (1+2i) + (3+4i) = " << calculate(c1, c2, '+') << endl;
-
-        // Test Shape Area Calculator
-        cout << "\n=== Shape Area Calculator ===" << endl;
-        cout << "Circle (r=5): " << fixed << setprecision(2) 
-             << calculateArea(5.0) << endl;
-        cout << "Rectangle (4x6): " << calculateArea(4.0, 6.0) << endl;
-        cout << "Triangle (b=3,h=4): " << calculateArea(3.0, 4.0, 'T') << endl;
-        cout << "Parallelogram (b=5,h=3): " << calculateArea(5.0, 3.0, 'P') << endl;
-
-        // Test String Formatter
-        cout << "\n=== String Formatter ===" << endl;
-        string text = "  Hello, World!  ";
-        cout << "Basic: \"" << format(text) << "\"" << endl;
-        cout << "Uppercase: \"" << format(text, true) << "\"" << endl;
-        cout << "Width(20,'*'): \"" << format(text, 20, '*') << "\"" << endl;
-        cout << "With affixes: \"" << format(text, "[", "]") << "\"" << endl;
-
-    } catch (const exception& e) {
-        cout << "Error: " << e.what() << endl;
-    }
-
+    cout << "Practice Overloading Demo" << endl;
+    cout << "======================\n" << endl;
+    
+    testCalculator();
+    testStringFormatter();
+    testShapes();
+    
     return 0;
 }

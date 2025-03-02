@@ -3,216 +3,232 @@
 #include <vector>
 #include <iomanip>
 #include <algorithm>
-#include <numeric>
 using namespace std;
 
-// ===== Exercise 1: Bank Account =====
+// Bank Account System
 struct BankAccount {
-    string accountHolder;
+    string accountNumber;
     double balance;
     vector<string> transactions;
 };
 
-// Function declarations
-void deposit(BankAccount& account, double amount);
-bool withdraw(BankAccount& account, double amount);
-void displayBalance(const BankAccount& account);
-void addTransaction(BankAccount& account, const string& transaction);
-double calculateInterest(const BankAccount& account, double rate);
-
-// ===== Exercise 2: Text Processor =====
-// Function declarations
-void tokenizeText(const string& text, vector<string>& words);
-void sortWords(vector<string>& words);
-int countUniqueWords(const vector<string>& words);
-void displayStats(const vector<string>& words);
-string joinWords(const vector<string>& words, const string& delimiter);
-
-// ===== Exercise 3: Data Analysis =====
-struct DataPoint {
-    double value;
-    string label;
-    bool isValid;
-};
-
-// Function declarations
-void processDataPoint(DataPoint& point);
-double calculateAverage(const vector<DataPoint>& data);
-void filterInvalidData(vector<DataPoint>& data);
-void displayDataSummary(const vector<DataPoint>& data);
-
-int main() {
-    // Test Exercise 1: Bank Account
-    cout << "===== Bank Account Tests =====" << endl;
-    BankAccount account{"John Doe", 1000.0, {}};
-    
-    deposit(account, 500.0);
-    withdraw(account, 200.0);
-    displayBalance(account);
-    cout << "Interest earned: $" << calculateInterest(account, 0.05) << endl;
-    cout << "\nTransaction History:" << endl;
-    for (const string& transaction : account.transactions) {
-        cout << transaction << endl;
-    }
-    cout << endl;
-    
-    // Test Exercise 2: Text Processor
-    cout << "===== Text Processor Tests =====" << endl;
-    string text = "The quick brown fox jumps over the lazy dog";
-    vector<string> words;
-    
-    tokenizeText(text, words);
-    cout << "Original words: " << joinWords(words, " ") << endl;
-    
-    sortWords(words);
-    cout << "Sorted words: " << joinWords(words, " ") << endl;
-    
-    cout << "Unique word count: " << countUniqueWords(words) << endl;
-    displayStats(words);
-    cout << endl;
-    
-    // Test Exercise 3: Data Analysis
-    cout << "===== Data Analysis Tests =====" << endl;
-    vector<DataPoint> dataPoints = {
-        {10.5, "Point 1", true},
-        {-1.0, "Point 2", false},
-        {15.7, "Point 3", true},
-        {8.9, "Point 4", true}
-    };
-    
-    for (DataPoint& point : dataPoints) {
-        processDataPoint(point);
-    }
-    
-    filterInvalidData(dataPoints);
-    displayDataSummary(dataPoints);
-    cout << "Average of valid points: " << calculateAverage(dataPoints) << endl;
-    
-    return 0;
-}
-
-// ===== Exercise 1: Bank Account Implementation =====
 void deposit(BankAccount& account, double amount) {
-    if (amount > 0) {
-        account.balance += amount;
-        addTransaction(account, "Deposit: $" + to_string(amount));
+    if (amount <= 0) {
+        cout << "Error: Invalid deposit amount" << endl;
+        return;
     }
+    
+    account.balance += amount;
+    account.transactions.push_back(
+        "Deposit: $" + to_string(amount)
+    );
 }
 
 bool withdraw(BankAccount& account, double amount) {
-    if (amount > 0 && amount <= account.balance) {
-        account.balance -= amount;
-        addTransaction(account, "Withdrawal: $" + to_string(amount));
-        return true;
+    if (amount <= 0) {
+        cout << "Error: Invalid withdrawal amount" << endl;
+        return false;
     }
-    return false;
+    
+    if (amount > account.balance) {
+        cout << "Error: Insufficient funds" << endl;
+        return false;
+    }
+    
+    account.balance -= amount;
+    account.transactions.push_back(
+        "Withdrawal: $" + to_string(amount)
+    );
+    return true;
 }
 
 void displayBalance(const BankAccount& account) {
-    cout << "Account Holder: " << account.accountHolder << endl;
-    cout << "Current Balance: $" << fixed << setprecision(2) 
+    cout << "Account: " << account.accountNumber << endl;
+    cout << "Balance: $" << fixed << setprecision(2) 
          << account.balance << endl;
 }
 
-void addTransaction(BankAccount& account, const string& transaction) {
-    account.transactions.push_back(transaction);
+void addTransaction(BankAccount& account, const string& description) {
+    account.transactions.push_back(description);
 }
 
-double calculateInterest(const BankAccount& account, double rate) {
-    return account.balance * rate;
+// Text Processing System
+void processText(const string& input, string& output) {
+    output = input;
+    // Convert to uppercase
+    transform(output.begin(), output.end(), 
+             output.begin(), ::toupper);
 }
 
-// ===== Exercise 2: Text Processor Implementation =====
-void tokenizeText(const string& text, vector<string>& words) {
-    string word;
-    size_t start = 0, end = 0;
-    
-    while ((end = text.find(' ', start)) != string::npos) {
-        word = text.substr(start, end - start);
-        if (!word.empty()) {
-            words.push_back(word);
-        }
-        start = end + 1;
-    }
-    
-    word = text.substr(start);
-    if (!word.empty()) {
-        words.push_back(word);
-    }
-}
-
-void sortWords(vector<string>& words) {
-    sort(words.begin(), words.end());
-}
-
-int countUniqueWords(const vector<string>& words) {
-    vector<string> uniqueWords = words;
-    sort(uniqueWords.begin(), uniqueWords.end());
-    auto last = unique(uniqueWords.begin(), uniqueWords.end());
-    return distance(uniqueWords.begin(), last);
-}
-
-void displayStats(const vector<string>& words) {
-    cout << "Word Statistics:" << endl;
-    cout << "Total words: " << words.size() << endl;
-    cout << "Average word length: " 
-         << accumulate(words.begin(), words.end(), 0.0,
-                      [](double sum, const string& word) {
-                          return sum + word.length();
-                      }) / words.size() << endl;
-}
-
-string joinWords(const vector<string>& words, const string& delimiter) {
-    string result;
-    for (size_t i = 0; i < words.size(); ++i) {
-        result += words[i];
-        if (i < words.size() - 1) {
-            result += delimiter;
-        }
-    }
-    return result;
-}
-
-// ===== Exercise 3: Data Analysis Implementation =====
-void processDataPoint(DataPoint& point) {
-    // Validate and process data point
-    if (point.value < 0) {
-        point.isValid = false;
-    }
-}
-
-double calculateAverage(const vector<DataPoint>& data) {
-    if (data.empty()) return 0.0;
-    
-    double sum = 0.0;
+int countWords(const string& text) {
     int count = 0;
+    bool inWord = false;
     
-    for (const DataPoint& point : data) {
-        if (point.isValid) {
-            sum += point.value;
+    for (char c : text) {
+        if (isspace(c)) {
+            inWord = false;
+        } else if (!inWord) {
+            inWord = true;
             count++;
         }
     }
     
-    return count > 0 ? sum / count : 0.0;
+    return count;
 }
 
-void filterInvalidData(vector<DataPoint>& data) {
-    data.erase(
-        remove_if(data.begin(), data.end(),
-                 [](const DataPoint& point) { return !point.isValid; }),
-        data.end()
-    );
-}
-
-void displayDataSummary(const vector<DataPoint>& data) {
-    cout << "Data Summary:" << endl;
-    cout << "Total points: " << data.size() << endl;
-    cout << "Valid points:" << endl;
-    
-    for (const DataPoint& point : data) {
-        if (point.isValid) {
-            cout << point.label << ": " << point.value << endl;
-        }
+void convertCase(string& text, char mode) {
+    if (mode == 'U' || mode == 'u') {
+        transform(text.begin(), text.end(), 
+                 text.begin(), ::toupper);
+    } else if (mode == 'L' || mode == 'l') {
+        transform(text.begin(), text.end(), 
+                 text.begin(), ::tolower);
     }
+}
+
+void findAndReplace(string& text, const string& find, 
+                   const string& replace) {
+    size_t pos = 0;
+    while ((pos = text.find(find, pos)) != string::npos) {
+        text.replace(pos, find.length(), replace);
+        pos += replace.length();
+    }
+}
+
+// Data Analysis System
+struct DataSet {
+    vector<double> values;
+    double mean;
+    double median;
+    double standardDev;
+};
+
+void calculateStats(DataSet& data) {
+    if (data.values.empty()) {
+        data.mean = data.median = data.standardDev = 0;
+        return;
+    }
+    
+    // Calculate mean
+    double sum = 0;
+    for (double value : data.values) {
+        sum += value;
+    }
+    data.mean = sum / data.values.size();
+    
+    // Calculate median
+    vector<double> sorted = data.values;
+    sort(sorted.begin(), sorted.end());
+    size_t size = sorted.size();
+    if (size % 2 == 0) {
+        data.median = (sorted[size/2 - 1] + sorted[size/2]) / 2;
+    } else {
+        data.median = sorted[size/2];
+    }
+    
+    // Calculate standard deviation
+    double sumSquares = 0;
+    for (double value : data.values) {
+        double diff = value - data.mean;
+        sumSquares += diff * diff;
+    }
+    data.standardDev = sqrt(sumSquares / data.values.size());
+}
+
+void addValue(DataSet& data, double value) {
+    data.values.push_back(value);
+    calculateStats(data);
+}
+
+void removeValue(DataSet& data, int index) {
+    if (index >= 0 && index < data.values.size()) {
+        data.values.erase(data.values.begin() + index);
+        calculateStats(data);
+    }
+}
+
+void displayStats(const DataSet& data) {
+    cout << "\nData Analysis:" << endl;
+    cout << "-------------" << endl;
+    cout << "Number of values: " << data.values.size() << endl;
+    cout << "Values: ";
+    for (double value : data.values) {
+        cout << value << " ";
+    }
+    cout << endl;
+    cout << fixed << setprecision(2);
+    cout << "Mean: " << data.mean << endl;
+    cout << "Median: " << data.median << endl;
+    cout << "Standard Deviation: " << data.standardDev << endl;
+}
+
+void testBankAccount() {
+    cout << "Bank Account Test" << endl;
+    cout << "=================" << endl;
+    
+    BankAccount account{"ACC001", 0.0, {}};
+    
+    deposit(account, 1000.0);
+    displayBalance(account);
+    
+    withdraw(account, 500.0);
+    displayBalance(account);
+    
+    withdraw(account, 700.0);  // Should fail
+    displayBalance(account);
+    
+    cout << "\nTransaction History:" << endl;
+    for (const string& transaction : account.transactions) {
+        cout << transaction << endl;
+    }
+}
+
+void testTextProcessing() {
+    cout << "\nText Processing Test" << endl;
+    cout << "===================" << endl;
+    
+    string input = "Hello, World!";
+    string output;
+    
+    processText(input, output);
+    cout << "Processed: " << output << endl;
+    
+    cout << "Word count: " << countWords(input) << endl;
+    
+    string text = "Mixed Case Text";
+    convertCase(text, 'U');
+    cout << "Uppercase: " << text << endl;
+    
+    text = "Replace this with that";
+    findAndReplace(text, "this", "that");
+    cout << "Replaced: " << text << endl;
+}
+
+void testDataAnalysis() {
+    cout << "\nData Analysis Test" << endl;
+    cout << "=================" << endl;
+    
+    DataSet data;
+    addValue(data, 10.5);
+    addValue(data, 15.2);
+    addValue(data, 12.8);
+    addValue(data, 8.7);
+    addValue(data, 14.3);
+    
+    displayStats(data);
+    
+    removeValue(data, 2);
+    cout << "\nAfter removing value:" << endl;
+    displayStats(data);
+}
+
+int main() {
+    cout << "Practice Call Types Demo" << endl;
+    cout << "======================" << endl;
+    
+    testBankAccount();
+    testTextProcessing();
+    testDataAnalysis();
+    
+    return 0;
 }

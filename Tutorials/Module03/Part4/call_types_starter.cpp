@@ -1,133 +1,206 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iomanip>
 using namespace std;
 
-// ===== Step 1: Call by Value Examples =====
-// TODO: Declare these value parameter functions:
-// 1. void modifyValue(int num)
-//    - Attempts to modify a value parameter
+// TODO: Implement value parameter examples
+// - Modify integer value
+// - Process array elements
+// - Handle string modification
+void modifyValue(int x) {
+    // Your code here
+}
 
-// 2. void processArray(int arr[], int size)
-//    - Shows array parameter behavior
+void processArray(int arr[], int size) {
+    // Your code here
+}
 
-// 3. void modifyString(string text)
-//    - Demonstrates string parameter behavior
+void handleString(string text) {
+    // Your code here
+}
 
+// TODO: Implement reference parameter examples
+// - Modify integer by reference
+// - Swap two values
+// - Update string content
+void modifyByRef(int& x) {
+    // Your code here
+}
 
-// ===== Step 2: Call by Reference Examples =====
-// TODO: Declare these reference parameter functions:
-// 1. void modifyReference(int& num)
-//    - Modifies a value through reference
+void swapValues(int& a, int& b) {
+    // Your code here
+}
 
-// 2. void getMinMax(const vector<int>& numbers, int& min, int& max)
-//    - Finds minimum and maximum values
+void updateString(string& text) {
+    // Your code here
+}
 
-// 3. void swapValues(int& a, int& b)
-//    - Swaps two values using references
+// TODO: Implement const reference examples
+// - Print vector contents
+// - Calculate array average
+// - Display person information
+void printData(const vector<int>& data) {
+    // Your code here
+}
 
+double calculateAverage(const double values[], int size) {
+    // Your code here
+    return 0.0;
+}
 
-// ===== Step 3: Const Reference Examples =====
-// TODO: Declare these const reference functions:
-// 1. double calculateAverage(const vector<int>& numbers)
-//    - Calculates average without modifying vector
+void displayPerson(const string& name, const int& age) {
+    // Your code here
+}
 
-// 2. void printDetails(const string& name, const int& age)
-//    - Prints details without modifying parameters
+// TODO: Implement mixed parameter types example
+struct Student {
+    string name;
+    vector<double> grades;
+    double average;
+};
 
-// 3. bool searchValue(const int arr[], int size, int target)
-//    - Searches array without modifying it
+void addGrade(Student& student, double grade) {
+    // Your code here
+}
 
+void displayStudent(const Student& student) {
+    // Your code here
+}
+
+// TODO: Implement multiple return values using references
+void getMinMax(const vector<int>& numbers, int& min, int& max) {
+    // Your code here
+}
+
+// TODO: Complete class with different parameter types
+class DataProcessor {
+public:
+    // Constructor should take name and data by const reference
+    DataProcessor(const string& name, const vector<int>& data) {
+        // Your code here
+    }
+    
+    void addValue(int value) {
+        // Your code here
+    }
+    
+    double getAverage() const {
+        // Your code here
+        return 0.0;
+    }
+    
+    const string& getName() const {
+        // Your code here
+        return processorName;
+    }
+    
+    void displayStats() const {
+        // Your code here
+    }
+
+private:
+    string processorName;
+    vector<int> values;
+    double average;
+    
+    void processData() {
+        // Your code here
+    }
+};
 
 int main() {
-    // Test Step 1: Call by Value
-    cout << "===== Testing Call by Value =====" << endl;
-    // TODO: Test modifyValue with a number
+    cout << "Call Types Demo" << endl;
+    cout << "=============\n" << endl;
     
-    // TODO: Test processArray with an array
+    // Test value parameters
+    cout << "Value Parameters:" << endl;
+    cout << "---------------" << endl;
     
-    // TODO: Test modifyString with a string
+    int number = 42;
+    cout << "Before: " << number << endl;
+    modifyValue(number);
+    cout << "After: " << number << endl;  // Should be unchanged
+    
+    int data[] = {1, 2, 3};
+    cout << "\nBefore array modification: ";
+    for (int i = 0; i < 3; i++) cout << data[i] << " ";
     cout << endl;
     
-    // Test Step 2: Call by Reference
-    cout << "===== Testing Call by Reference =====" << endl;
-    // TODO: Test modifyReference with a number
+    processArray(data, 3);
     
-    // TODO: Test getMinMax with a vector
-    
-    // TODO: Test swapValues with two numbers
+    cout << "After array modification: ";
+    for (int i = 0; i < 3; i++) cout << data[i] << " ";
     cout << endl;
     
-    // Test Step 3: Const Reference
-    cout << "===== Testing Const Reference =====" << endl;
-    // TODO: Test calculateAverage with a vector
+    string msg = "Hello";
+    cout << "\nBefore: " << msg << endl;
+    handleString(msg);
+    cout << "After: " << msg << endl;  // Should be unchanged
     
-    // TODO: Test printDetails with name and age
+    // Test reference parameters
+    cout << "\nReference Parameters:" << endl;
+    cout << "-------------------" << endl;
     
-    // TODO: Test searchValue with an array
+    int value = 42;
+    cout << "Before: " << value << endl;
+    modifyByRef(value);
+    cout << "After: " << value << endl;  // Should be modified
+    
+    int x = 5, y = 10;
+    cout << "\nBefore swap: x=" << x << ", y=" << y << endl;
+    swapValues(x, y);
+    cout << "After swap: x=" << x << ", y=" << y << endl;
+    
+    string text = "Hello";
+    cout << "\nBefore: " << text << endl;
+    updateString(text);
+    cout << "After: " << text << endl;  // Should be modified
+    
+    // Test const reference parameters
+    cout << "\nConst Reference Parameters:" << endl;
+    cout << "------------------------" << endl;
+    
+    vector<int> numbers = {1, 2, 3, 4, 5};
+    cout << "Vector contents: ";
+    printData(numbers);
+    
+    double scores[] = {85.5, 92.0, 77.5, 90.0};
+    cout << "Average score: " << calculateAverage(scores, 4) << endl;
+    
+    string name = "Alice";
+    int age = 25;
+    displayPerson(name, age);
+    
+    // Test mixed parameter types
+    cout << "\nMixed Parameter Types:" << endl;
+    cout << "-------------------" << endl;
+    
+    Student alice{"Alice", {}, 0.0};
+    addGrade(alice, 95.0);
+    addGrade(alice, 87.5);
+    addGrade(alice, 92.0);
+    displayStudent(alice);
+    
+    // Test multiple return values
+    cout << "\nMultiple Return Values:" << endl;
+    cout << "--------------------" << endl;
+    
+    vector<int> values = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+    int min, max;
+    getMinMax(values, min, max);
+    cout << "Min: " << min << ", Max: " << max << endl;
+    
+    // Test class with different parameter types
+    cout << "\nClass Parameter Types:" << endl;
+    cout << "-------------------" << endl;
+    
+    DataProcessor processor("Test Processor", {1, 2, 3, 4, 5});
+    processor.addValue(6);
+    processor.displayStats();
+    
+    cout << "\nProcessor name: " << processor.getName() << endl;
+    cout << "Average: " << processor.getAverage() << endl;
     
     return 0;
 }
-
-// ===== Step 1: Call by Value Implementations =====
-// TODO: Implement modifyValue
-// Function: modifyValue
-// Purpose: Shows that value parameters create copies
-// Parameters: num - integer to modify
-// Returns: void
-
-// TODO: Implement processArray
-// Function: processArray
-// Purpose: Shows array parameter behavior
-// Parameters: arr - array to modify
-//            size - size of array
-// Returns: void
-
-// TODO: Implement modifyString
-// Function: modifyString
-// Purpose: Shows string parameter behavior
-// Parameters: text - string to modify
-// Returns: void
-
-// ===== Step 2: Call by Reference Implementations =====
-// TODO: Implement modifyReference
-// Function: modifyReference
-// Purpose: Shows reference parameter modification
-// Parameters: num - reference to integer
-// Returns: void
-
-// TODO: Implement getMinMax
-// Function: getMinMax
-// Purpose: Finds minimum and maximum values
-// Parameters: numbers - vector to search
-//            min - reference to store minimum
-//            max - reference to store maximum
-// Returns: void
-
-// TODO: Implement swapValues
-// Function: swapValues
-// Purpose: Swaps two values using references
-// Parameters: a, b - references to values to swap
-// Returns: void
-
-// ===== Step 3: Const Reference Implementations =====
-// TODO: Implement calculateAverage
-// Function: calculateAverage
-// Purpose: Calculates average of vector values
-// Parameters: numbers - const reference to vector
-// Returns: double - the calculated average
-
-// TODO: Implement printDetails
-// Function: printDetails
-// Purpose: Prints name and age details
-// Parameters: name - const reference to name string
-//            age - const reference to age
-// Returns: void
-
-// TODO: Implement searchValue
-// Function: searchValue
-// Purpose: Searches for value in array
-// Parameters: arr - const array to search
-//            size - size of array
-//            target - value to find
-// Returns: bool - true if found, false otherwise

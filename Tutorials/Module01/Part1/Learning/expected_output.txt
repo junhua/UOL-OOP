@@ -1,0 +1,61 @@
+# Expected Output for welcome.cpp
+
+## Test Case 1: Valid Input
+Input: John
+
+Expected Output:
+====================================
+  Welcome to C++ Programming!
+====================================
+What's your name? John
+
+Hello, John!
+Ready to start your C++ journey?
+
+This program demonstrates:
+- Basic console output using std::cout
+- User input with std::getline
+- Simple input validation
+- String manipulation
+
+## Test Case 2: Empty Input Followed by Valid Input
+Input: [empty string]
+       Alice
+
+Expected Output:
+====================================
+  Welcome to C++ Programming!
+====================================
+What's your name? 
+Name cannot be empty. Please try again.
+What's your name? Alice
+
+Hello, Alice!
+Ready to start your C++ journey?
+
+This program demonstrates:
+- Basic console output using std::cout
+- User input with std::getline
+- Simple input validation
+- String manipulation
+
+## Test Case 3: Whitespace Input Followed by Valid Input
+Input: [space]
+       Bob
+
+Expected Output:
+====================================
+  Welcome to C++ Programming!
+====================================
+What's your name?  
+Name cannot be empty. Please try again.
+What's your name? Bob
+
+Hello, Bob!
+Ready to start your C++ journey?
+
+This program demonstrates:
+- Basic console output using std::cout
+- User input with std::getline
+- Simple input validation
+- String manipulation

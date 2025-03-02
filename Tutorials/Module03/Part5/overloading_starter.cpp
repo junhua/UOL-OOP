@@ -1,54 +1,169 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <complex>
 #include <iomanip>
+#include <sstream>
 #include <algorithm>
 using namespace std;
 
-// TODO: Implement basic function overloading
-// Add functions for int, double, and string
+// TODO: Implement basic overloading with different types
+// - Print integer values
+// - Print double values
+// - Print string values
+// - Print vector contents
+void print(int value) {
+    // Your code here
+}
 
-// TODO: Implement print function overloading
-// Print functions for different parameter combinations
+void print(double value) {
+    // Your code here
+}
 
-// TODO: Create Point class with overloaded methods
-class Point {
+void print(const string& text) {
+    // Your code here
+}
+
+void print(const vector<int>& values) {
+    // Your code here
+}
+
+// TODO: Implement overloading with different number of parameters
+// - Display single value
+// - Display two values
+// - Display three values
+void display(int x) {
+    // Your code here
+}
+
+void display(int x, int y) {
+    // Your code here
+}
+
+void display(int x, int y, int z) {
+    // Your code here
+}
+
+// TODO: Implement overloading with different parameter types
+// - Format integer values
+// - Format floating point values with precision
+// - Format text with case conversion
+string format(int value) {
+    // Your code here
+    return "";
+}
+
+string format(double value, int precision) {
+    // Your code here
+    return "";
+}
+
+string format(const string& text, bool uppercase) {
+    // Your code here
+    return "";
+}
+
+// TODO: Implement overloading with const and non-const versions
+class DataContainer {
 public:
-    int x, y;
+    DataContainer(const vector<int>& data) : values(data) {}
     
-    // TODO: Implement constructor overloading
-    // Default constructor
-    // Single parameter constructor
-    // Two parameter constructor
+    // TODO: Add non-const getData() that allows modification
     
-    // TODO: Implement method overloading
-    // move with dx, dy
-    // move with another Point
-    // move with single distance
+    // TODO: Add const getData() that provides read-only access
     
-    string toString() const {
-        return "(" + to_string(x) + ", " + to_string(y) + ")";
-    }
+private:
+    vector<int> values;
 };
 
-// TODO: Implement function overloading with const
-// updateValue for modifying the original
-// updateValue for storing in a result variable
+// TODO: Implement operator overloading
+class Point {
+public:
+    Point(int x = 0, int y = 0) : x(x), y(y) {}
+    
+    // TODO: Overload + operator
+    
+    // TODO: Overload - operator
+    
+    // TODO: Overload * operator for scaling
+    
+    // TODO: Overload == operator
+    
+    // TODO: Overload << operator as friend function
+    
+private:
+    int x, y;
+};
+
+// TODO: Implement template function overloading
+// - Add two values
+// - Add three values
+// - Add all values in a vector
+template<typename T>
+T add(T a, T b) {
+    // Your code here
+    return T();
+}
+
+template<typename T>
+T add(T a, T b, T c) {
+    // Your code here
+    return T();
+}
+
+template<typename T>
+T add(const vector<T>& values) {
+    // Your code here
+    return T();
+}
 
 int main() {
+    cout << "Function Overloading Demo" << endl;
+    cout << "======================\n" << endl;
+    
     // Test basic overloading
-    cout << "=== Basic Function Overloading ===" << endl;
-    // TODO: Test add functions with different types
+    cout << "Basic Overloading:" << endl;
+    cout << "-----------------" << endl;
+    print(42);
+    print(3.14159);
+    print("Hello, World!");
+    print(vector<int>{1, 2, 3, 4, 5});
     
-    cout << "\n=== Print Function Overloading ===" << endl;
-    // TODO: Test print functions with different parameters
+    // Test parameter count overloading
+    cout << "\nParameter Count Overloading:" << endl;
+    cout << "--------------------------" << endl;
+    display(1);
+    display(1, 2);
+    display(1, 2, 3);
     
-    cout << "\n=== Point Class Overloading ===" << endl;
-    // TODO: Test Point constructors and move methods
+    // Test parameter type overloading
+    cout << "\nParameter Type Overloading:" << endl;
+    cout << "-------------------------" << endl;
+    cout << format(42) << endl;
+    cout << format(3.14159, 2) << endl;
+    cout << format("hello", true) << endl;
     
-    cout << "\n=== Const Overloading ===" << endl;
-    // TODO: Test updateValue functions
+    // Test const overloading
+    cout << "\nConst Overloading:" << endl;
+    cout << "-----------------" << endl;
+    DataContainer data({1, 2, 3, 4, 5});
+    const DataContainer constData({6, 7, 8, 9, 10});
+    
+    // TODO: Test getData() with both const and non-const objects
+    
+    // Test operator overloading
+    cout << "\nOperator Overloading:" << endl;
+    cout << "-------------------" << endl;
+    Point p1(1, 2), p2(3, 4);
+    
+    // TODO: Test overloaded operators
+    
+    // Test template overloading
+    cout << "\nTemplate Overloading:" << endl;
+    cout << "-------------------" << endl;
+    cout << "add(1, 2) = " << add(1, 2) << endl;
+    cout << "add(1.5, 2.7) = " << add(1.5, 2.7) << endl;
+    cout << "add(1, 2, 3) = " << add(1, 2, 3) << endl;
+    cout << "add(vector) = " << add(vector<int>{1, 2, 3, 4, 5}) << endl;
     
     return 0;
 }

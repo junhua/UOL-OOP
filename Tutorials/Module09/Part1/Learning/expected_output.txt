@@ -1,0 +1,59 @@
+===== Basic Pointers =====
+Value of number: 42
+Address of number: 0x7ffd123456a8  # Address will vary
+Value of ptr: 0x7ffd123456a8  # Address will vary
+Value pointed to by ptr: 42
+New value of number: 100
+New value pointed to by ptr: 100
+
+===== Pointer Assignment =====
+num1 = 10, address: 0x7ffd123456a8  # Address will vary
+num2 = 20, address: 0x7ffd123456ac  # Address will vary
+ptr1 = 0x7ffd123456a8, points to: 10  # Address will vary
+ptr2 = 0x7ffd123456ac, points to: 20  # Address will vary
+
+After assignment and modification:
+num1 = 10
+num2 = 30
+ptr1 = 0x7ffd123456ac, points to: 30  # Address will vary
+ptr2 = 0x7ffd123456ac, points to: 30  # Address will vary
+
+ptr1 and ptr2 point to the same memory location
+
+===== Null Pointers =====
+ptr is a null pointer
+Attempting to use pointer safely:
+Cannot dereference a null pointer
+ptr is not null, it points to: 42
+
+===== Void Pointers =====
+Integer value: 42
+Double value: 3.14159
+Character value: A
+
+===== Pointers and Arrays =====
+Array elements using array notation:
+numbers[0] = 10
+numbers[1] = 20
+numbers[2] = 30
+numbers[3] = 40
+numbers[4] = 50
+
+Array elements using pointer notation:
+*(ptr + 0) = 10
+*(ptr + 1) = 20
+*(ptr + 2) = 30
+*(ptr + 3) = 40
+*(ptr + 4) = 50
+
+Accessing elements by incrementing pointer:
+*ptr = 10
+*ptr after ptr++ = 20
+*ptr after ptr += 2 = 40
+
+Array address: 0x7ffd123456a8  # Address will vary
+Address of first element: 0x7ffd123456a8  # Address will vary
+
+Demonstrating array decay:
+Size of numbers array: 20 bytes  # 5 integers * 4 bytes each
+Size of ptr: 8 bytes  # On a 64-bit system

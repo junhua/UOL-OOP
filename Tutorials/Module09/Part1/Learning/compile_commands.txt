@@ -1,0 +1,11 @@
+# Compile the starter code
+g++ -o pointer_demo_starter main_starter.cpp Pointer_starter.cpp
+
+# Compile the completed code
+g++ -o pointer_demo main.cpp Pointer.cpp
+
+# Run the starter code
+./pointer_demo_starter
+
+# Run the completed code
+./pointer_demo

@@ -1,0 +1,52 @@
+# Compilation Commands for welcome.cpp
+
+## Linux/macOS
+# Basic compilation
+g++ -o welcome welcome_starter.cpp
+
+# Compilation with warnings enabled (recommended)
+g++ -Wall -Wextra -o welcome welcome_starter.cpp
+
+# Compilation with debugging information
+g++ -Wall -Wextra -g -o welcome welcome_starter.cpp
+
+## Windows (Command Prompt with MinGW)
+# Basic compilation
+g++ -o welcome.exe welcome_starter.cpp
+
+# Compilation with warnings enabled (recommended)
+g++ -Wall -Wextra -o welcome.exe welcome_starter.cpp
+
+# Compilation with debugging information
+g++ -Wall -Wextra -g -o welcome.exe welcome_starter.cpp
+
+## Windows (Visual Studio Developer Command Prompt)
+# Basic compilation
+cl /EHsc welcome_starter.cpp
+
+# Compilation with warnings enabled (recommended)
+cl /EHsc /W4 welcome_starter.cpp
+
+# Compilation with debugging information
+cl /EHsc /W4 /Zi welcome_starter.cpp
+
+## Compilation Process Steps (for learning)
+# 1. Preprocessing only
+g++ -E welcome_starter.cpp -o welcome.i
+
+# 2. Compilation to assembly
+g++ -S welcome_starter.cpp -o welcome.s
+
+# 3. Assembly to object file
+g++ -c welcome_starter.cpp -o welcome.o
+
+# 4. Linking to executable
+g++ welcome.o -o welcome
+
+## Common Compiler Flags
+# -Wall: Enable all warnings
+# -Wextra: Enable extra warnings
+# -g: Include debugging information
+# -O1, -O2, -O3: Different optimization levels
+# -std=c++17: Specify C++ standard version
+# -o: Specify output file name
