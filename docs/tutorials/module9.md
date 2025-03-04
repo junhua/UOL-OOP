@@ -67,7 +67,7 @@ By the end of this module, you will be able to:
 - Apply best practices
 
 ## Memory Model
-```mermaid
+{% mermaid %}
 graph TD
     A[Memory Management] --> B[Stack Memory]
     A --> C[Heap Memory]
@@ -75,7 +75,7 @@ graph TD
     B --> E[Function Parameters]
     C --> F[Dynamic Allocation]
     C --> G[Manual Management]
-```
+{% endmermaid %}
 
 ## Best Practices
 

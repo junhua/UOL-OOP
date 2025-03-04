@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Project Overview
+title: Midterm Project
 parent: Projects
 nav_order: 1
 ---

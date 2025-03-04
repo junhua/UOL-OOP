@@ -247,7 +247,7 @@ int main() {
 ## Memory Model
 
 ### Heap vs Stack
-```mermaid
+{% mermaid %}
 graph TD
     A[Memory] --> B[Stack]
     A --> C[Heap]
@@ -255,16 +255,16 @@ graph TD
     B --> E[Function Calls]
     C --> F[Dynamic Allocation]
     C --> G[Manual Management]
-```
+{% endmermaid %}
 
 ### Memory Lifecycle
-```mermaid
+{% mermaid %}
 graph LR
     A[Request] --> B[Allocate]
     B --> C[Use]
     C --> D[Deallocate]
     D --> E[Release]
-```
+{% endmermaid %}
 
 ## Best Practices
 

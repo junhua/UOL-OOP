@@ -255,16 +255,16 @@ int main() {
 ## Memory Layout
 
 ### Array in Memory
-```mermaid
+{% mermaid %}
 graph LR
     A[Array Base] --> B[Element 0]
     B --> C[Element 1]
     C --> D[Element 2]
     D --> E[...]
-```
+{% endmermaid %}
 
 ### 2D Array Layout
-```mermaid
+{% mermaid %}
 graph TD
     A[Matrix] --> B[Row 0]
     A --> C[Row 1]
@@ -272,7 +272,7 @@ graph TD
     B --> E[Elements 0,0 to 0,n]
     C --> F[Elements 1,0 to 1,n]
     D --> G[Elements 2,0 to 2,n]
-```
+{% endmermaid %}
 
 ## Best Practices
 

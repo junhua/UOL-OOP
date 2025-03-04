@@ -255,22 +255,22 @@ int main() {
 ## Object Relationships
 
 ### Inheritance Hierarchy
-```mermaid
+{% mermaid %}
 graph TD
     A[Shape] --> B[Circle]
     A --> C[Rectangle]
     B --> D[Virtual Methods]
     C --> E[Virtual Methods]
-```
+{% endmermaid %}
 
 ### Memory Layout
-```mermaid
+{% mermaid %}
 graph TD
     A[Object Memory] --> B[VTable Pointer]
     A --> C[Member Variables]
     B --> D[Virtual Functions]
     C --> E[Instance Data]
-```
+{% endmermaid %}
 
 ## Best Practices
 

@@ -224,7 +224,7 @@ ptr ptr+1 +2  +3  +4
 ```
 
 ### Pointer Movement
-```mermaid
+{% mermaid %}
 graph LR
     A[ptr] -->|++| B[ptr+1]
     B -->|++| C[ptr+2]
@@ -234,7 +234,7 @@ graph LR
     D -->|--| C
     C -->|--| B
     B -->|--| A
-```
+{% endmermaid %}
 
 ## Best Practices
 

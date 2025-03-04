@@ -234,23 +234,23 @@ int main() {
 ## Memory Management Patterns
 
 ### RAII Pattern
-```mermaid
+{% mermaid %}
 graph TD
     A[Resource Acquisition] --> B[Object Construction]
     B --> C[Resource Use]
     C --> D[Object Destruction]
     D --> E[Resource Release]
-```
+{% endmermaid %}
 
 ### Smart Pointer Hierarchy
-```mermaid
+{% mermaid %}
 graph TD
     A[Smart Pointers] --> B[unique_ptr]
     A --> C[shared_ptr]
     A --> D[weak_ptr]
     C --> E[Reference Counting]
     D --> F[Weak References]
-```
+{% endmermaid %}
 
 ## Best Practices
 

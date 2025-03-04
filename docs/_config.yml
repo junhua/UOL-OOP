@@ -112,3 +112,7 @@ highlighter: rouge
 plugins:
   - jekyll-remote-theme
   - jekyll-seo-tag
+  - jekyll-mermaid
+
+mermaid:
+  src: 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js'

@@ -242,22 +242,22 @@ int main() {
 ## Function Pointer Types
 
 ### Basic Function Pointer
-```mermaid
+{% mermaid %}
 graph TD
     A[Function Pointer] --> B[Return Type]
     A --> C[Parameter Types]
     B --> D[Function Signature]
     C --> D
-```
+{% endmermaid %}
 
 ### Member Function Pointer
-```mermaid
+{% mermaid %}
 graph TD
     A[Member Function Pointer] --> B[Class Type]
     A --> C[Function Type]
     B --> D[Member Function]
     C --> D
-```
+{% endmermaid %}
 
 ## Best Practices
 

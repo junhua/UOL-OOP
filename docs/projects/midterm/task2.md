@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Task 2 - Text-Based Candlestick Plot
-parent: Projects
-nav_order: 3
+parent: Midterm Project
+nav_order: 2
 ---
 
 # Task 2: Text-Based Candlestick Plot
@@ -26,28 +26,30 @@ Here's what a typical candlestick chart looks like:
 
 ```
 Temperature
-   ^
-   |
-10 |    │       │
-   |    │       │
- 9 |    │   ┌───┐
-   |    │   │   │
- 8 |    ┌───┤   │
-   |    │   │   │
- 7 |    │   └───┘
-   |    │       │
- 6 |    │       │
-   |    │       │
- 5 |    │       │
-   |
-   +-----------------> Time
-      1980    1981
+35.3 | |   |   |              
+32.3 | |   |   |   |   |   |  
+29.3 | |   |   |   |   |   |  
+26.4 | |   |   |   |   |   |  
+23.4 | |   |   |   |   |   |  
+20.4 | |   |   |   |   |   |  
+17.5 | |   |   |   |   |   |  
+14.5 |+++ ---  |   |  +++ --- 
+11.6 | |  --- +++ --- +++ --- 
+8.64 | |   |   |   |   |   |  
+5.68 | |   |   |   |   |   |  
+2.71 | |   |   |   |   |   |  
+-0.2 | |   |   |   |   |   |  
+-3.2 | |   |   |   |   |   |  
+-6.1 |     |       |          
+-9.1 |     |                  
+------------------------------
+1990 1991 1992 1993 1994 1995 
 ```
 
 In this ASCII representation:
 - The vertical line represents the High-Low range (the "wick")
-- The box represents the Open-Close range (the "body")
-- An empty or differently filled box can indicate whether the temperature rose or fell
+- The +++ or --- signs represent the Open-Close range (the "body")
+- The + or - symbols can indicate whether the temperature rose or fell
 
 ## Step 2: Implementing the Plotter Class
 
@@ -74,20 +76,46 @@ To implement this function, you'll need to:
 
 Here's a visual representation of the process:
 
-```mermaid
+{% mermaid %}
 flowchart TD
-    A[Find min/max temperatures] --> B[Calculate scale]
-    B --> C[Create empty chart grid]
-    C --> D[Add temperature labels]
-    D --> E[For each candlestick]
-    E --> F[Calculate row positions]
-    F --> G[Draw wick]
-    G --> H[Draw body]
-    H --> I{More candlesticks?}
+    %% Main sections with styling
+    subgraph Initialization ["Initialization"]
+        direction TB
+        A["Find min/max temperatures"] --> B["Calculate scale"]
+        B --> C["Create empty chart grid"]
+        C --> D["Add temperature labels"]
+    end
+
+    subgraph Processing ["Data Processing"]
+        direction TB
+        E["For each candlestick"] --> F["Calculate row positions"]
+        F --> G["Draw wick"]
+        G --> H["Draw body"]
+    end
+
+    subgraph Output ["Output Generation"]
+        direction TB
+        J["Print chart"] --> K["Print date labels"]
+    end
+
+    %% Connect sections with styled edges
+    Initialization --> Processing
+    Processing --> I{More candlesticks?}
     I -->|Yes| E
-    I -->|No| J[Print chart]
-    J --> K[Print date labels]
-```
+    I -->|No| Output
+
+    %% Style definitions
+    classDef initialization fill:#d4f1f9,stroke:#05a8e6,stroke-width:2px
+    classDef processing fill:#ffe6cc,stroke:#ff9900,stroke-width:2px
+    classDef output fill:#e6ffcc,stroke:#70c030,stroke-width:2px
+    classDef decision fill:#f8cecc,stroke:#b85450,stroke-width:2px,color:#333
+
+    %% Apply styles
+    class Initialization initialization
+    class Processing processing
+    class Output output
+    class I decision
+{% endmermaid %}
 
 ### Chart Scaling
 
@@ -102,37 +130,6 @@ Where:
 - `tempPerRow` is the temperature range represented by each row
 - The result is the row index from the top of the chart
 
-### Example Chart Structure
-
-Here's how you might structure your chart:
-
-```
-10.0 |                        
- 9.5 |    │       │           
- 9.0 |    │   ┌───┐           
- 8.5 |    │   │   │           
- 8.0 |    ┌───┤   │           
- 7.5 |    │   │   │           
- 7.0 |    │   └───┘           
- 6.5 |    │       │           
- 6.0 |    │       │           
------+------------------------
-     |  1980    1981    1982  
-```
-
-## Alternative Simple Table Approach
-
-If the ASCII art approach is challenging, you can start with a simpler tabular representation:
-
-```
-Date   | Open | Close | High | Low  | Trend
--------|------|-------|------|------|------
-1980   | 7.5  | 8.2   | 9.1  | 6.3  | UP
-1981   | 8.2  | 7.1   | 9.0  | 6.5  | DOWN
-1982   | 7.1  | 7.8   | 8.7  | 6.2  | UP
-```
-
-This approach is easier to implement and still provides all the essential information.
 
 ## Implementation Tips
 
@@ -149,7 +146,7 @@ This approach is easier to implement and still provides all the essential inform
    - Map temperature values to row positions
 
 2. **Candlestick Representation**:
-   - Use '|' for the wick (High to Low)
+   - Use '\|' for the wick (High to Low)
    - Use characters like '+', '#', or '█' to fill the body
    - Use different characters for up trends vs. down trends
 

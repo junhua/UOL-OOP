@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Task 1 - Computing Candlestick Data
-parent: Projects
-nav_order: 2
+parent: Midterm Project
+nav_order: 1
 ---
 
 # Task 1: Computing Candlestick Data
@@ -53,7 +53,7 @@ To implement this function, you'll need to:
 
 Here's a visual representation of the CSV parsing process:
 
-```mermaid
+{% mermaid %}
 flowchart TD
     A[Open CSV file] --> B{File opened?}
     B -->|No| C[Return empty vector]
@@ -71,7 +71,7 @@ flowchart TD
     M --> N[Create record]
     N --> O[Add to vector]
     O --> H
-```
+{% endmermaid %}
 
 ### Error Handling
 
@@ -121,6 +121,20 @@ Here's a visual representation of a candlestick:
     Low
 ```
 
+Alternatively, you may use a simpler design:
+
+```
+ |   High
+ | 
+ | 
++++  Close
++++
++++  Open
+ | 
+ | 
+ |   Low
+```
+
 ### Candlestick Computation Algorithm
 
 To implement this function, you'll need to:
@@ -134,7 +148,7 @@ To implement this function, you'll need to:
 
 Here's a visual representation of the grouping process:
 
-```mermaid
+{% mermaid %}
 flowchart TD
     A[Raw Temperature Records] --> B[Group by Timeframe]
     B --> C[Yearly Groups]
@@ -145,7 +159,7 @@ flowchart TD
     E --> F
     F --> G[Create Candlestick objects]
     G --> H[Return Candlestick vector]
-```
+{% endmermaid %}
 
 ### Special Cases
 
@@ -153,6 +167,19 @@ Remember to handle these special cases:
 - For the first period, set Open equal to Close (since there's no previous period)
 - Ensure proper date formatting for the candlestick labels
 - Handle empty input gracefully
+
+## Data Table Output
+
+You may print a simple tabular representation of the data to justify your completion of task 1:
+
+```
+Date   | Open | Close | High | Low  | Trend
+-------|------|-------|------|------|------
+1980   | 7.5  | 8.2   | 9.1  | 6.3  | UP
+1981   | 8.2  | 7.1   | 9.0  | 6.5  | DOWN
+1982   | 7.1  | 7.8   | 8.7  | 6.2  | UP
+```
+
 
 ## Key Points for Task 1
 

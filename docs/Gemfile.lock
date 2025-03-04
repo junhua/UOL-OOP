@@ -63,6 +63,7 @@ GEM
       webrick (~> 1.7)
     jekyll-include-cache (0.2.1)
       jekyll (>= 3.7, < 5.0)
+    jekyll-mermaid (1.0.0)
     jekyll-remote-theme (0.4.3)
       addressable (~> 2.0)
       jekyll (>= 3.5, < 5.0)
@@ -164,6 +165,7 @@ DEPENDENCIES
   http_parser.rb (~> 0.6.0)
   jekyll (~> 4.3.3)
   jekyll-include-cache
+  jekyll-mermaid
   jekyll-remote-theme
   jekyll-seo-tag
   logger

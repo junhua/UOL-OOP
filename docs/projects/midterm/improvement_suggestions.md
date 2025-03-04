@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Improvement Suggestions
-parent: Projects
-nav_order: 6
+parent: Midterm Project
+nav_order: 5
 ---
 
 # Taking Your Midterm Project to the Next Level: Grade-Boosting Strategies

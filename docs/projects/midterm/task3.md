@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Task 3 - Filtering Data
-parent: Projects
-nav_order: 4
+parent: Midterm Project
+nav_order: 3
 ---
 
 # Task 3: Filtering Data
@@ -41,7 +41,7 @@ To implement this function, you'll need to:
 
 Here's a visual representation of the filtering process:
 
-```mermaid
+{% mermaid %}
 flowchart TD
     A[Input Candlestick Data] --> B[Create Empty Result Vector]
     B --> C[For Each Candlestick]
@@ -52,7 +52,7 @@ flowchart TD
     F --> G
     G -->|Yes| C
     G -->|No| H[Return Filtered Result]
-```
+{% endmermaid %}
 
 ### Date Comparison
 
@@ -79,7 +79,7 @@ To make your application more interactive, you can enhance the main function to 
 
 Here's a flowchart of the user interaction:
 
-```mermaid
+{% mermaid %}
 flowchart TD
     A[Load Full Dataset] --> B[Display Full Dataset]
     B --> C{Filter Data?}
@@ -88,7 +88,7 @@ flowchart TD
     E --> F[Apply Filter]
     F --> G[Display Filtered Dataset]
     G --> H[Make Predictions on Filtered Data]
-```
+{% endmermaid %}
 
 ## Step 3: Implementing Additional Filters (Optional)
 

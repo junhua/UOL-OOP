@@ -4,7 +4,7 @@ This exercise focuses on implementing a smart thermostat system that demonstrate
 
 ## Class Hierarchy
 
-```mermaid
+{% mermaid %}
 classDiagram
     TemperatureController <|-- SmartThermostat
     SmartThermostat <|-- ZoneController
@@ -33,7 +33,7 @@ classDiagram
         +setZonePriority()
         +getZoneStatus()
     }
-```
+{% endmermaid %}
 
 ## Files
 

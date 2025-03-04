@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Task 4 - Prediction Models
-parent: Projects
-nav_order: 5
+parent: Midterm Project
+nav_order: 4
 ---
 
 # Task 4: Prediction Models
@@ -11,9 +11,9 @@ This task involves implementing prediction models to forecast future temperature
 
 ## Understanding Prediction Models
 
-Prediction models use historical data to forecast future values. In this project, you'll implement three different models, each with its own strengths and characteristics:
+Prediction models use historical data to forecast future values. There are three simple models you may consider implementing. Each with its own strengths and characteristics:
 
-```mermaid
+{% mermaid %}
 flowchart TD
     A[Historical Temperature Data] --> B[Linear Regression]
     A --> C[Moving Average]
@@ -21,9 +21,9 @@ flowchart TD
     B --> E[Future Temperature Prediction]
     C --> E
     D --> E
-```
+{% endmermaid %}
 
-## Step 1: Understanding the Prediction Models
+## Understanding the Prediction Models
 
 ### 1. Linear Regression Model
 
@@ -118,7 +118,7 @@ Temperature
                       Projection -->
 ```
 
-## Step 2: Implementing the Prediction Class
+## Implementing the Prediction Class
 
 Let's look at the function signatures from the header file:
 
@@ -155,9 +155,9 @@ To implement the heuristic model:
 3. Calculate the last change (last - secondLast)
 4. Predict that the same change will happen again (last + change)
 
-## Step 3: Evaluating and Comparing Prediction Models
+## Evaluating and Comparing Prediction Models
 
-After implementing the prediction models, you should evaluate and compare their results:
+If you implement more than one models, you can evaluate and compare their results:
 
 1. Apply each model to the same dataset
 2. Display the predictions side by side

@@ -189,7 +189,7 @@ int main() {
 ## Memory Model
 
 ### Stack vs Heap
-```mermaid
+{% mermaid %}
 graph TD
     A[Memory] --> B[Stack]
     A --> C[Heap]
@@ -197,16 +197,16 @@ graph TD
     B --> E[Function Parameters]
     C --> F[Dynamic Allocation]
     C --> G[Manual Management]
-```
+{% endmermaid %}
 
 ### Pointer Lifetime
-```mermaid
+{% mermaid %}
 graph LR
     A[Declaration] --> B[Initialization]
     B --> C[Usage]
     C --> D[Cleanup]
     D --> E[Nulling]
-```
+{% endmermaid %}
 
 ## Best Practices
 
