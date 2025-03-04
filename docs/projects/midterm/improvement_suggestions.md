@@ -13,7 +13,7 @@ This guide provides concrete suggestions to help you maximize your grade on the 
 
 ## Understanding the Grading Breakdown
 
-Before diving into improvements, let's understand where the points come from:
+Before diving into improvements, let's recap the rubrics:
 
 | Category | Points |
 |----------|--------|

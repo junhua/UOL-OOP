@@ -48,6 +48,23 @@ The Weather Data Analysis and Prediction project is designed to analyze temperat
      - Moving Average
      - Heuristic-based
 
+## Grading Breakdown
+
+Let's understand where the points come from:
+
+| Category | Points |
+|----------|--------|
+| Task 1: Compute candlestick data (Code + Description) | 16 |
+| Task 2: Text-based plot (Code + Description) | 16 |
+| Task 3: Filtering and plotting (Code + Description) | 16 |
+| Task 4: Prediction models (Code + Description) | 16 |
+| Code style: indentation, descriptive comments | 6 |
+| Originality and challenge of implementation | 10 |
+| Clearly labeled code sections | 6 |
+| Submission requirements | 4 |
+| Video demonstration | 10 |
+| **TOTAL** | **100** |
+
 ## Project Structure
 
 The project is organized into several classes, each with a specific responsibility:
