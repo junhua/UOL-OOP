@@ -1,358 +1,393 @@
 ---
 layout: default
-title: Task 2 - Advanced DJ Features
+title: Digital Audio Processing
 parent: Final Project
 nav_order: 2
 ---
 
-# Task 2: Advanced DJ Features
+# Digital Audio Processing
 
-This task involves implementing advanced DJ features inspired by professional DJ software. You'll enhance the basic audio playback functionality with features that allow for creative mixing and performance.
+This part involves sample code to implement professional audio processing features common in DJ software. Let's start by understanding digital audio processing concepts.
 
-## Understanding Professional DJ Features
+## Understanding Digital Audio Processing
 
-Common features in professional DJ software include:
-- Beat matching and sync
-- Effects processing
-- Loop controls
-- Hot cues
-- EQ and filters
-- Beat grid visualization
-- Advanced waveform display
+Before implementing features, it's important to understand some fundamental concepts:
 
-## Step 1: Implementing Audio Effects
+### Audio Signal Flow
+In digital audio systems, audio flows through a chain of processors:
+1. **Input Stage**: Reading from audio file or stream
+   - Buffer management
+   - Format conversion
+   - Sample rate conversion if needed
 
-### Adding Effect Processing Capability
+2. **Pre-processing**: Preparing audio for effects
+   - Normalization
+   - Stereo width adjustment
+   - Phase correction
+
+3. **Effects Processing**: Audio manipulation
+   - EQ and filters
+   - Time-based effects (delay, reverb)
+   - Dynamic effects (compression)
+
+4. **Mixing Stage**: Combining signals
+   - Volume control
+   - Crossfading
+   - Stereo panning
+
+5. **Output Stage**: Final delivery
+   - Limiting to prevent clipping
+   - Dithering if needed
+   - Buffer output
+
+### Real-time Processing Constraints
+DJ software must process audio in real-time with these considerations:
+
+1. **Latency Management**:
+   - Buffer size affects latency
+   - Smaller buffers = lower latency but more CPU
+   - Typical buffer sizes: 256-1024 samples
+   - Target latency: <10ms for best response
+
+2. **CPU Efficiency**:
+   - Process must complete within buffer time
+   - Example: at 44.1kHz, 512 samples = 11.6ms
+   - Must process and deliver next buffer in time
+   - Use efficient algorithms and optimization
+
+3. **Thread Safety**:
+   - Audio processing runs in high-priority thread
+   - UI updates run in message thread
+   - Need thread-safe parameter updates
+   - Avoid locks in audio thread
+
+## Audio Processing Features
+
+### 1. Effect Chain System
+
+The effect chain processes audio through multiple effects in sequence. Here's an efficient implementation:
 
 ```cpp
-class DJAudioPlayer
+class EffectChain
 {
-private:
-    // Effect processors
-    dsp::ProcessorChain<dsp::IIR::Filter<float>,      // Low/High-pass filter
-                        dsp::Gain<float>,              // Volume
-                        dsp::Reverb<float>> processor; // Reverb effect
-    
 public:
-    void processBlock(AudioBuffer<float>& buffer)
+    // Initialize processors with audio settings
+    // Called when sample rate or block size changes
+    void prepare(const dsp::ProcessSpec& spec)
     {
-        // Wrap buffer in AudioBlock
-        dsp::AudioBlock<float> block(buffer);
-        dsp::ProcessContextReplacing<float> context(block);
+        // Initialize each processor with audio specs
+        // This ensures proper internal state setup
+        eqLow.prepare(spec);   // Low shelf EQ
+        eqMid.prepare(spec);   // Parametric mid EQ
+        eqHigh.prepare(spec);  // High shelf EQ
+        filter.prepare(spec);  // State variable filter
+        delay.prepare(spec);   // Delay line
+        reverb.prepare(spec);  // Reverb processor
+    }
+    
+    // Process audio through the effect chain
+    // Called for each block of audio samples
+    void process(const dsp::ProcessContextReplacing<float>& context)
+    {
+        // Process through chain in optimal order:
+        // 1. Frequency-based effects (EQ, filters)
+        // 2. Time-based effects (delay, reverb)
+        if (eqEnabled)
+        {
+            eqLow.process(context);   // Process low frequencies
+            eqMid.process(context);   // Process mid frequencies
+            eqHigh.process(context);  // Process high frequencies
+        }
         
-        // Process audio through effect chain
-        processor.process(context);
+        if (filterEnabled)
+            filter.process(context);   // Apply filter effect
+            
+        if (delayEnabled)
+            delay.process(context);    // Add delay effect
+            
+        if (reverbEnabled)
+            reverb.process(context);   // Add space/reverb
     }
     
-    void setFilterCutoff(float frequency)
-    {
-        auto& filter = processor.get<0>();
-        filter.coefficients = dsp::IIR::Coefficients<float>::makeLowPass(
-            sampleRate, frequency);
+    // Thread-safe parameter control methods
+    void setEQLow(float gain) 
+    { 
+        // Convert from dB to linear gain
+        eqLow.setGainDecibels(gain); 
     }
     
-    void setReverbSettings(float roomSize, float damping)
+    void setFilterCutoff(float freq)
     {
-        auto& reverb = processor.get<2>();
-        reverb.params.roomSize = roomSize;
-        reverb.params.damping = damping;
+        // Update filter frequency with smoothing
+        auto& params = filter.state->getParameters();
+        params.setCutOffFrequency(freq);
     }
-};
-```
-
-### Creating an Effects Section in DeckGUI
-
-```cpp
-class DeckGUI
-{
+    
 private:
-    // Effect controls
-    Slider filterCutoffSlider;
-    Slider reverbRoomSizeSlider;
-    Slider reverbDampingSlider;
+    // Audio processors using JUCE's DSP module
+    dsp::IIR::Filter<float> eqLow;    // Low shelf EQ
+    dsp::IIR::Filter<float> eqMid;    // Parametric EQ
+    dsp::IIR::Filter<float> eqHigh;   // High shelf EQ
+    dsp::IIR::Filter<float> filter;   // State variable filter
+    dsp::DelayLine<float> delay;      // Delay effect
+    dsp::Reverb reverb;               // Reverb effect
     
-    void createEffectControls()
-    {
-        // Filter cutoff control
-        filterCutoffSlider.setRange(20.0, 20000.0, 1.0);
-        filterCutoffSlider.setSkewFactorFromMidPoint(1000.0);
-        filterCutoffSlider.onValueChange = [this] {
-            player->setFilterCutoff(filterCutoffSlider.getValue());
-        };
-        
-        // Reverb controls
-        reverbRoomSizeSlider.setRange(0.0, 1.0);
-        reverbRoomSizeSlider.onValueChange = [this] {
-            player->setReverbSettings(reverbRoomSizeSlider.getValue(),
-                                    reverbDampingSlider.getValue());
-        };
-    }
+    // Effect enable flags
+    bool eqEnabled = true;
+    bool filterEnabled = false;
+    bool delayEnabled = false;
+    bool reverbEnabled = false;
 };
 ```
 
-## Step 2: Implementing Beat Detection
+### 2. Beat Detection System
 
-### Beat Analysis System
+Beat detection is crucial for tempo-sync features. Here's how to implement energy-based detection:
 
 ```cpp
 class BeatDetector
 {
 public:
-    void analyzeBuffer(const AudioBuffer<float>& buffer)
+    // Analyze audio block for beats using energy detection
+    void analyzeAudioBlock(const AudioBuffer<float>& buffer)
     {
-        // Convert to mono if stereo
-        float* monoData = new float[buffer.getNumSamples()];
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        const float* samples = buffer.getReadPointer(0);
+        int numSamples = buffer.getNumSamples();
+        
+        // Calculate RMS energy of current block
+        float energy = 0.0f;
+        for (int i = 0; i < numSamples; ++i)
+            energy += samples[i] * samples[i];
+        energy = std::sqrt(energy / numSamples);
+        
+        // Use adaptive threshold for beat detection
+        // This adjusts to varying audio levels
+        if (energy > energyThreshold && !inPeak)
         {
-            float sum = 0.0f;
-            for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
-                sum += buffer.getReadPointer(ch)[i];
-            monoData[i] = sum / buffer.getNumChannels();
+            // Beat detected - calculate timing
+            beatDetected(buffer.getNumSamples());
+            inPeak = true;
+        }
+        else if (energy < energyThreshold * 0.5f)
+        {
+            // Reset peak detection when energy drops
+            inPeak = false;
         }
         
-        // Detect energy peaks
-        for (int i = 1; i < buffer.getNumSamples() - 1; ++i)
-        {
-            if (monoData[i] > monoData[i-1] && 
-                monoData[i] > monoData[i+1] &&
-                monoData[i] > threshold)
-            {
-                beatPositions.add(i);
-            }
-        }
-        
-        delete[] monoData;
+        // Smoothly adapt threshold to current levels
+        // 0.9 and 0.1 factors provide good balance
+        energyThreshold = 0.9f * energyThreshold + 0.1f * energy;
     }
     
-    // Calculate BPM from beat positions
-    float calculateBPM()
+    // Calculate current tempo from beat timings
+    float getBPM() const
     {
-        if (beatPositions.size() < 2)
+        if (beatIntervals.size() < 2)
             return 0.0f;
             
-        // Calculate average time between beats
-        float avgTimeBetweenBeats = 0.0f;
-        for (int i = 1; i < beatPositions.size(); ++i)
-        {
-            avgTimeBetweenBeats += beatPositions[i] - beatPositions[i-1];
-        }
-        avgTimeBetweenBeats /= (beatPositions.size() - 1);
+        // Calculate average interval between beats
+        float avgInterval = 0.0f;
+        for (auto interval : beatIntervals)
+            avgInterval += interval;
+        avgInterval /= beatIntervals.size();
         
-        // Convert to BPM
-        return 60.0f * sampleRate / avgTimeBetweenBeats;
+        // Convert to BPM using formula:
+        // BPM = (60 seconds * sample rate) / samples between beats
+        return 60.0f * sampleRate / avgInterval;
     }
-
+    
 private:
-    Array<int> beatPositions;
-    float threshold = 0.1f;
+    void beatDetected(int numSamples)
+    {
+        auto time = totalSamples;
+        if (lastBeatTime >= 0)
+        {
+            // Calculate interval and store for BPM calculation
+            auto interval = time - lastBeatTime;
+            beatIntervals.push_back(interval);
+            
+            // Keep a moving window of intervals
+            // This allows for tempo changes
+            if (beatIntervals.size() > 8)
+                beatIntervals.erase(beatIntervals.begin());
+        }
+        lastBeatTime = time;
+        totalSamples += numSamples;
+    }
+    
+    float energyThreshold = 0.0f;
+    bool inPeak = false;
     double sampleRate = 44100.0;
+    int64 lastBeatTime = -1;
+    int64 totalSamples = 0;
+    std::vector<int64> beatIntervals;
 };
 ```
 
-## Step 3: Implementing Loop Controls
+### 3. Loop System
 
-### Loop System
+A flexible loop system is essential for creative mixing. Here's an implementation:
 
 ```cpp
 class LoopSystem
 {
 public:
+    // Set loop points with validation
     void setLoopPoints(double startTime, double endTime)
     {
-        loopStart = startTime;
-        loopEnd = endTime;
-        loopEnabled = true;
+        if (startTime >= 0.0 && endTime > startTime)
+        {
+            loopStart = startTime;
+            loopEnd = endTime;
+            loopLength = endTime - startTime;
+            enabled = true;
+        }
     }
     
+    // Calculate next playback position with loop handling
     double getNextPlayPosition(double currentTime)
     {
-        if (!loopEnabled)
+        if (!enabled)
             return currentTime;
             
         if (currentTime >= loopEnd)
-            return loopStart + (currentTime - loopEnd);
-            
+        {
+            // Handle loop point crossing
+            // Maintain phase accuracy with overshoot calculation
+            double overshoot = currentTime - loopEnd;
+            return loopStart + overshoot;
+        }
+        
         return currentTime;
     }
     
-    void enableLoop(bool shouldEnable)
+    // Set beat quantization for loop points
+    void setQuantization(int beats)
     {
-        loopEnabled = shouldEnable;
+        quantizeBeats = beats;
     }
+    
+    bool isEnabled() const { return enabled; }
+    void setEnabled(bool shouldBeEnabled) { enabled = shouldBeEnabled; }
     
 private:
-    double loopStart = 0.0;
-    double loopEnd = 0.0;
-    bool loopEnabled = false;
-};
-```
-
-### Integration with DJAudioPlayer
-
-```cpp
-class DJAudioPlayer
-{
-private:
-    LoopSystem loopSystem;
-    
-public:
-    void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override
-    {
-        if (readerSource.get() == nullptr)
-        {
-            bufferToFill.clearActiveBufferRegion();
-            return;
-        }
-        
-        double currentTime = transportSource.getCurrentPosition();
-        double nextPosition = loopSystem.getNextPlayPosition(currentTime);
-        
-        if (nextPosition != currentTime)
-            transportSource.setPosition(nextPosition);
-            
-        transportSource.getNextAudioBlock(bufferToFill);
-    }
-};
-```
-
-## Step 4: Implementing Beat Sync
-
-### Tempo Matching System
-
-```cpp
-class TempoMatcher
-{
-public:
-    void matchTempo(DJAudioPlayer* playerToSync, DJAudioPlayer* targetPlayer)
-    {
-        // Get BPM of both tracks
-        float sourceBPM = playerToSync->getBPM();
-        float targetBPM = targetPlayer->getBPM();
-        
-        if (sourceBPM == 0.0f || targetBPM == 0.0f)
-            return;
-            
-        // Calculate required speed change
-        float speedRatio = targetBPM / sourceBPM;
-        
-        // Apply speed change
-        playerToSync->setSpeed(speedRatio);
-    }
-    
-    void alignPhase(DJAudioPlayer* playerToSync, DJAudioPlayer* targetPlayer)
-    {
-        // Get nearest beat positions
-        double sourcePos = playerToSync->getNextBeatPosition();
-        double targetPos = targetPlayer->getNextBeatPosition();
-        
-        // Calculate phase difference
-        double phaseDiff = targetPos - sourcePos;
-        
-        // Adjust position to align beats
-        playerToSync->setPosition(playerToSync->getPosition() + phaseDiff);
-    }
-};
-```
-
-## Step 5: Implementing Advanced Waveform Display
-
-### Enhanced WaveformDisplay
-
-```cpp
-class EnhancedWaveformDisplay : public WaveformDisplay
-{
-public:
-    void paintFrequencyBands(Graphics& g)
-    {
-        auto bounds = getLocalBounds().toFloat();
-        auto numBands = 3; // Low, Mid, High
-        auto bandHeight = bounds.getHeight() / numBands;
-        
-        // Draw frequency bands with different colors
-        for (int i = 0; i < audioThumb.getNumChannels(); ++i)
-        {
-            // Low frequencies
-            g.setColour(Colours::red.withAlpha(0.6f));
-            drawBand(g, bounds.removeFromTop(bandHeight), 0, 200);
-            
-            // Mid frequencies
-            g.setColour(Colours::green.withAlpha(0.6f));
-            drawBand(g, bounds.removeFromTop(bandHeight), 200, 2000);
-            
-            // High frequencies
-            g.setColour(Colours::blue.withAlpha(0.6f));
-            drawBand(g, bounds, 2000, 20000);
-        }
-    }
-    
-    void drawBeatMarkers(Graphics& g)
-    {
-        auto bounds = getLocalBounds().toFloat();
-        g.setColour(Colours::white);
-        
-        for (auto& beatPos : beatPositions)
-        {
-            float x = beatPos * bounds.getWidth();
-            g.drawLine(x, 0, x, bounds.getHeight(), 1.0f);
-        }
-    }
+    double loopStart = 0.0;    // Loop start time in seconds
+    double loopEnd = 0.0;      // Loop end time in seconds
+    double loopLength = 0.0;   // Cached loop length
+    bool enabled = false;      // Loop enable state
+    int quantizeBeats = 4;     // Quantization grid
 };
 ```
 
 ## Implementation Tips
 
-1. **Audio Processing**:
-   - Use JUCE's DSP module for effects
-   - Process audio in small blocks
-   - Minimize latency
-   - Handle buffer underruns
+### 1. Audio Thread Safety
 
-2. **Beat Detection**:
-   - Use energy-based detection
-   - Implement phase vocoder for accuracy
-   - Cache results for performance
-   - Handle different tempos
+Audio processing must be thread-safe:
 
-3. **User Interface**:
-   - Show real-time feedback
-   - Implement smooth animations
-   - Use clear visualizations
-   - Provide accurate timing display
+```cpp
+class ThreadSafeProcessor
+{
+public:
+    // Audio thread method
+    void process(const AudioBuffer<float>& buffer)
+    {
+        // Use RAII lock for thread safety
+        const ScopedLock sl(lock);
+        // Process audio using current parameters
+    }
+    
+    // UI thread method
+    void updateParameters(const Parameters& newParams)
+    {
+        // Protect parameter updates
+        const ScopedLock sl(lock);
+        parameters = newParams;
+    }
+    
+private:
+    CriticalSection lock;      // Thread synchronization
+    Parameters parameters;      // Shared state
+};
+```
 
-4. **Performance**:
-   - Optimize audio processing
-   - Cache computed values
-   - Use efficient algorithms
-   - Profile critical sections
+### 2. Performance Testing
 
-## Key Points
+Test processing overhead to ensure real-time performance:
 
-1. **Audio Quality**:
-   - Clean signal processing
-   - Minimal artifacts
-   - Smooth transitions
-   - Proper gain staging
+```cpp
+class PerformanceTest : public UnitTest
+{
+public:
+    void runTest() override
+    {
+        beginTest("Effect Chain Performance");
+        
+        // Setup test conditions
+        EffectChain chain;
+        AudioBuffer<float> buffer(2, 512);  // Stereo, 512 samples
+        
+        Time start = Time::getMillisecondCounterHiRes();
+        
+        // Process equivalent of 1 second of audio
+        // At 44.1kHz, 512 samples = ~11.6ms
+        // So need about 86 blocks for 1 second
+        for (int i = 0; i < 100; ++i)  // Extra headroom
+        {
+            dsp::AudioBlock<float> block(buffer);
+            dsp::ProcessContextReplacing<float> context(block);
+            chain.process(context);
+        }
+        
+        double duration = Time::getMillisecondCounterHiRes() - start;
+        // Should process well under real-time requirement
+        expectLessThan(duration, 10.0);
+    }
+};
+```
 
-2. **Feature Integration**:
-   - Coherent workflow
-   - Consistent behavior
-   - Reliable performance
-   - Intuitive controls
+## Design Considerations
 
-3. **Professional Features**:
-   - Industry-standard tools
-   - Creative possibilities
-   - Performance options
-   - Quality output
+### 1. Effect Chain Architecture
+- Plan effect ordering for optimal sound
+- Consider CPU impact of each effect
+- Allow flexible routing options
+- Implement smooth bypass switching
 
-4. **Code Structure**:
-   - Modular design
-   - Clean interfaces
-   - Error handling
-   - Documentation
+### 2. Beat Detection
+- Choose appropriate analysis window size
+- Handle varying tempos and genres
+- Consider using multiple detection methods
+- Implement confidence metrics
+
+### 3. Loop Implementation
+- Ensure sample-accurate transitions
+- Handle tempo changes gracefully
+- Support beat-synced loop lengths
+- Enable seamless loop nesting
+
+## Key Points to Remember
+
+1. **Audio Quality**
+   - Maintain clean signal path
+   - Prevent digital clipping
+   - Use appropriate bit depth
+   - Apply proper dithering
+
+2. **Performance**
+   - Profile critical paths
+   - Optimize inner loops
+   - Use SIMD where possible
+   - Monitor CPU usage
+
+3. **User Experience**
+   - Provide immediate feedback
+   - Use clear visual indicators
+   - Handle errors gracefully
+   - Support common workflows
 
 ## Navigation
 
 - [Back to Project Overview](index.html)
-- [Previous: Task 1 - Custom Deck Control Interface](task1.html)
-- [Next: Task 3 - Music Library System](task3.html)
+- [Previous: Custom Deck Control Interface](task1.html)
+- [Next: Music Library System](task3.html)
